@@ -1,0 +1,47 @@
+//- INDEX LANDING PAGES
+//- start variable
+- var pageActive = 'home'
+- var baseURL = ''
+- var contentDescription = {}
+- ogImageURL = baseURL+"/img/og-image.jpg"
+- contentDescription.title = "Jawara Teknologi Digital - Indonesia Leading Innovator in Web and Mobile Solutions"
+- contentDescription.description = "We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses."
+
+doctype html
+html(lang="en" page-class="home")
+    include pug/includes/html_head.pug
+    body
+        
+        // header
+        include pug/includes/header.pug
+        
+        // nav
+        include pug/includes/side_nav.pug
+
+        // main
+        main.site-main
+            // hero
+            include pug/home/section_hero.pug
+            // about
+            include pug/home/section_about.pug
+            // team
+            include pug/home/section_team.pug
+            // skills
+            include pug/home/section_service.pug
+            // portfolio
+            include pug/home/section_portfolio.pug
+            // contact
+            include pug/home/section_contact.pug
+
+        include pug/includes/scroll_top.pug
+            
+            
+
+        
+
+        // Footer
+
+
+    include pug/includes/html_foot.pug
+    include pug/includes/google_analytic.pug
+

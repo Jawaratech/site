@@ -1,0 +1,31 @@
+header.site-header
+    .container-fluid
+        ul.site-menu.d-flex.align-items-center.justify-content-center
+            li(class={"is-active" : pageActive === 'home'})
+                a.d-flex.align-items-center(href=baseURL+"#home") Home
+            
+            li
+                a.d-flex.align-items-center(href=baseURL+"#about") About 
+
+            li
+                a.d-flex.align-items-center(href=baseURL+"#service") Service
+
+            li
+                a.d-flex.align-items-center(href=baseURL+"#portfolio") Portfolio
+
+            li
+                a.d-flex.align-items-center(href=baseURL+"#team") Team
+            
+            li
+                a.d-flex.align-items-center(href=baseURL+"#contact") Contact
+
+        //- ul.social-media-list.d-flex.align-items-center.justify-content-end
+            //- li
+                a(href='https://www.instagram.com/yourprofile' target='_blank' aria-label='Instagram')
+                    img(src=baseURL+'asset/icon-instagram.svg' alt='Instagram')
+            li
+                a(href='https://www.linkedin.com/in/dikasoulseva/' target='_blank' aria-label='LinkedIn')
+                    img(src=baseURL+'asset/icon-linkedin.svg' alt='LinkedIn')
+            li
+                a(href='mailto:dikaseva@gmail.com' aria-label='Email')
+                    img(src=baseURL+'asset/icon-mail.svg' alt='Email')
