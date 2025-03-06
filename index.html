@@ -1,192 +1,234 @@
 <!DOCTYPE html>
-<html lang="en" page-class="home">
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="img/favicon/favicon.ico">
-    <link rel="icon" type="image/vnd.microsoft.icon" href="img/favicon/favicon.ico">
-    <link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
-    <link rel="icon" href="img/favicon/favicon.ico">
-    <link rel="shortcut icon" href="img/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-    <link rel="manifest" href="img/site.webmanifest">
-    <title>Jawara Teknologi Digital - Indonesia Leading Innovator in Web and Mobile Solutions</title>
-    <!--Block index-->
-    <meta name="description" content="We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="Jawara Teknologi Digital - Indonesia Leading Innovator in Web and Mobile Solutions">
-    <meta property="og:site_name" content="Dika Soul Seva">
-    <meta property="og:url" content="https://dikaseva.com/">
-    <meta property="og:description" content="We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses.">
-    <meta property="og:image" content="/img/og-image.jpg">
-    <meta property="og:image:width" content="400">
-    <meta property="og:image:height" content="627">
-    <meta property="og:locale" content="id_ID">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@dikaseva">
-    <meta name="twitter:title" content="Jawara Teknologi Digital - Indonesia Leading Innovator in Web and Mobile Solutions">
-    <meta name="twitter:description" content="We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses.">
-    <meta name="twitter:image" content="/img/og-image.jpg">
-    <meta name="twitter:image:width" content="1200">
-    <meta name="twitter:image:height" content="630">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;family=Barlow:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" as="style" href="css/style.css">
-  </head>
-  <body>
-    <!-- header-->
-    <header class="site-header">
-      <div class="container-fluid">
-        <ul class="site-menu d-flex align-items-center justify-content-center">
-          <li class="is-active"><a class="d-flex align-items-center" href="#home">Home</a></li>
-          <li><a class="d-flex align-items-center" href="#about">About </a></li>
-          <li><a class="d-flex align-items-center" href="#service">Service</a></li>
-          <li><a class="d-flex align-items-center" href="#portfolio">Portfolio</a></li>
-          <li><a class="d-flex align-items-center" href="#team">Team</a></li>
-          <li><a class="d-flex align-items-center" href="#contact">Contact</a></li>
-        </ul>
-      </div>
-    </header>
-    <!-- nav-->
-    <nav class="site-nav scrollspy-nav"><a class="site-logo" href=""> <img src="img/logo-jtd.svg" alt="Logo JTD"></a>
-      <div class="site-brand">
-        <ul class="site-menu social d-flex align-items-center flex-column">
-          <li><a href="https://www.instagram.com/" alt="Instram @jawara.tech" target="_blank"><img src="img/social/instagram.svg" alt="Instram @jawara.tech"></a></li>
-          <li><a href="https://www.linkedin.com/showcase/gojek-gotogroup" alt="Linkedin Jawara Tech" target="_blank"><img src="img/social/linkedin.svg" alt="Linkedin Jawara Tech"></a></li>
-          <li><a href="mailto:contact@jtd.co.id" alt="Mail to contact@jawaratech.co.id" target="_blank"><img src="img/social/mail.svg" alt="Mail to contact@jawaratech.co.id"></a></li>
-          <li><a href="tel:+6281381405618" alt="Call to +6281381405618" target="_blank"><img src="img/social/phone.svg" alt="Call to +6281381405618"></a></li>
-        </ul>
-      </div>
-    </nav>
-    <!-- main-->
-    <main class="site-main">
-      <!-- hero-->
-      <section class="py-lg-5 section-full d-flex align-items-center adjust-anchor scrollspy-content" id="home">
-        <div class="container">
-          <div class="row pt-5 d-flex align-items-center">
-            <div class="col-6">
-              <h1 class="color-heading">Indonesia’s Leading Innovator in Web and Mobile Solutions</h1>
-              <p>We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses. Our solutions turn every investment into sustainable growth with lasting impact. Backed by years of experience, we have partnered with leading industries like finance and education software that drives success</p><a class="btn" href="#about">Learn More</a>
+    <title>Jawara Teknologi Digital (JTD.) | Coming Soon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+        }
+
+        body {
+            /* background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); */
+            background-image: linear-gradient(to bottom, #16213e, #13244e, #11275f, #10296f, #152b7f);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            color: #a0a0a0;
+            line-height: 1.6;
+            max-width: 600px;
+            display: inline-block;
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: #a0a0a0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .email-form {
+            margin: 2rem 0;
+        }
+
+        input[type="email"] {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            width: 300px;
+            margin-right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            background: #007bff;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .social-links {
+            margin-top: 3rem;
+        }
+
+        .social-links a {
+            color: #fff;
+            margin: 0 1rem;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .countdown {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            input[type="email"] {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FBQVHTBRNN"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FBQVHTBRNN');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div style="border-radius: 8px; padding: 10px; background-color: #fff; margin-bottom: 10px; display: inline-block;"><img src="img/jtd-logo.svg" alt="Jawara Teknologi Digital" class="logo"></div>
+        <h1>Something Amazing is Coming</h1>
+        <p>We're revolutionizing the future of technology. Subscribe to get notified when we launch!</p>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
             </div>
-            <div class="col-6">
-              <picture><img src="img/img-jtd-hero.webp" loading="lazy" alt="Image"></picture>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
             </div>
-          </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
         </div>
-      </section>
-      <!-- about-->
-      <section class="py-lg-5 section-full d-flex align-items-center scrollspy-content" id="about">
-        <div class="container">
-          <div class="row"> 
-            <div class="col-12">
-              <h3 class="mb-0 color-heading">ABOUT</h3>
-              <p class="mt-2 text-light"><i>We turn your digital dreams into lasting reality!</i></p>
-              <p>Your digital investments deserve to make a real difference. We build applications that help your business grow, thrive, and stay ahead. With years of experience tackling projects of all sizes and complexities, we’ve mastered the art of creating modern, reliable, and battle-tested solutions. Trusted by leading innovators and industry giants, we make sure your digital journey is smooth, sustainable, and built for the future.</p>
-              <p> <b>Sustainable. Reliable. Innovative. Trustworthy.</b></p>
-            </div>
-          </div>
+
+        <div class="email-form">
+            <input type="email" placeholder="Enter your email for updates">
+            <button>Notify Me</button>
         </div>
-      </section>
-      <!-- team-->
-      <section class="py-lg-5 scrollspy-content section-full" id="team">
-        <div class="container">
-          <h3 class="mb-0 color-heading">TEAM</h3>
-          <div class="d-lg-flex justify-content-between alignt-items-center mb-4">
-            <div>
-              <p class="mt-2 text-light mb-0"><i>One of the hobby through the lens</i></p>
-            </div>
-          </div>
+
+        <div class="social-links">
+            <a href="https://www.linkedin.com/company/105967384"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/jawara.teknologi.digital/"><i class="fab fa-instagram"></i></a>
+            <a href="https://github.com/Jawaratech"><i class="fab fa-github"></i></a>
         </div>
-      </section>
-      <!-- skills-->
-      <section class="py-lg-5 section-full d-flex align-items-center scrollspy-content" id="service">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <h3 class="mb-0 color-heading">SERVICE</h3>
-              <p class="mt-2 text-light"><i>A highly-experienced product engineering team and a modern and battle-tested approach will empower you to create innovative applications that customers love.</i></p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-md-6 mb-4">
-              <div class="service-box box-style p-4">
-                <div class="d-flex align-self-center align-items-center">
-                  <div class="service-icon box-icon-style"><i class="lni bi bi-brush"></i></div>
-                  <h4 class="ms-3 text-primary">Product Design & UI/UX</h4>
-                </div>
-                <div class="box-content-style service-content"><span class="barlow-condensed-semibold-italic fs-4">Elevate your digital product experience with our product design and UX services expertise.</span>
-                  <p>We transform your revolutionary ideas and noble intentions into a successful product design that's sleek, innovative, and tailored to your needs, passionately crafted for its looks and interaction to maximize functionality and represent every value and vision laid on to every user with a seamless experience.</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6 mb-4">
-              <div class="service-box box-style p-4">
-                <div class="d-flex align-self-center align-items-center">
-                  <div class="service-icon box-icon-style"><i class="bi bi-lightning"></i></div>
-                  <h4 class="ms-3 text-primary">Build Applications</h4>
-                </div>
-                <div class="box-content-style service-content"><span class="barlow-condensed-semibold-italic fs-4">Deliver the reliable, modern, and long-lasting applications your customers love</span>
-                  <p>
-                      We construct your business idea into sustainable applications by leveraging cutting-edge technology to boost your business by reaching millions of customers on any scale and in any form of modern, innovative, and reliable applications from mobile phones, web, desktop, smartwatches to every smart TV in your customer's living room.</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <div class="service-box box-style p-4">
-                <div class="d-flex align-self-center align-items-center">
-                  <div class="service-icon box-icon-style"><i class="bi bi-rocket"></i></div>
-                  <h4 class="ms-3 text-primary">Mordernize Application</h4>
-                </div>
-                <div class="box-content-style service-content"><span class="barlow-condensed-semibold-italic fs-4">Make your applications stay relevant, reliable, and resilient to empower your business.</span>
-                  <p>  We deeply understand that outdated and sluggish software applications can slow your business. Modernizing applications is crucial for companies that want to stay competitive and relevant in today's fast-paced digital landscape and break the limit of the ability to integrate with new technologies.</p>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-              <div class="service-box box-style p-4">
-                <div class="d-flex align-self-center align-items-center">
-                  <div class="service-icon box-icon-style"><i class="bi bi-gear-wide"></i></div>
-                  <h4 class="ms-3 text-primary">Build As You Wish</h4>
-                </div>
-                <div class="box-content-style service-content"><span class="barlow-condensed-semibold-italic fs-4">Your Vision, Our Expertise – Let’s Build It Together!</span>
-                  <p> Turn your unique ideas into reality with tailor-made digital solutions designed to meet your specific needs. Whether it's a custom web platform, a cutting-edge app, or a hybrid solution, we bring your vision to life with precision and creativity. From ideation to launch, we collaborate closely to ensure every detail aligns with your goals and exceeds expectations. If you can dream it, we can build it!</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- portfolio-->
-      <section class="py-lg-5 section-full d-flex align-items-center scrollspy-content" id="portfolio">
-        <div class="container">
-          <div class="row"> 
-            <div class="col-12">
-              <h3 class="mb-0 color-heading">PORTFOLIO</h3>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- contact-->
-      <section class="py-lg-5 section-full d-flex align-items-center scrollspy-content" id="contact">
-        <div class="container">
-          <div class="row"> 
-            <div class="col-12">
-              <h3 class="color-heading mb-0">CONTACT</h3>
-              <p class="mt-2 text-light"></p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-    <button class="btn-scroll-top" id="scrollToTop" title="Scroll to top">
-      <svg class="bi bi-chevron-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#424242" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"></path>
-      </svg>
-    </button>
-    <!-- Footer-->
-  </body>
-  <script src="js/jquery-3.7.1.min.js"></script>
-  <script src="js/main.js"></script>
-  <!-- Google tag (gtag.js)-->
+    </div>
+
+    <script>
+        // Set the launch date (example: 30 days from now)
+        const launchDate = new Date();
+        launchDate.setDate(launchDate.getDate() + 14);
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerHTML = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerHTML = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector('.countdown').innerHTML = '<h2>We\'re Live!</h2>';
+            }
+        }
+
+        // Update countdown every second
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+    </script>
+</body>
 </html>

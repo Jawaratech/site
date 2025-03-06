@@ -1,31 +1,97 @@
-header.site-header
-    .container-fluid
-        ul.site-menu.d-flex.align-items-center.justify-content-center
-            li(class={"is-active" : pageActive === 'home'})
-                a.d-flex.align-items-center(href=baseURL+"#home") Home
+//- header.site-header
+//-     .container-fluid
+//-         ul.site-menu.d-flex.align-items-center.justify-content-center
+//-             li(class={"is-active" : pageActive === 'home'})
+//-                 a.d-flex.align-items-center(href=baseURL+"#home") Home
             
-            li
-                a.d-flex.align-items-center(href=baseURL+"#about") About 
+//-             li
+//-                 a.d-flex.align-items-center(href=baseURL+"#about") About 
 
-            li
-                a.d-flex.align-items-center(href=baseURL+"#service") Service
+//-             li
+//-                 a.d-flex.align-items-center(href=baseURL+"#service") Service
 
-            li
-                a.d-flex.align-items-center(href=baseURL+"#portfolio") Portfolio
+//-             li
+//-                 a.d-flex.align-items-center(href=baseURL+"#portfolio") Portfolio
 
-            li
-                a.d-flex.align-items-center(href=baseURL+"#team") Team
+//-             li
+//-                 a.d-flex.align-items-center(href=baseURL+"#team") Team
             
-            li
-                a.d-flex.align-items-center(href=baseURL+"#contact") Contact
+//-             li
+//-                 a.d-flex.align-items-center(href=baseURL+"#contact") Contact
 
-        //- ul.social-media-list.d-flex.align-items-center.justify-content-end
-            //- li
-                a(href='https://www.instagram.com/yourprofile' target='_blank' aria-label='Instagram')
-                    img(src=baseURL+'asset/icon-instagram.svg' alt='Instagram')
-            li
-                a(href='https://www.linkedin.com/in/dikasoulseva/' target='_blank' aria-label='LinkedIn')
-                    img(src=baseURL+'asset/icon-linkedin.svg' alt='LinkedIn')
-            li
-                a(href='mailto:dikaseva@gmail.com' aria-label='Email')
-                    img(src=baseURL+'asset/icon-mail.svg' alt='Email')
+//-         //- ul.social-media-list.d-flex.align-items-center.justify-content-end
+//-             //- li
+//-                 a(href='https://www.instagram.com/yourprofile' target='_blank' aria-label='Instagram')
+//-                     img(src=baseURL+'asset/icon-instagram.svg' alt='Instagram')
+//-             li
+//-                 a(href='https://www.linkedin.com/in/dikasoulseva/' target='_blank' aria-label='LinkedIn')
+//-                     img(src=baseURL+'asset/icon-linkedin.svg' alt='LinkedIn')
+//-             li
+//-                 a(href='mailto:dikaseva@gmail.com' aria-label='Email')
+//-                     img(src=baseURL+'asset/icon-mail.svg' alt='Email')
+
+
+header.header.navbar-area
+  //  Toolbar Start 
+  .toolbar-area
+    .container
+      .row
+        .col-lg-8.col-md-9.col-12
+          .toolbar-contact
+            p
+              i.lni.lni-envelope
+              a(href='mailto:info@jawaratech.co.id') info@jawaratech.co.id
+            p
+              i.lni.lni-phone
+              a(href='tel:+6281381405618') (+62) 813-814-5618
+            p
+              i.lni.lni-map-marker
+              |  CAPITAL EIGHT, Jakarta, Indonesia
+        .col-lg-4.col-md-3.col-12
+          .toolbar-sl-share
+            ul
+              li
+                a(href='#')
+                  i.lni.lni-instagram-filled
+              li
+                a(href='#')
+                  i.lni.lni-linkedin-original
+  //  Toolbar End 
+  .container
+    .row.align-items-center
+      .col-lg-12
+        .nav-inner
+          nav.navbar.navbar-expand-lg
+            a.navbar-brand(href='index.html')
+              img(src=baseURL+'img/jtd-logo.svg' alt='jtd logo')
+            button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+              span.toggler-icon
+              span.toggler-icon
+              span.toggler-icon
+            .collapse.navbar-collapse.sub-menu-bar#navbarSupportedContent
+              ul#nav.navbar-nav.ms-auto
+                li.nav-item
+                  a.page-scroll.active(href=baseURL+"#home") Home
+                li.nav-item
+                  a.page-scroll(href=baseURL+"#about") About 
+                li.nav-item
+                  a.page-scroll(href='javascript:void(0)') Services
+                li.nav-item
+                  a.page-scroll(href=baseURL+"#service") Service
+                //- li.nav-item
+                  a.page-scroll.dd-menu.collapsed(href='javascript:void(0)' data-bs-toggle='collapse' data-bs-target='#submenu-1-1' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation') Pages
+                  ul.sub-menu.collapse#submenu-1-1
+                    li.nav-item
+                      a(href='about-us.html') About Us
+                li.nav-item
+                  a.page-scroll(href=baseURL+"#team") Team
+                //- li.nav-item
+                  a.page-scroll(href=baseURL+"#contact") Contact
+            //  navbar collapse 
+            .button
+              a.btn.white-bg.mouse-dir(href='javascript:void(0)')
+                | Get a Quote 
+                span.dir-part
+          //  navbar 
+    //  row 
+  //  container 

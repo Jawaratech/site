@@ -11,27 +11,32 @@ doctype html
 html(lang="en" page-class="home")
     include pug/includes/html_head.pug
     body
+        .preloader
+            .preloader-inner
+                .preloader-icon
+                span
+                span
         
         // header
         include pug/includes/header.pug
         
         // nav
-        include pug/includes/side_nav.pug
+        //- include pug/includes/side_nav.pug
 
         // main
         main.site-main
             // hero
             include pug/home/section_hero.pug
             // about
-            include pug/home/section_about.pug
+            //- include pug/home/section_about.pug
             // team
-            include pug/home/section_team.pug
+            //- include pug/home/section_team.pug
             // skills
-            include pug/home/section_service.pug
+            //- include pug/home/section_service.pug
             // portfolio
-            include pug/home/section_portfolio.pug
+            //- include pug/home/section_portfolio.pug
             // contact
-            include pug/home/section_contact.pug
+            //- include pug/home/section_contact.pug
 
         include pug/includes/scroll_top.pug
             
@@ -43,5 +48,5 @@ html(lang="en" page-class="home")
 
 
     include pug/includes/html_foot.pug
-    include pug/includes/google_analytic.pug
+    //- include pug/includes/google_analytic.pug
 
