@@ -179,32 +179,35 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
     <style>
-
         #sib-container input:-ms-input-placeholder {
-          text-align: left;
-          font-family: inherit;
-          color: #c0ccda;
+            text-align: left;
+            font-family: inherit;
+            color: #c0ccda;
         }
-      
+    
         #sib-container input::placeholder {
-          text-align: left;
-          font-family: inherit;
-          color: #c0ccda;
+            text-align: left;
+            font-family: inherit;
+            color: #c0ccda;
         }
-      
+    
         #sib-container textarea::placeholder {
-          text-align: left;
-          font-family: inherit;
-          color: #c0ccda;
+            text-align: left;
+            font-family: inherit;
+            color: #c0ccda;
         }
-      
+    
         #sib-container a {
-          text-decoration: underline;
-          color: #2BB2FC;
+            text-decoration: underline;
+            color: #2BB2FC;
         }
-      </style>
-      <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
+        input.input {
+            color: #3c4858 !important;
+        }
+        
+    </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FBQVHTBRNN"></script>
     <script>
@@ -265,15 +268,15 @@
                 </div>
                 <div></div>
                 <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:rgba(255,255,255,1); max-width:540px; border-radius:3px; border-width:1px; border-color:#C0CCD9; border-style:solid; direction:ltr">
-                <form id="sib-form" method="POST" action="https://sibforms.com/serve/MUIFAKyfYquZwiNh8YP5yOHNgy8jmxYzNoJS6q9fHtAvhqCgUbULxM2vloXqE8rz3o_PMUA6NNKaFkCmtNLwZCWAdwpKxEXNuV0dDNRkkqkm3efsD-nCL1Dad_6ldqkGNYeFQmCpjY60-5qvZ34oFODFuCjXOrI-k1Eg8WDEDgi7mUsY755YSdOo9w5SXm-tN_2p2jV1A-VYsRAY" data-type="subscription">
+                <form id="sib-form" method="POST" action="https://sibforms.com/serve/MUIFALMriwe72hagi96x0__D6AqpfwnbXUxCKPU2QiVkSytO0m_EwalI12zKhwWrb9GQev8ZVTtc4DKL4jDUCWz3dovikWSUTrN-tKkwNIUKIw6JRuQpfvLs7RXiGCHoWojCOTP8y7FDQOYJ8ISN9oPSFVmTOOQkquEsrX5n1BZpeGGAMh3OUOP-yqqzbBRBXrbCtuQU-qQYOYTm" data-type="subscription">
                     <div style="padding: 8px 0;">
                     <div class="sib-input sib-form-block">
                         <div class="form__entry entry_block">
                         <div class="form__label-row ">
-                            <label class="entry__label" style="font-weight: 700; text-align:left; font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858;" for="EMAIL" data-required="*">We'll notify you when it's ready</label>
+                            <label class="entry__label" style="font-weight: 700; text-align:left; font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858;" for="EMAIL" data-required="*">Enter your email address</label>
 
                             <div class="entry__field">
-                            <input class="input " type="text" id="EMAIL" name="EMAIL" autocomplete="off" placeholder="Email addrees, ex: jhon.doe@email.com" data-required="true" required />
+                            <input class="input " type="text" id="EMAIL" name="EMAIL" autocomplete="off" placeholder="EMAIL" data-required="true" required />
                             </div>
                         </div>
 
@@ -286,24 +289,7 @@
                     </div>
                     </div>
                     <div style="padding: 8px 0;">
-                    <div class="sib-captcha sib-form-block">
-                        <div class="form__entry entry_block">
-                        <div class="form__label-row ">
-                            <script>
-                            function handleCaptchaResponse() {
-                                var event = new Event('captchaChange');
-                                document.getElementById('sib-captcha').dispatchEvent(event);
-                            }
-                            </script>
-                            <div class="g-recaptcha sib-visible-recaptcha" id="sib-captcha" data-sitekey="6LfkyPEqAAAAACnc2Yc6eke4dzuwlm4_hWFAxusA" data-callback="handleCaptchaResponse" style="direction:ltr"></div>
-                        </div>
-                        <label class="entry__error entry__error--primary" style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-color:#ff4949;">
-                        </label>
-                        <label class="entry__specification" style="font-size:12px; text-align:left; font-family:Helvetica, sans-serif; color:#8390A4; text-align:left">
-                            Form secured by reCAPTCHA
-                        </label>
-                        </div>
-                    </div>
+                    <div class="g-recaptcha-v3" data-sitekey="6LfkyPEqAAAAACnc2Yc6eke4dzuwlm4_hWFAxusA" style="display: none"></div>
                     </div>
                     <div style="padding: 8px 0;">
                     <div class="sib-form-block" style="text-align: left">
@@ -322,9 +308,6 @@
                 </div>
             </div>
             </div>
-            <!-- END - We recommend to place the above code where you want the form in your website html  -->
-
-            <!-- START - We recommend to place the below code in footer or bottom of your website html  -->
 
         <div class="social-links">
             <a href="https://www.linkedin.com/company/105967384"><i class="fab fa-linkedin"></i></a>
@@ -367,28 +350,28 @@
         window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
         window.LOCALE = 'en';
         window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
-
+    
         window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
-
+    
         window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
-
-
-
-
+    
+    
+    
+    
         window.translation = {
-            common: {
+        common: {
             selectedList: '{quantity} list selected',
             selectedLists: '{quantity} lists selected',
             selectedOption: '{quantity} selected',
             selectedOptions: '{quantity} selected',
-            }
+        }
         };
-
+    
         var AUTOHIDE = Boolean(0);
-        </script>
-
-        <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
-
-        <script src="https://www.google.com/recaptcha/api.js?hl=en"></script>
+    </script>
+    
+    <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+    
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfkyPEqAAAAACnc2Yc6eke4dzuwlm4_hWFAxusA&hl=en" async defer></script>
 </body>
 </html>
