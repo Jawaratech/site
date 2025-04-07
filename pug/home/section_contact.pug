@@ -1,7 +1,42 @@
-section#contact.py-lg-5.section-full.d-flex.align-items-center.scrollspy-content
-    .container
-        .row 
-            .col-12
-                h3.color-heading.mb-0 CONTACT
-                p.mt-2.text-light
-                    
+section#contact.call-action.section.overlay
+  .container
+    .row
+      .col-lg-6.col-md-6.col-12.wow.fadeInLeft(data-wow-delay='.3s' style='visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;')
+        .section-title
+          span Get to Know Us
+          h2
+            | We Are Very
+            br
+            | Good In
+            br
+            | Boosting Your
+            br
+            | Businesses
+          p There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.
+        //- .button.section-button
+          a.btn.mouse-dir(href='about-us.html')
+            | Discover More 
+            span.dir-part
+      .col-lg-6.col-md-6.col-12.wow.fadeInRight(data-wow-delay='.4s' style='visibility: visible; animation-delay: 0.4s; animation-name: fadeInRight;')
+        .right-form
+          .section-heading
+            span.small Request
+            h4
+              | Let's 
+              span Request a Call
+              |  Back
+          .contact-form-box
+            form.mailform(method='post' action='assets/mail/mail.php')
+              .row
+                .col-12
+                  input(type='text' name='name' placeholder='Your Name')
+                .col-lg-6.col-12
+                  input(type='email' name='email' placeholder='Your Email')
+                .col-lg-6.col-12
+                  input(type='text' name='phone' placeholder='Your Number')
+                .col-12
+                  textarea(name='message' rows='5' placeholder='Your Messege')
+                .button.col-12
+                  button.btn.white-bg.mouse-dir(type='submit')
+                    | Sumbit 
+                    span.dir-part

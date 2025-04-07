@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" page-class="home">
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/favicon/favicon.ico">
     <link rel="icon" type="image/vnd.microsoft.icon" href="img/favicon/favicon.ico">
     <link rel="icon" type="image/x-icon" href="img/favicon/favicon.ico">
@@ -15,8 +14,8 @@
     <meta name="description" content="We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:title" content="Jawara Teknologi Digital - Indonesia Leading Innovator in Web and Mobile Solutions">
-    <meta property="og:site_name" content="Dika Soul Seva">
-    <meta property="og:url" content="https://dikaseva.com/">
+    <meta property="og:site_name" content="Jawara Teknologi Digital">
+    <meta property="og:url" content="https://jawaratech.co.id/">
     <meta property="og:description" content="We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses.">
     <meta property="og:image" content="/img/og-image.jpg">
     <meta property="og:image:width" content="400">
@@ -29,349 +28,378 @@
     <meta name="twitter:image" content="/img/og-image.jpg">
     <meta name="twitter:image:width" content="1200">
     <meta name="twitter:image:height" content="630">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
-        }
-
-        body {
-            /* background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); */
-            background-image: linear-gradient(to bottom, #16213e, #13244e, #11275f, #10296f, #152b7f);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .logo {
-            width: 100px;
-            animation: fadeIn 1.5s ease-in;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
-            color: #a0a0a0;
-            line-height: 1.6;
-            max-width: 600px;
-            display: inline-block;
-        }
-
-        .countdown {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .countdown-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-        }
-
-        .countdown-number {
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 0.5rem;
-        }
-
-        .countdown-label {
-            font-size: 0.9rem;
-            color: #a0a0a0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .email-form {
-            margin: 2rem 0;
-        }
-
-        input[type="email"] {
-            padding: 1rem 1.5rem;
-            border: none;
-            border-radius: 30px;
-            width: 300px;
-            margin-right: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 1rem;
-        }
-
-        button {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 30px;
-            background: #007bff;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            background: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        .social-links {
-            margin-top: 3rem;
-        }
-
-        .social-links a {
-            color: #fff;
-            margin: 0 1rem;
-            font-size: 1.5rem;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            opacity: 1;
-            transform: translateY(-3px);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .countdown {
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-            }
-
-            input[type="email"] {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-
-            button {
-                width: 100%;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
-    <style>
-        #sib-container input:-ms-input-placeholder {
-            text-align: left;
-            font-family: inherit;
-            color: #c0ccda;
-        }
-    
-        #sib-container input::placeholder {
-            text-align: left;
-            font-family: inherit;
-            color: #c0ccda;
-        }
-    
-        #sib-container textarea::placeholder {
-            text-align: left;
-            font-family: inherit;
-            color: #c0ccda;
-        }
-    
-        #sib-container a {
-            text-decoration: underline;
-            color: #2BB2FC;
-        }
-        input.input {
-            color: #3c4858 !important;
-        }
-        
-    </style>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FBQVHTBRNN"></script>
-    <script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/css/LineIcons.2.0.css">
+    <link rel="stylesheet" href="css/css/animate.css">
+    <link rel="stylesheet" href="css/css/tiny-slider.css">
+    <link rel="stylesheet" href="css/css/glightbox.min.css">
+    <link rel="stylesheet" href="css/css/main.css">
+    <link rel="stylesheet" href="css/css/reset.css">
+    <link rel="stylesheet" href="css/css/responsive.css">
+  </head>
+  <!-- Google tag (gtag.js)-->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FBQVHTBRNN"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-FBQVHTBRNN');
-    </script>
-</head>
-<body>
-    <div class="container">
-        <div style="border-radius: 8px; padding: 10px; background-color: #fff; margin-bottom: 10px; display: inline-block;"><img src="img/jtd-logo.svg" alt="Jawara Teknologi Digital" class="logo"></div>
-        <h1>Something Amazing is Coming</h1>
-        <p>We're revolutionizing the future of technology. Subscribe to get notified when we launch!</p>
-        
-        <div class="countdown">
-            <div class="countdown-item">
-                <div class="countdown-number" id="days">00</div>
-                <div class="countdown-label">Days</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="hours">00</div>
-                <div class="countdown-label">Hours</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="minutes">00</div>
-                <div class="countdown-label">Minutes</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="seconds">00</div>
-                <div class="countdown-label">Seconds</div>
-            </div>
-        </div>
-
-        <div class="sib-form" style="text-align: center;">
-            <div id="sib-form-container" class="sib-form-container">
-                <div id="error-message" class="sib-form-message-panel" style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-color:#ff4949;max-width:540px;">
-                <div class="sib-form-message-panel__text sib-form-message-panel__text--center">
-                    <svg viewBox="0 0 512 512" class="sib-icon sib-notification__icon">
-                    <path d="M256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216 0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm-11.49 120h22.979c6.823 0 12.274 5.682 11.99 12.5l-7 168c-.268 6.428-5.556 11.5-11.99 11.5h-8.979c-6.433 0-11.722-5.073-11.99-11.5l-7-168c-.283-6.818 5.167-12.5 11.99-12.5zM256 340c-15.464 0-28 12.536-28 28s12.536 28 28 28 28-12.536 28-28-12.536-28-28-28z" />
-                    </svg>
-                    <span class="sib-form-message-panel__inner-text">
-                                    Your email could not be saved. Please try again.
-                                </span>
-                </div>
-                </div>
-                <div></div>
-                <div id="success-message" class="sib-form-message-panel" style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#085229; background-color:#e7faf0; border-radius:3px; border-color:#13ce66;max-width:540px;">
-                <div class="sib-form-message-panel__text sib-form-message-panel__text--center">
-                    <svg viewBox="0 0 512 512" class="sib-icon sib-notification__icon">
-                    <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 464c-118.664 0-216-96.055-216-216 0-118.663 96.055-216 216-216 118.664 0 216 96.055 216 216 0 118.663-96.055 216-216 216zm141.63-274.961L217.15 376.071c-4.705 4.667-12.303 4.637-16.97-.068l-85.878-86.572c-4.667-4.705-4.637-12.303.068-16.97l8.52-8.451c4.705-4.667 12.303-4.637 16.97.068l68.976 69.533 163.441-162.13c4.705-4.667 12.303-4.637 16.97.068l8.451 8.52c4.668 4.705 4.637 12.303-.068 16.97z" />
-                    </svg>
-                    <span class="sib-form-message-panel__inner-text">
-                                    Thank you, we&#039;ll notify you very soon
-                                </span>
-                </div>
-                </div>
-                <div></div>
-                <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:rgba(255,255,255,1); max-width:540px; border-radius:3px; border-width:1px; border-color:#C0CCD9; border-style:solid; direction:ltr">
-                <form id="sib-form" method="POST" action="https://sibforms.com/serve/MUIFALMriwe72hagi96x0__D6AqpfwnbXUxCKPU2QiVkSytO0m_EwalI12zKhwWrb9GQev8ZVTtc4DKL4jDUCWz3dovikWSUTrN-tKkwNIUKIw6JRuQpfvLs7RXiGCHoWojCOTP8y7FDQOYJ8ISN9oPSFVmTOOQkquEsrX5n1BZpeGGAMh3OUOP-yqqzbBRBXrbCtuQU-qQYOYTm" data-type="subscription">
-                    <div style="padding: 8px 0;">
-                    <div class="sib-input sib-form-block">
-                        <div class="form__entry entry_block">
-                        <div class="form__label-row ">
-                            <label class="entry__label" style="font-weight: 700; text-align:left; font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858;" for="EMAIL" data-required="*">Enter your email address</label>
-
-                            <div class="entry__field">
-                            <input class="input " type="text" id="EMAIL" name="EMAIL" autocomplete="off" placeholder="EMAIL" data-required="true" required />
-                            </div>
-                        </div>
-
-                        <label class="entry__error entry__error--primary" style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-color:#ff4949;">
-                        </label>
-                        <label class="entry__specification" style="font-size:12px; text-align:left; font-family:Helvetica, sans-serif; color:#8390A4; text-align:left">
-                            Provide your email address to notify when it launch. For e.g abc@xyz.com
-                        </label>
-                        </div>
-                    </div>
-                    </div>
-                    <div style="padding: 8px 0;">
-                    <div class="g-recaptcha-v3" data-sitekey="6LfkyPEqAAAAACnc2Yc6eke4dzuwlm4_hWFAxusA" style="display: none"></div>
-                    </div>
-                    <div style="padding: 8px 0;">
-                    <div class="sib-form-block" style="text-align: left">
-                        <button class="sib-form-block__button sib-form-block__button-with-loader" style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#FFFFFF; background-color:#184a94; border-radius:3px; border-width:0px;" form="sib-form" type="submit">
-                        <svg class="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512">
-                            <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
-                        </svg>
-                        Notify Me
-                        </button>
-                    </div>
-                    </div>
-
-                    <input type="text" name="email_address_check" value="" class="input--hidden">
-                    <input type="hidden" name="locale" value="en">
-                </form>
-                </div>
-            </div>
-            </div>
-
-        <div class="social-links">
-            <a href="https://www.linkedin.com/company/105967384"><i class="fab fa-linkedin"></i></a>
-            <a href="https://www.instagram.com/jawara.teknologi.digital/"><i class="fab fa-instagram"></i></a>
-            <a href="https://github.com/Jawaratech"><i class="fab fa-github"></i></a>
-        </div>
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-FBQVHTBRNN');
+  </script>
+  <body>
+    <div class="preloader">
+      <div class="preloader-inner">
+        <div class="preloader-icon"></div><span></span><span></span>
+      </div>
     </div>
-
-    <script>
-        // Set the launch date (example: 30 days from now)
-        const launchDate = new Date('2025-03-31');
-        launchDate.setDate(launchDate.getDate() - 14);
-
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = launchDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerHTML = days.toString().padStart(2, '0');
-            document.getElementById('hours').innerHTML = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').innerHTML = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').innerHTML = seconds.toString().padStart(2, '0');
-
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                document.querySelector('.countdown').innerHTML = '<h2>We\'re Live!</h2>';
-            }
-        }
-
-        // Update countdown every second
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        updateCountdown(); // Initial call
-    </script>
-
-    <script>
-        window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
-        window.LOCALE = 'en';
-        window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
-    
-        window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
-    
-        window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
-    
-    
-    
-    
-        window.translation = {
-        common: {
-            selectedList: '{quantity} list selected',
-            selectedLists: '{quantity} lists selected',
-            selectedOption: '{quantity} selected',
-            selectedOptions: '{quantity} selected',
-        }
-        };
-    
-        var AUTOHIDE = Boolean(0);
-    </script>
-    
-    <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
-    
-    <script src="https://www.google.com/recaptcha/api.js?render=6LfkyPEqAAAAACnc2Yc6eke4dzuwlm4_hWFAxusA&hl=en" async defer></script>
-</body>
+    <!-- header-->
+    <header class="header navbar-area">
+      <!--  Toolbar Start -->
+      <div class="toolbar-area">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 col-md-9 col-12">
+              <div class="toolbar-contact">
+                <p><i class="lni lni-envelope"></i><a href="mailto:info@jawaratech.co.id">info@jawaratech.co.id</a></p>
+                <p><i class="lni lni-phone"></i><a href="tel:+6281381405618">(+62) 813-814-5618</a></p>
+                <p><i class="lni lni-map-marker"></i> CAPITAL EIGHT, Jakarta, Indonesia</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-3 col-12">
+              <div class="toolbar-sl-share">
+                <ul>
+                  <li><a href="#"><i class="lni lni-instagram-filled"></i></a></li>
+                  <li><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--  Toolbar End -->
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-12">
+            <div class="nav-inner">
+              <nav class="navbar navbar-expand-lg"><a class="navbar-brand" href="index.html"><img src="img/jtd-logo.svg" alt="jtd logo"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="toggler-icon"></span><span class="toggler-icon"></span><span class="toggler-icon"></span></button>
+                <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                  <ul class="navbar-nav ms-auto" id="nav">
+                    <li class="nav-item"><a class="page-scroll active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="page-scroll" href="#service">Service</a></li>
+                    <li class="nav-item"><a class="page-scroll" href="#team">Team</a></li>
+                  </ul>
+                </div>
+                <!--  navbar collapse -->
+                <div class="button"><a class="btn white-bg mouse-dir" href="#contact">Get a Quote <span class="dir-part"></span></a></div>
+              </nav>
+              <!--  navbar -->
+            </div>
+          </div>
+        </div>
+        <!--  row -->
+      </div>
+      <!--  container -->
+    </header>
+    <!-- nav-->
+    <!-- main-->
+    <main class="site-main">
+      <!-- hero--><!-- Start Hero Area -->
+      <section class="hero-slider" id="home">
+        <!--  Single Slider -->
+        <div class="single-slider">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6 co-12">
+                <div class="home-slider">
+                  <div class="hero-text"><span class="small-title wow fadeInUp" data-wow-delay=".3s">Business Solution</span>
+                    <h1 class="wow fadeInUp" data-wow-delay=".5s"><span>We Provide Quality</span><br>Consulting Services</h1>
+                    <p class="wow fadeInUp" data-wow-delay=".7s">We don’t just build software — we help you make the right digital decisions. <br>Our consulting services guide you from strategy to execution, ensuring every solution aligns with your business goals. </p>
+                    <div class="button wow fadeInUp" data-wow-delay=".9s"><a class="btn mouse-dir" href="about-us.html">Discover More <span class="dir-part"></span></a></div>
+                  </div>
+                  <div class="hero-text"><span class="small-title">Business </span>
+                    <h1><span>Scale Your Business</span><br>with Technology</h1>
+                    <p>We help you unlock new growth through smart, scalable tech. <br>By combining deep technical knowledge with business insight, we build digital solutions that grow with you — from MVPs to enterprise systems. <br>Let technology do the heavy lifting, so you can focus on what matters most: expanding your impact.</p>
+                    <div class="button"><a class="btn mouse-dir" href="about-us.html">Discover More <span class="dir-part"></span></a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- service-->
+      <!--  Start Service Area -->
+      <section class="services section" id="service">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-12">
+              <div class="section-title"><span class="wow fadeInDown" data-wow-delay=".2s">What We Offer You</span>
+                <h2 class="wow fadeInUp" data-wow-delay=".4s">Our Services</h2>
+                <p class="wow fadeInUp" data-wow-delay=".6s">Delivering Impactful Digital Solutions with Precision & Passion.</p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-service wow fadeInUp" data-wow-delay=".2s">
+                <div class="serial"><span><i class="lni lni-code"></i></span></div>
+                <h3><a href="service-single.html">Custom Development</a></h3>
+                <p>We design and build fast, reliable, and scalable digital products — from responsive websites to feature-rich mobile applications.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-service wow fadeInUp" data-wow-delay=".3s">
+                <div class="serial"><span><i class="lni lni-vector"></i></span></div>
+                <h3><a href="service-single.html">UI/UX & Product Design</a></h3>
+                <p>Beautiful meets functional. We craft seamless user experiences that bring your brand to life and keep users coming back.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-service wow fadeInUp" data-wow-delay=".4s">
+                <div class="serial"><span><i class="lni lni-ux"></i></span></div>
+                <h3><a href="service-single.html">AI-Powered Solutions</a></h3>
+                <p>Integrate AI to boost automation, personalization, and decision-making in your applications with our intelligent system development.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-service wow fadeInUp" data-wow-delay=".5s">
+                <div class="serial"><span><i class="lni lni-bricks"></i></span></div>
+                <h3><a href="service-single.html">System &amp; Backend Architecture</a></h3>
+                <p>Connect the dots with solid backend and system integration to ensure smooth operations behind the scenes.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-service wow fadeInUp" data-wow-delay=".6s">
+                <div class="serial"><span><i class="lni lni-bar-chart"></i></span></div>
+                <h3><a href="service-single.html">Digital Strategy &amp; Tech Consulting</a></h3>
+                <p>Turn ideas into executable plans. We provide strategic insights to align your technology with your business goals.</p>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="single-service wow fadeInUp" data-wow-delay=".7s">
+                <div class="serial"><span><i class="lni lni-cloud"></i></span></div>
+                <h3><a href="service-single.html">Cloud &amp; DevOps Solutions</a></h3>
+                <p>Need A Project Completed By An Expert? Let’s Go! Access A Human Resources Consultant To Answer Questions</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  /End Services Area -->
+      <!-- team-->
+      <section class="team-area section" id="team">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 offset-lg-2 col-12">
+              <div class="section-title"><span class="wow fadeInDown" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;">Our Team</span>
+                <h2 class="wow fadeInUp" data-wow-delay=".4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInUp;">Our Creative Team</h2>
+                <p class="wow fadeInUp" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInUp;"> </p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="team-card wow fadeInUp" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInUp;">
+                <div class="team-img"><img src="img/teams/jepri-team.jpg" alt="Jepri Sinaga">
+                  <div class="team-social-icon">
+                    <ul class="social-link">
+                      <li><a href="https://x.com/JepriSinaga" target="_blank"><i class="lni lni-twitter-original"></i></a></li>
+                      <li><a href="https://www.instagram.com/jeprisinaga/" target="_blank"><i class="lni lni-instagram-original"></i></a></li>
+                      <li><a href="https://www.linkedin.com/in/jeprisinaga/" target="_blank"><i class="lni lni-linkedin-original"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="content">
+                  <h3>Jepri Sinaga</h3><span>Founder - Director</span>
+                  <p>Introducing JTD to the world, Jepri Sinaga is a visionary tech leader whose passion, experience, and commitment have shaped JTD into a trusted and innovative force in the industry.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="team-card wow fadeInUp" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;">
+                <div class="team-img"><img src="img/teams/afandi-team.jpg" alt="Afandi">
+                  <div class="team-social-icon">
+                    <ul class="social-link">
+                      <li><a href="https://www.instagram.com/fandifandii/" target="_blank"><i class="lni lni-instagram-original"></i></a></li>
+                      <li><a href="https://www.linkedin.com/in/afandi-afandi/" target="_blank"><i class="lni lni-linkedin-original"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="content">
+                  <h3>Afandi</h3><span>Founder - Director</span>
+                  <p>Afandi is a skilled data engineer and software developer whose expertise in data analysis, machine learning, and problem-solving has been key to driving JTD’s technical excellence and client success.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <div class="team-card wow fadeInUp" data-wow-delay=".7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInUp;">
+                <div class="team-img"><img src="img/teams/maul-team.jpg" alt="Maulana">
+                  <div class="team-social-icon">
+                    <ul class="social-link">
+                      <li><a href="https://www.instagram.com/maulanapesch/" target="_blank"><i class="lni lni-instagram-original"></i></a></li>
+                      <li><a href="https://www.linkedin.com/in/maulana-pesch-91287759" target="_blank"><i class="lni lni-linkedin-original"></i></a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="content">
+                  <h3>Maulana</h3><span>Founder - Commissioner</span>
+                  <p>Maulana is a passionate and experienced software engineer whose technical expertise and innovative mindset have been vital in shaping JTD’s direction and delivering top-tier solutions to clients.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- skills-->
+      <!-- portfolio-->
+      <!-- clients-->
+      <!--  Start Clients Area -->
+      <section class="client-logo-section">
+        <div class="container">
+          <div class="client-logo-wrapper">
+            <div class="client-logo-carousel d-flex align-items-center justify-content-between">
+              <div class="client-logo"><img src="img/clients/logo-bank-indonesia.png" alt="Bank Indonesia"></div>
+              <div class="client-logo"><img src="img/clients/logo-prakerja.png" alt="Prakerja"></div>
+              <div class="client-logo"><img src="img/clients/logo-KPPMIBP2MI.webp" alt="KPPMIBP2MI"></div>
+              <div class="client-logo"><img src="img/clients/logo-ojk.png" alt="OJK"></div>
+              <div class="client-logo"><img src="img/clients/logo-fintech.png" alt="Fintech Indonesia"></div>
+              <div class="client-logo"><img src="img/clients/logo-aspi.png" alt="Aosiasi Perusahaan Pembiayaan Indonesia"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--  End Clients Area -->
+      <!-- contact-->
+      <section class="call-action section overlay" id="contact">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-12 wow fadeInLeft" data-wow-delay=".3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+              <div class="section-title"><span>Get to Know Us</span>
+                <h2>We Are Very<br>Good In<br>Boosting Your<br>Businesses</h2>
+                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12 wow fadeInRight" data-wow-delay=".4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInRight;">
+              <div class="right-form">
+                <div class="section-heading"><span class="small">Request</span>
+                  <h4>Let's <span>Request a Call</span> Back</h4>
+                </div>
+                <div class="contact-form-box">
+                  <form class="mailform" method="post" action="assets/mail/mail.php">
+                    <div class="row">
+                      <div class="col-12">
+                        <input type="text" name="name" placeholder="Your Name">
+                      </div>
+                      <div class="col-lg-6 col-12">
+                        <input type="email" name="email" placeholder="Your Email">
+                      </div>
+                      <div class="col-lg-6 col-12">
+                        <input type="text" name="phone" placeholder="Your Number">
+                      </div>
+                      <div class="col-12">
+                        <textarea name="message" rows="5" placeholder="Your Messege"></textarea>
+                      </div>
+                      <div class="button col-12">
+                        <button class="btn white-bg mouse-dir" type="submit">Sumbit <span class="dir-part"></span></button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer-->
+  </body>
+  <footer class="footer">
+    <!--  Start Middle Top -->
+    <div class="footer-middle">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 col-md-5 col-12">
+            <!--  Single Widget -->
+            <div class="f-about single-footer">
+              <div class="logo"><a href="index.html"><img src="img/jtd-logo.svg" alt="#"></a></div>
+              <p>We specialize in designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses. Our solutions turn every investment into sustainable growth with lasting impact.</p>
+              <div class="footer-social">
+                <ul>
+                  <li><a href="" target="_blank"><i class="lni lni-instagram-filled"></i></a></li>
+                  <li><a href="#" target="_blank"><i class="lni lni-linkedin-original"></i></a></li>
+                </ul>
+              </div>
+            </div>
+            <!--  End Single Widget -->
+          </div>
+          <div class="col-lg-7 col-md-7 col-12">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-6">
+                <!--  Single Widget -->
+                <div class="single-footer f-link">
+                  <h3>Company</h3>
+                  <ul>
+                    <li><a href="#">About Comapny</a></li>
+                    <li><a href="#">Our Service</a></li>
+                    <li><a href="#">Happy Clients</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-6">
+                <!--  Single Widget -->
+                <div class="single-footer f-contact f-link">
+                  <h3>Contact Us</h3>
+                  <p>Unrestricted &amp; nothing limits our potential</p>
+                  <ul class="footer-contact">
+                    <li><i class="lni lni-phone"></i> <a href="tel:+628138145618">(+62) 813-814-5618</a></li>
+                    <li><i class="lni lni-envelope"></i> <a href="mailto:info@jawaratech.co.id">info@jawaratech.co.id</a></li>
+                    <li><i class="lni lni-map-marker"></i> CAPITAL EIGHT, Jakarta, Indonesia</li>
+                    <li><i class="lni lni-world"></i> <a href="https://jawaratech.co.id" target="_blank">www.jawaratech.co.id</a></li>
+                  </ul>
+                </div>
+                <!--  End Single Widget -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- / End Footer Middle -->
+    <!--  Start Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="inner">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="left">
+                <p>Designed and Developed by @jawaratech</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="right">
+                <p>
+                  All Right Reserved Design By Jawara Teknologi Digital</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  End Footer Middle -->
+  </footer><a class="scroll-top btn-hover" href="#" style="display: block;"><i class="lni lni-chevron-up"></i></a>
+  <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/count-up.min.js"></script>
+  <script src="/js/wow.min.js"></script>
+  <script src="/js/tiny-slider.js"></script>
+  <script src="/js/glightbox.min.js"></script>
+  <script src="/js/imagesloaded.min.js"></script>
+  <script src="/js/isotope.min.js"></script>
+  <script src="/js/main.js"></script>
 </html>

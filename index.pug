@@ -10,6 +10,7 @@
 doctype html
 html(lang="en" page-class="home")
     include pug/includes/html_head.pug
+    include pug/includes/google_analytic.pug
     body
         .preloader
             .preloader-inner
@@ -27,26 +28,27 @@ html(lang="en" page-class="home")
         main.site-main
             // hero
             include pug/home/section_hero.pug
-            // about
-            //- include pug/home/section_about.pug
+            // service
+            include pug/home/section_service.pug
             // team
-            //- include pug/home/section_team.pug
+            include pug/home/section_team.pug
             // skills
             //- include pug/home/section_service.pug
             // portfolio
             //- include pug/home/section_portfolio.pug
+            // clients
+            include pug/home/section_clients.pug
             // contact
-            //- include pug/home/section_contact.pug
+            include pug/home/section_contact.pug
+            
 
-        include pug/includes/scroll_top.pug
+        //- include pug/includes/scroll_top.pug
             
             
 
         
 
         // Footer
-
-
+    include pug/includes/footer.pug
     include pug/includes/html_foot.pug
-    //- include pug/includes/google_analytic.pug
 
