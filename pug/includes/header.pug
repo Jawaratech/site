@@ -62,7 +62,7 @@ header.header.navbar-area
       .col-lg-12
         .nav-inner
           nav.navbar.navbar-expand-lg
-            a.navbar-brand(href='index.html')
+            a.navbar-brand(href='/')
               img(src=baseURL+'img/jtd-logo.svg' alt='jtd logo')
             button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
               span.toggler-icon
@@ -71,7 +71,7 @@ header.header.navbar-area
             .collapse.navbar-collapse.sub-menu-bar#navbarSupportedContent
               ul#nav.navbar-nav.ms-auto
                 li.nav-item
-                  a.page-scroll.active(href=baseURL+"#home") Home
+                  a(href=baseURL+"#home" class={"active" : pageActive === 'home'}) Home
                 //- li.nav-item
                   a.page-scroll(href=baseURL+"#about") About
                 li.nav-item
@@ -85,7 +85,8 @@ header.header.navbar-area
                   a.page-scroll(href=baseURL+"#team") Team
                 //- li.nav-item
                   a.page-scroll(href=baseURL+"#contact") Contact
-            //  navbar collapse 
+                li.nav-item()
+                  a(href=baseURL+"/article" class={"active" : pageActive === 'article'}) Articles
             .button
               a.btn.white-bg.mouse-dir(href=baseURL+"#contact")
                 | Get a Quote 

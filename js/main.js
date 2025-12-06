@@ -1,3 +1,6 @@
+const blogAPIURL = 'https://useful-friendship-b52c022f70.strapiapp.com/api/';
+const token = '6d5afb2c9d06296a14a27e0b40ef7a899a11e990700389fba32be5f72ddd0f0a8061721bec3b6ec8b6768fff6a8bb850a9eb7fd7d0ade25ff1d53d934b936c4d48a8f52e1aaca418d76c4241805cc6869951fe8085fb8ba9e652f1382dd3e317093f8e1c71ca726bc8bdcf5de7121b44f4923668e4ac4e58e5025e4cdc5db2dc'
+
 $(document).ready(function () {
 // Scrollspy custom
 //   $(window).bind("scroll", function () {
@@ -100,13 +103,111 @@ $(document).ready(function () {
 //     });
 // }
 // displayWorksCount();
-
 });
+
+function getArticleList () {
+	return fetch(`${blogAPIURL}articles?populate[1]=cover&populate[2]=author`, {
+		method: 'GET',
+		headers: {
+			'Authorization': `Bearer ${token}`,
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => response.json())
+	.then(data => {
+		return data;
+	})
+	.catch(error => {
+		console.error('Error fetching articles:', error);
+	});
+}
+
+// get all categories first and loop for all the categories count make it async
+function getCategoryList () {
+	return fetch(`${blogAPIURL}categories?populate=*`, {
+		method: 'GET',
+		headers: {
+			'Authorization': `Bearer ${token}`,
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => response.json())
+	.then(data => {
+		return data;
+	})
+	.catch(error => {
+		console.error('Error fetching categories:', error);
+	});
+}
 
 
 (function () {
 
 	"use strict";
+
+	const articleListContainer = document.getElementById('article-list');
+	const articleListCategory = document.getElementById('article-category');
+	if (articleListContainer) {
+		getArticleList().then(articles => {
+			articleListContainer.innerHTML = '';
+			articles.data.forEach(article => {
+				const articleElement = document.createElement('div');
+				articleElement.classList.add('single-list');
+				articleElement.innerHTML = `
+					<div class="post-thumbnils">
+						<img src="${article.cover.formats.medium.url}" alt="${article.title}" class="img-fluid object-fit-cover img-thumbs">
+					</div>
+					<div class="post-details">
+						<div class="detail-inner">
+							<h2 class="post-title">
+								<a href="article-detail.html?id=${article.id}">${article.title}</a>
+							</h2>
+							<ul class="custom-flex post-meta">
+								<li>
+									<a href="#">
+										<i class="lni lni-user"></i> by ${article.author.name}
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="lni lni-calendar"></i> ${new Date(article.publishedAt).toLocaleDateString()}
+									</a>
+								</li>
+							</ul>
+							<p class="text">${article.description}</p>
+							<div class="button">
+								<a class="btn mouse-dir white-bg" href="article-detail.html?id=${article.id}">Read More 
+									<span class="dir-part"></span>
+								</a>
+							</div>
+						</div>
+					</div>
+				`;
+				articleListContainer.appendChild(articleElement);
+			});
+		});
+	}
+
+	if (articleListCategory) {
+		getCategoryList().then(categories => {
+			articleListCategory.innerHTML = '';
+			categories.data.forEach(category => {
+				const catList = document.createElement('li');
+				catList.classList.add('single')
+				catList.innerHTML = `
+					<a href="/article?category=${category.name}" class="text-capitalize">
+						${category.name}
+						<span>
+							${category.articles.length}
+						</span>
+					</a>
+				`;
+				articleListCategory.appendChild(catList);
+			})
+		})
+	}
+
+
 
 	//===== Prealoder
 
@@ -236,6 +337,8 @@ $(document).ready(function () {
 
         }
     });
+
+
 
 
 })();

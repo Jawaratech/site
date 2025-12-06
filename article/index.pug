@@ -1,0 +1,35 @@
+//- INDEX LANDING PAGES
+//- start variable
+- var pageActive = 'article'
+- var baseURL = '../'
+- var contentDescription = {}
+- ogImageURL = baseURL+"/img/og-image.jpg"
+- contentDescription.title = "Article - Jawara Teknologi Digital (JAWARATECH)"
+- contentDescription.description = "."
+
+doctype html
+html(lang="en" page-class="articles")
+    include ../pug/includes/html_head.pug
+    include ../pug/includes/google_analytic.pug
+    body
+        include ../pug/includes/preloader.pug
+        
+        // header
+        include ../pug/includes/header.pug
+
+        include ../pug/articles/article-container.pug
+        
+        // nav
+        //- include ../pug/includes/side_nav.pug
+
+        // main
+        main.site-main
+            // hero
+            //- include ../pug/home/section_hero.pug
+            
+        //- include ../pug/includes/scroll_top.pug
+
+        // Footer
+    include ../pug/includes/footer.pug
+    include ../pug/includes/html_foot.pug
+

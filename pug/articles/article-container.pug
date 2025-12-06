@@ -1,0 +1,122 @@
+section.section.blog-list
+  .container
+    .row
+      .col-lg-8.col-md-7.col-12
+        .hero-text
+          h1(class="wow fadeInUp mb-3" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInUp;")
+            span(class="small-title wow fadeInUp fw-medium") Explore Our Newest&nbsp;
+            span Article
+        #article-list
+          // loop 3 single list
+          - var i = 0
+            while i < 3
+              include partials/skeleton.pug
+              - i++
+
+        //  Pagination 
+        //.pagination.center
+          ul.pagination-list
+            li
+              a(href='#')
+                i.lni.lni-arrow-left
+            li.active
+              a(href='#') 1
+            li
+              a(href='#') 2
+            li
+              a(href='#') 3
+            li
+              a(href='#') 4
+            li
+              a(href='#')
+                i.lni.lni-arrow-right
+        // / End Pagination 
+      aside.col-lg-4.col-md-5.col-12
+        .sidebar
+          .widget.search-widget
+            h5.widget-title Search Articles
+            form#search-blog(action='#')
+              input(type='text' placeholder='Search your keyword...')
+              button(type='submit')
+                i.lni.lni-search-alt
+          //- .widget.popular-feeds
+            h5.widget-title Popular Feeds
+            .popular-feed-loop
+              .single-popular-feed
+                .feed-img.animate-img
+                  a(href='#')
+                    img.image-fit(src='assets/images/blog/blog1.jpg' alt='#')
+                .feed-desc
+                  h6.post-title
+                    a(href='#') Business is Pulvinar get Venenatis.
+                  span.time
+                    i.lni.lni-calendar
+                    |  05th Nov 2023
+              .single-popular-feed
+                .feed-img.animate-img
+                  a(href='#')
+                    img.image-fit(src='assets/images/blog/blog2.jpg' alt='#')
+                .feed-desc
+                  h6.post-title
+                    a(href='#') We’re currently acceping new projects.
+                  span.time
+                    i.lni.lni-calendar
+                    |  24th March 2023
+              .single-popular-feed
+                .feed-img.animate-img
+                  a(href='#')
+                    img.image-fit(src='assets/images/blog/blog3.jpg' alt='#')
+                .feed-desc
+                  h6.post-title
+                    a(href='#') sunt in culpa qui officia deserunt.
+                  span.time
+                    i.lni.lni-calendar
+                    |  30th Jan 2023
+          .widget.categories-widget
+            h5.widget-title Categories
+            ul.custom#article-category
+             - var i = 0
+              while i < 3
+                include partials/skeleton-category.pug
+                - i++
+              
+              //- li
+              //-   a(href='#')
+              //-     | Consultant
+              //-     span 30
+              //- li
+              //-   a(href='#')
+              //-     | Creative
+              //-     span 71
+              //- li
+              //-   a(href='#')
+              //-     | UI/UX
+              //-     span 56
+              //- li
+              //-   a(href='#')
+              //-     | Technology
+              //-     span 60
+          .widget.social-widget
+            h5.widget-title Follow Us
+            ul.custom-flex
+              li
+                a(href='https://www.instagram.com/jawara.teknologi.digital/' target='_blank')
+                  i.lni.lni-instagram-filled
+              li
+                a(href='https://www.linkedin.com/company/105967384' target='_blank')
+                  i.lni.lni-linkedin-original
+          //- .widget.popular-tag-widget
+            h5.widget-title Popular Tags
+            .tags
+              a(href='#') Popular
+              a(href='#') Design
+              a(href='#') UX
+              a(href='#') Usability
+              a(href='#') Develop
+              a(href='#') Icon
+              a(href='#') Business
+              a(href='#') Consult
+              a(href='#') Kit
+              a(href='#') Keyboard
+              a(href='#') Mouse
+              a(href='#') Tech
