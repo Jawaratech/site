@@ -1,0 +1,43 @@
+section.section.blog-list
+  .container
+    .row
+        .col-lg-8.col-md-7.col-12
+            #article-detail 
+                - var i = 0
+                while i < 1
+                    include partials/skeleton.pug
+                    - i++
+
+        aside.col-lg-4.col-md-5.col-12
+            .sidebar
+                .widget.search-widget
+                    h5.widget-title Search Articles
+                    form#search-blog(action='#')
+                        input(type='text' placeholder='Search your keyword...')
+                        button(type='submit')
+                            i.lni.lni-search-alt
+                //- .widget.categories-widget
+                    h5.widget-title Popular Feeds
+                    ul.custom#article-popular
+                        - var i = 0
+                            while i < 3
+                                include partials/skeleton-feeds.pug
+                                - i++
+
+                .widget.categories-widget
+                    h5.widget-title Categories
+                    ul.custom#article-category
+                        - var i = 0
+                            while i < 3
+                                include partials/skeleton-category.pug
+                                - i++
+                    
+                .widget.social-widget
+                    h5.widget-title Follow Us
+                    ul.custom-flex
+                        li
+                            a(href='https://www.instagram.com/jawara.teknologi.digital/' target='_blank')
+                                i.lni.lni-instagram-filled
+                        li
+                            a(href='https://www.linkedin.com/company/105967384' target='_blank')
+                                i.lni.lni-linkedin-original

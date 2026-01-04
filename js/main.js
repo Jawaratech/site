@@ -103,52 +103,14 @@ $(document).ready(function () {
 //     });
 // }
 // displayWorksCount();
-});
-
-function getArticleList () {
-	return fetch(`${blogAPIURL}articles?populate[1]=cover&populate[2]=author`, {
-		method: 'GET',
-		headers: {
-			'Authorization': `Bearer ${token}`,
-			'Content-Type': 'application/json'
-		}
-	})
-	.then(response => response.json())
-	.then(data => {
-		return data;
-	})
-	.catch(error => {
-		console.error('Error fetching articles:', error);
-	});
-}
-
-// get all categories first and loop for all the categories count make it async
-function getCategoryList () {
-	return fetch(`${blogAPIURL}categories?populate=*`, {
-		method: 'GET',
-		headers: {
-			'Authorization': `Bearer ${token}`,
-			'Content-Type': 'application/json'
-		}
-	})
-	.then(response => response.json())
-	.then(data => {
-		return data;
-	})
-	.catch(error => {
-		console.error('Error fetching categories:', error);
-	});
-}
-
-
-(function () {
-
-	"use strict";
 
 	const articleListContainer = document.getElementById('article-list');
 	const articleListCategory = document.getElementById('article-category');
+	const articleDetail = document.getElementById('article-detail');
+
 	if (articleListContainer) {
-		getArticleList().then(articles => {
+		var getFilter = document.location.search;
+		getArticleList(getFilter).then(articles => {
 			articleListContainer.innerHTML = '';
 			articles.data.forEach(article => {
 				const articleElement = document.createElement('div');
@@ -160,7 +122,7 @@ function getCategoryList () {
 					<div class="post-details">
 						<div class="detail-inner">
 							<h2 class="post-title">
-								<a href="article-detail.html?id=${article.id}">${article.title}</a>
+								<a href="detail.html?title=${article.title.replace(/ /g, '-')}&id=${article.documentId}">${article.title}</a>
 							</h2>
 							<ul class="custom-flex post-meta">
 								<li>
@@ -176,7 +138,7 @@ function getCategoryList () {
 							</ul>
 							<p class="text">${article.description}</p>
 							<div class="button">
-								<a class="btn mouse-dir white-bg" href="article-detail.html?id=${article.id}">Read More 
+								<a class="btn mouse-dir white-bg" href="detail.html?title=${article.title.replace(/ /g, '-')}&id=${article.documentId}">Read More 
 									<span class="dir-part"></span>
 								</a>
 							</div>
@@ -185,6 +147,43 @@ function getCategoryList () {
 				`;
 				articleListContainer.appendChild(articleElement);
 			});
+		});
+	}
+
+	if (articleDetail) {
+		// get id from url
+		const urlParams = new URLSearchParams(window.location.search);
+		const articleId = urlParams.get('id');
+		getArticleDetail(articleId).then(data => {
+			var converter = new showdown.Converter();
+			const article = data.data;
+			articleDetail.innerHTML = `
+				<div class="hero-text">
+					<div class="post-thumbnils">
+                        <img src="${article.cover.formats.large.url}" alt="${article.title}" class="img-fluid object-fit-cover img-thumbs">
+                    </div>
+					<div class="post-details">
+						<div class="detail-inner">
+							<h2 class="post-title"><a href=#>${article.title}>${article.title}</a></h2>
+							<ul class="custom-flex post-meta">
+								<li>
+									<a href="#">
+										<i class="lni lni-user"></i> by ${article.author.name}
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="lni lni-calendar"></i> ${new Date(article.publishedAt).toLocaleDateString()}
+									</a>
+								</li>
+							</ul>
+							<div class="post-content">
+								${converter.makeHtml(article.blocks[0].body)}
+							</div>
+						</div>
+					</div>
+				</div>
+			`;
 		});
 	}
 
@@ -207,10 +206,7 @@ function getCategoryList () {
 		})
 	}
 
-
-
 	//===== Prealoder
-
 	window.onload = function () {
 		window.setTimeout(fadeout, 200);
 	}
@@ -270,8 +266,6 @@ function getCategoryList () {
 		}
 	});
 	
-
-
 	//WOW Scroll Spy
 	var wow = new WOW({
 		//disabled for mobile
@@ -338,37 +332,93 @@ function getCategoryList () {
         }
     });
 
+	// ====== scroll top js
+	window.onscroll = function () {
+		var header_navbar = document.querySelector(".navbar-area");
+		var sticky = header_navbar.offsetTop;
+		if (window.pageYOffset > sticky) {
+			header_navbar.classList.add("sticky");
+		} else {
+			header_navbar.classList.remove("sticky");
+		}
+		var backToTo = document.querySelector(".scroll-top");
+		if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+			backToTo.style.display = "block";
+		} else {
+			backToTo.style.display = "none";
+		}
+	};
+
+	Math.easeInOutQuad = function (t, b, c, d) {
+
+		t /= d/2;
+		if (t < 1) return c/2*t*t + b;
+		t--;
+		return -c/2 * (t*(t-2) - 1) + b;
+	};
+
+	document.querySelector('.scroll-top').onclick = function () {
+		scrollTo(document.documentElement); 
+	}
 
 
+});
 
-})();
-
-// ====== scroll top js
-window.onscroll = function () {
-    var header_navbar = document.querySelector(".navbar-area");
-    var sticky = header_navbar.offsetTop;
-    if (window.pageYOffset > sticky) {
-        header_navbar.classList.add("sticky");
-    } else {
-        header_navbar.classList.remove("sticky");
-    }
-    var backToTo = document.querySelector(".scroll-top");
-    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-        backToTo.style.display = "block";
-    } else {
-        backToTo.style.display = "none";
-    }
-};
-
-Math.easeInOutQuad = function (t, b, c, d) {
-
-	t /= d/2;
-	if (t < 1) return c/2*t*t + b;
-	t--;
-	return -c/2 * (t*(t-2) - 1) + b;
-};
-
-document.querySelector('.scroll-top').onclick = function () {
-	scrollTo(document.documentElement); 
+function getArticleList (filter) {
+	return fetch(`${blogAPIURL}articles?populate[1]=cover&populate[2]=author`, {
+		method: 'GET',
+		headers: {
+			'Authorization': `Bearer ${token}`,
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => response.json())
+	.then(data => {
+		return data;
+	})
+	.catch(error => {
+		console.error('Error fetching articles:', error);
+	});
 }
 
+// get all categories first and loop for all the categories count make it async
+function getCategoryList () {
+	return fetch(`${blogAPIURL}categories?populate=*`, {
+		method: 'GET',
+		headers: {
+			'Authorization': `Bearer ${token}`,
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => response.json())
+	.then(data => {
+		return data;
+	})
+	.catch(error => {
+		console.error('Error fetching categories:', error);
+	});
+}
+
+function getArticleDetail (id) {
+	return fetch(`${blogAPIURL}articles/${id}?populate=*`, {
+		method: 'GET',
+		headers: {
+			'Authorization': `Bearer ${token}`,
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => response.json())
+	.then(data => {
+		return data;
+	})
+	.catch(error => {
+		console.error('Error fetching article detail:', error);
+	});
+}
+
+(function () {
+
+	"use strict";
+
+	
+})();
