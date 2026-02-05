@@ -160,7 +160,7 @@ $(document).ready(function () {
 			articleDetail.innerHTML = `
 				<div class="hero-text">
 					<div class="post-thumbnils">
-                        <img src="${article.cover.formats.large.url}" alt="${article.title}" class="img-fluid object-fit-cover img-thumbs">
+                        <img src="${article.cover.formats.medium.url}" alt="${article.title}" class="img-fluid object-fit-cover img-thumbs">
                     </div>
 					<div class="post-details">
 						<div class="detail-inner">
