@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>GSIH User Flow UF-01 s.d. UF-27</title>
+<title>GSIH User Flow UF-01 s.d. UF-32</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -661,7 +661,30 @@ const FLOWS=[
  ['t','Melihat detail opportunity'],['t','Memeriksa eligibility'],['t','Menyimpan opportunity'],['t','Apply / Register'],
  ['s','Mencatat aplikasi & mengirim status',{i:1}],['t','Melihat status aplikasi']]},
 
-{id:'UF-07',name:'Partnership / Pilot Tracking',who:'Startup Founder — Rani / Corporation — Agung',
+{id:'UF-07',name:'SME Assessment → Recommendation',who:'SME Owner — Hendra / Core Team — Steven',
+ goal:'Menyederhanakan assessment dan memastikan rekomendasi yang diterima SME sudah divalidasi Core Team.',
+ desc:'SME mengisi assessment kebutuhan digital, lalu sistem menyusun draf rekomendasi. Core Team mereviu dan menyesuaikan rekomendasi sebelum dikirim ke SME untuk ditindaklanjuti.',
+ steps:'Membuka assessment ↓ Melihat instruksi ↓ Mengisi assessment (Save & Continue jika diperlukan) ↓ Review jawaban ↓ Submit assessment ↓ Sistem mengolah hasil & menyusun draf rekomendasi ↓ Core Team mereviu hasil & draf rekomendasi ↓ Rekomendasi sesuai? (tidak → Core Team menyesuaikan rekomendasi) ↓ Sistem mengirim hasil & rekomendasi ke SME ↓ Melihat hasil / area kebutuhan ↓ Melihat rekomendasi ↓ Memilih rekomendasi yang relevan ↓ Melanjutkan ke program / mentoring / solusi',
+ lanes:[['m','SME Owner — Hendra','P'],SYS,['c','Core Team — Steven','O']],
+ nodes:[['m','Membuka assessment'],['m','Melihat instruksi'],['m','Mengisi assessment'],['m','Selesai sekaligus?',{t:'d'}],
+ ['m','Review jawaban'],['m','Submit assessment'],['s','Mengolah hasil & menyusun draf rekomendasi'],
+ ['c','Mereviu hasil assessment & draf rekomendasi'],['c','Rekomendasi sudah sesuai?',{t:'d'}],
+ ['c','Menyesuaikan rekomendasi',{c:9,s:1}],['s','Mengirim hasil & rekomendasi ke SME',{c:10}],
+ ['m','Melihat hasil / area kebutuhan'],['m','Melihat rekomendasi'],['m','Memilih rekomendasi yang relevan'],
+ ['m','Melanjutkan ke program / mentoring / solusi'],['m','Save & Continue',{c:4,s:1}]],
+ edges:['0>1>2>3',[3,4,'Ya'],'4>5>6>7>8',[8,10,'Ya'],[8,9,'Tidak'],[9,10],'10>11>12>13>14',[3,15,'Tidak'],[15,2,'Lanjut nanti','b']]},
+
+{id:'UF-08',name:'Startup Verification & Partner Evaluation',who:'Corporation — Agung',
+ goal:'Menyediakan informasi profile dan verification yang membantu Corporation memahami dan mengevaluasi potential partner untuk kolaborasi atau pilot. Evaluasi startup oleh Funder ditangani di UF-15.',
+ desc:'Corporation menemukan profile startup/SME, memahami capability dan status verification, lalu mengevaluasi kesesuaian untuk collaboration atau pilot.',
+ lanes:[['p','Corporation — Agung','R'],SYS],
+ nodes:[['p','Mencari startup / SME'],['p','Membuka profile'],['s','Menampilkan profile & badge verifikasi',{i:1}],['p','Melihat informasi profile'],
+ ['p','Melihat verification status'],['p','Melihat capability / supporting information'],['p','Memeriksa kesesuaian dengan kebutuhan'],
+ ['p','Sesuai kebutuhan?',{t:'d',i:1}],['p','Save / Shortlist'],['p','Melanjutkan ke engagement / evaluation'],
+ ['p','Mencari kandidat lain',{c:8,s:1,i:1}]],
+ edges:['0>1>2>3>4>5>6>7',[7,8,'Ya'],'8>9',[7,10,'Tidak'],[10,0,'Cari lagi','b']]},
+
+{id:'UF-09',name:'Partnership / Pilot Tracking',who:'Startup Founder — Rani / Corporation — Agung',
  goal:'Memudahkan startup mengelola pilot melalui milestone yang jelas dan disetujui Corporation.',
  desc:'Startup membuat milestone pilot dan Corporation menyetujuinya. Startup memperbarui progress tiap milestone hingga selesai, lalu Corporation mencatat outcome pilot.',
  steps:'Corporation memulai pilot dengan startup terpilih ↓ Startup membuat milestone (target, output, tenggat) ↓ Corporation menyetujui milestone (belum → startup merevisi) ↓ Startup memperbarui progress & bukti tiap milestone ↓ Corporation memantau progress ↓ Startup menandai semua milestone selesai ↓ Corporation mencatat outcome pilot',
@@ -671,27 +694,32 @@ const FLOWS=[
  ['u','Menandai semua milestone selesai'],['k','Mencatat outcome pilot']],
  edges:['0>1>2',[2,3,'Ya'],[2,1,'Revisi','b'],'3>4>5>6']},
 
-{id:'UF-08',name:'Researcher Profile & Knowledge / Collaboration Discovery',who:'Researcher — Budi',
+{id:'UF-10',name:'Researcher Profile & Knowledge / Collaboration Discovery',who:'Researcher — Budi',
  goal:'Memungkinkan Researcher memperkenalkan expertise dan menemukan opportunity untuk knowledge sharing atau collaboration.',
  desc:'Membangun profile expertise dan kontribusi riset/knowledge, lalu menemukan kebutuhan atau opportunity yang sesuai untuk berbagi pengetahuan atau berkolaborasi.',
  lanes:[['b','Researcher — Budi','R'],SYS],
  nodes:[['b','Membuka researcher profile'],['b','Melengkapi profile'],['b','Menambahkan expertise'],['b','Menambahkan research / knowledge'],
- ['b','Publish profile'],['s','Menayangkan profile di direktori',{i:1}],['b','Mencari opportunity / collaboration'],
+ ['b','Mengatur visibility profile'],['b','Publish profile'],['s','Menayangkan profile di direktori',{i:1}],['b','Mencari opportunity / collaboration'],
  ['b','Melihat detail opportunity'],['b','Mengajukan interest / collaboration'],['s','Meneruskan interest ke pemilik opportunity',{i:1}]]},
 
-{id:'UF-09',name:'Publikasi Hasil Riset',who:'Researcher — Budi / Core Team — Steven',
- goal:'Memungkinkan Researcher mempublikasikan hasil riset ke ekosistem GSIH setelah direviu Core Team, agar dapat ditemukan oleh pihak yang relevan.',
- desc:'Researcher mengunggah hasil riset beserta informasinya dan mengatur visibilitas. Core Team mereviu sebelum tayang; riset yang tayang direkomendasikan ke participant dan partner dengan topik yang relevan.',
- steps:'Membuka menu Riset ↓ Klik "Publikasikan Riset" ↓ Mengisi judul, abstrak, bidang/topik & penulis ↓ Mengunggah dokumen riset ↓ Mengatur visibilitas (publik / hanya anggota) ↓ Submit ↓ Sistem mengirim notifikasi ke Core Team ↓ Core Team mereviu riset ↓ Layak dipublikasikan? (belum → Researcher merevisi & submit ulang) ↓ Sistem menayangkan riset di direktori & merekomendasikan ke pengguna dengan topik relevan ↓ Researcher menerima notifikasi riset tayang',
- lanes:[['b','Researcher — Budi','R'],SYS,['c','Core Team — Steven','O']],
- nodes:[['b','Membuka menu Riset'],['b','Klik "Publikasikan Riset"'],['b','Mengisi judul, abstrak, bidang/topik & penulis'],
- ['b','Mengunggah dokumen riset'],['b','Mengatur visibilitas (publik / hanya anggota)'],['b','Submit'],
- ['s','Mengirim notifikasi ke Core Team'],['c','Mereviu riset'],['c','Layak dipublikasikan?',{t:'d'}],
- ['s','Menayangkan riset di direktori & merekomendasikan ke pengguna dengan topik relevan',{c:9}],
- ['b','Menerima notifikasi: riset tayang',{c:10}],['b','Merevisi riset sesuai catatan',{c:9}]],
- edges:['0>1>2>3>4>5>6>7>8',[8,9,'Ya'],'9>10',[8,11,'Revisi'],[11,5,'Submit ulang','b']]},
+{id:'UF-11',name:'Mentor Assignment & Mentoring Session',who:'Mentor — Ferdi',
+ goal:'Mendukung assignment, melihat konteks participant, menjalankan mentoring, serta mencatat feedback/progress.',
+ desc:'Mentor menerima assignment, memahami konteks participant, menjalankan sesi mentoring, dan mencatat hasil serta progress participant.',
+ lanes:[['m','Mentor — Ferdi','P'],['p','Participant (mentee)','P']],
+ nodes:[['m','Membuka mentor workspace'],['m','Melihat assignment'],['m','Memilih participant'],['m','Melihat participant context & kebutuhan'],
+ ['m','Melihat jadwal mentoring'],['m','Menjalankan mentoring session'],['m','Mencatat session outcome'],['m','Memberikan feedback'],
+ ['p','Menerima feedback & next action',{c:8,i:1}],['m','Memperbarui progress',{c:8}],['m','Melihat next action / session']],
+ edges:['0>1>2>3>4>5>6>7',[7,8],'7>9>10']},
 
-{id:'UF-10',name:'Gabung Event',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Hub Management — Dimas / Core Team — Steven',
+{id:'UF-12',name:'Post-Program / Alumni Engagement',who:'Startup Founder — Rani / Digital Talent — Sari / Partner',
+ goal:'Mempertahankan hubungan setelah program melalui opportunity, community, mentoring, collaboration, atau engagement lanjutan.',
+ desc:'Melanjutkan hubungan setelah program selesai dengan akses ke opportunity, connection, mentoring, collaboration, atau aktivitas ekosistem yang relevan.',
+ lanes:[['a','Alumni (Rani / Sari / Partner)','P'],SYS],
+ nodes:[['a','Menyelesaikan program'],['s','Mencatat outcome & mengaktifkan status alumni',{i:1}],['a','Melihat outcome / achievement'],
+ ['a','Masuk ke alumni / ecosystem'],['a','Melihat recommended opportunity'],['a','Menemukan participant / mentor / partner'],['a','Melakukan connection'],
+ ['a','Mengikuti opportunity baru / collaboration'],['a','Memperbarui profile / outcome']]},
+
+{id:'UF-13',name:'Gabung Event',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Hub Management — Dimas / Core Team — Steven',
  goal:'Memudahkan peserta bergabung ke event dengan data profil yang sudah ada, termasuk seleksi peserta untuk Curated Event, serta memastikan kehadiran melalui konfirmasi H-1.',
  desc:'Peserta bergabung ke event memakai data profil yang ada. Untuk Curated Event (target audience tertentu), Hub Management / Core Team menyetujui atau menolak pendaftar; peserta terkonfirmasi menerima email dan reminder H-1 (Yes / No / Not Sure).',
  steps:'Membuka portal GSIH ↓ Membuka menu Event ↓ Membuka detail event ↓ Klik "Gabung Event" ↓ Sistem memeriksa status login (belum login → login / registrasi, UF-01) ↓ Sistem mencatat pendaftaran dari data profil ↓ Curated Event? (ya → status Menunggu persetujuan → Hub Management / Core Team mereviu profil pendaftar → disetujui / ditolak dengan notifikasi) ↓ Sistem mengonfirmasi peserta & mengirim email konfirmasi ↓ Peserta melihat status Terdaftar ↓ Sistem mengirim reminder & konfirmasi kehadiran H-1 ↓ Peserta menjawab Yes / No / Not Sure ↓ Sistem memperbarui daftar peserta sesuai jawaban',
@@ -705,7 +733,15 @@ const FLOWS=[
  ['s','Memperbarui daftar peserta sesuai jawaban']],
  edges:['0>1>2>3>4',[4,6,'Ya'],[4,5,'Belum'],[5,6],'6>7',[7,8,'Ya'],[7,12,'Tidak'],'8>9>10',[10,12,'Ya'],[10,11,'Tidak'],'12>13>14>15>16']},
 
-{id:'UF-11',name:'Proses Matchmaking & Pendanaan',who:'Funder — Willy / Startup Founder — Rani',
+{id:'UF-14',name:'Pengajuan Agenda Komunitas',who:'Komunitas Ekosistem / Hub Management — Dimas',
+ goal:'Memfasilitasi komunitas lokal untuk mendaftarkan acara mereka ke dalam kalender Hub.',
+ desc:'Komunitas mengajukan acara lokal mandiri yang kemudian diakomodasi ke dalam agenda resmi operasional Hub.',
+ lanes:[['k','Komunitas Ekosistem','C'],['h','Hub Management — Dimas','O'],SYS],
+ nodes:[['k','Submit detail acara'],['h','Meninjau pengajuan'],['h','Disetujui?',{t:'d'}],['s','Acara tayang di kalender publik Hub lokal'],
+ ['k','Menerima notifikasi penolakan',{c:3,i:1}]],
+ edges:['0>1>2',[2,3,'Approve'],[2,4,'Reject']]},
+
+{id:'UF-15',name:'Proses Matchmaking & Pendanaan',who:'Funder — Willy / Startup Founder — Rani',
  goal:'Memungkinkan Funder menemukan startup potensial dan membuka akses informasi secara bertahap: data confidential setelah Interest disetujui Founder, lalu kontak Founder saat pertemuan diatur.',
  desc:'Funder menemukan startup di direktori, lalu klik Interest untuk meminta akses data confidential yang perlu disetujui Founder. Jika tertarik setelah meninjau data, Funder mengatur pertemuan dan baru menerima kontak Founder pada tahap ini.',
  steps:'Funder membuka direktori startup ↓ Search / filter sesuai kriteria pendanaan ↓ Memilih startup & melihat profil publik ↓ Klik "Interest" ↓ Sistem memeriksa Funder sudah terverifikasi (belum → diarahkan ke verifikasi Partner, UF-02) ↓ Sistem mengirim notifikasi interest ke Founder ↓ Founder menyetujui akses data confidential (ditolak → Funder menerima notifikasi) ↓ Sistem membuka informasi detail & confidential untuk Funder ↓ Funder meninjau data ↓ Tertarik? (tidak → kembali ke direktori) ↓ Klik "Atur Pertemuan" & mengusulkan jadwal ↓ Sistem membagikan nomor & kontak Founder ke Funder serta notifikasi jadwal ke Founder ↓ Founder menerima jadwal pertemuan ↓ Pelaksanaan pertemuan ↓ (Opsional) Memperbarui status pendanaan',
@@ -719,7 +755,7 @@ const FLOWS=[
  ['f','Diarahkan menyelesaikan verifikasi Partner (UF-02)',{c:5}],['r','Akses ditolak, Funder menerima notifikasi',{c:7}]],
  edges:['0>1>2>3>4',[4,5,'Ya'],[4,15,'Tidak'],'5>6',[6,7,'Ya'],[6,16,'Tidak'],'7>8>9',[9,10,'Ya'],[9,0,'Tidak','b'],'10>11>12>13>14']},
 
-{id:'UF-12',name:'Reservasi Fasilitas Hub',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Hub Management — Dimas',
+{id:'UF-16',name:'Reservasi Fasilitas Hub',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Hub Management — Dimas',
  goal:'Memesan ruang di Hub lokal secara online maupun langsung di lokasi (walk-in), dengan persetujuan Hub Management agar jadwal tidak bentrok.',
  desc:'Peserta memesan space di Hub lokalnya lewat dashboard, atau datang langsung dan dibantu admin Hub (walk-in). Semua booking menunggu persetujuan Hub Management sebelum space digunakan.',
  steps:'[Online] Membuka dashboard GSIH ↓ Membuka menu Spaces (hanya space di Hub lokal) ↓ Melihat space yang tersedia ↓ Menambahkan booking space  /  [Walk-in] Datang ke lokasi Hub ↓ Admin Hub mengecek ketersediaan (tidak tersedia → menawarkan space / waktu lain) ↓ Admin Hub membuat booking atas nama peserta ↓ Sistem mencatat booking (Menunggu approval) ↓ Hub Management menyetujui (ditolak → peserta memilih space / jadwal lain) ↓ Konfirmasi booking masuk ke dashboard ↓ Menggunakan space sesuai jadwal',
@@ -733,16 +769,22 @@ const FLOWS=[
  ['p','Menerima notifikasi, memilih space / jadwal lain',{c:6}]],
  edges:['0>1>2>3',[3,9],[4,5],'5>6',[6,7,'Ya'],[6,8,'Tidak'],[7,9],'9>10',[10,11,'Ya'],[10,13,'Tidak'],'11>12',[13,2,'Pilih ulang','b']]},
 
-{id:'UF-13',name:'Pembatalan Peserta (Drop-out)',who:'Semua Participant / Hub Management — Dimas',
- goal:'Membatalkan keikutsertaan event / program dan mengembalikan kuota secara otomatis agar bisa dipakai pendaftar lain.',
- desc:'Peserta membatalkan keikutsertaan dengan alasan singkat. Sistem langsung mengembalikan kuota ke event, mengirim konfirmasi ke peserta, dan memberi laporan ke Hub Management sebagai informasi.',
- steps:'Peserta menekan tombol "Batal Hadir / Mundur" ↓ Mengisi alasan singkat ↓ Sistem mengembalikan kuota ke event secara otomatis ↓ Sistem mengirim konfirmasi pembatalan ke peserta & laporan ke Hub Management ↓ Peserta menerima konfirmasi pembatalan / Hub Management menerima laporan (informasi)',
- lanes:[['u','Participant','P'],SYS,['h','Hub Management — Dimas','O']],
- nodes:[['u','Menekan tombol "Batal Hadir / Mundur"'],['u','Mengisi alasan singkat'],['s','Mengembalikan kuota ke event secara otomatis'],
- ['s','Mengirim konfirmasi ke peserta & laporan ke Hub'],['u','Menerima konfirmasi pembatalan',{c:4}],['h','Menerima laporan pembatalan (informasi)',{c:4}]],
- edges:['0>1>2>3',[3,4],[3,5]]},
+{id:'UF-17',name:'Pendaftaran Program UMKM',who:'SME Owner — Hendra',
+ goal:'Mendaftar ke program / event yang direkomendasikan sistem berdasarkan hasil asesmen UMKM.',
+ desc:'Pendaftaran instan yang tidak meminta ulang data yang sudah diisi saat assessment awal.',
+ lanes:[['m','SME Owner — Hendra','P'],SYS],
+ nodes:[['m','Klik rekomendasi program pasca-asesmen'],['m','Membaca detail program / event'],['m','Klik Daftar'],
+ ['s','Form terisi otomatis dari data asesmen UMKM'],['m','Konfirmasi pendaftaran'],['s','Jadwal masuk ke dasbor']]},
 
-{id:'UF-14',name:'Tambah Role Baru',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Mentor — Ferdi',
+{id:'UF-18',name:'Pembatalan Peserta (Drop-out)',who:'Semua Participant / Hub Management — Dimas',
+ goal:'Membatalkan keikutsertaan program/event agar kuota dapat dikembalikan ke sistem.',
+ desc:'Manajemen kuota dinamis yang memungkinkan kursi kosong diisi peserta lain dari waiting list.',
+ lanes:[['u','Participant','P'],['h','Hub Management — Dimas','O'],SYS],
+ nodes:[['u','Menekan tombol "Batal Hadir / Mundur"'],['u','Mengisi alasan singkat'],['h','Menerima laporan pembatalan otomatis'],
+ ['s','Ada waiting list?',{t:'d',i:1}],['s','Melepaskan kembali kuota ke direktori pendaftaran publik'],['s','Menawarkan kursi ke peserta waiting list',{c:4,s:1,i:1}]],
+ edges:['0>1>2>3',[3,4,'Tidak'],[3,5,'Ya']]},
+
+{id:'UF-19',name:'Tambah Role Baru',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Mentor — Ferdi',
  goal:'Memungkinkan pengguna yang sudah terdaftar menambah role lain tanpa membuat akun baru.',
  desc:'Dari menu Profile, pengguna memilih role tambahan dan mengisi data sesuai role tersebut. Role langsung aktif, kecuali Mentor yang perlu diverifikasi Core Team terlebih dahulu. Setelah role aktif, pengguna mengisi profiling interest sebelum masuk dashboard.',
  steps:'Membuka dashboard ↓ Membuka menu Profile ↓ Klik "Tambah Role" ↓ Memilih role (Digital Talent / Startup Founder / SME Owner / Mentor) ↓ Sistem menampilkan form sesuai role (data profil terisi otomatis) ↓ Mengisi data sesuai role ↓ Jika Mentor → menunggu verifikasi Core Team (belum layak → melengkapi data & kirim ulang) ↓ Role baru aktif ↓ Mengisi profiling interest sesuai role ↓ Masuk dashboard (rekomendasi sesuai interest)',
@@ -755,7 +797,7 @@ const FLOWS=[
  ['s','Role baru aktif',{c:12}],['p','Mengisi profiling interest sesuai role'],['p','Masuk dashboard (rekomendasi sesuai interest)']],
  edges:['0>1>2>3>4>5>6',[6,7,'Ya'],[6,13,'Tidak'],'7>8>9',[9,10,'Ya'],[9,11,'Tidak'],'11>12',[12,8,'Kirim ulang','b'],[10,13],'13>14>15']},
 
-{id:'UF-15',name:'Undangan Event untuk Mentor',who:'Mentor — Ferdi / Hub Management — Dimas / Core Team — Steven',
+{id:'UF-20',name:'Undangan Event untuk Mentor',who:'Mentor — Ferdi / Hub Management — Dimas / Core Team — Steven',
  goal:'Memudahkan Hub Management atau Core Team mengundang Mentor ke event dan memastikan kehadirannya.',
  desc:'Mentor menerima undangan event melalui email, melihat detailnya, lalu menerima atau menolak. Mentor yang menerima mendapat reminder H-3 dan hadir di event; penolakan dikirim ke pengundang.',
  steps:'Hub Management / Core Team mengundang Mentor ke event ↓ Sistem mengirim email undangan ↓ Mentor menerima email undangan ↓ Melihat detail undangan ↓ Menerima undangan? (tidak → menolak dengan alasan, pengundang menerima notifikasi & mencari Mentor lain) ↓ Sistem mencatat Mentor sebagai pengisi & memberi notifikasi ke pengundang ↓ Reminder & konfirmasi H-3 ↓ Menghadiri event sebagai Mentor',
@@ -766,7 +808,7 @@ const FLOWS=[
  ['s','Mengirim reminder & konfirmasi H-3',{c:6}],['m','Menghadiri event sebagai Mentor',{c:7}]],
  edges:['0>1>2>3>4',[4,5,'Ya'],[4,6,'Tidak'],[6,7],'5>8>9']},
 
-{id:'UF-16',name:'Check-in Event',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Spoke — Jessica / Hub Management — Dimas',
+{id:'UF-21',name:'Check-in Event',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Spoke — Jessica / Hub Management — Dimas',
  goal:'Mencatat kehadiran peserta event offline dengan cepat melalui satu QR Profile yang sama untuk semua event.',
  desc:'Peserta menunjukkan QR Profile, lalu petugas Spoke / Hub memindainya lewat menu Scan Ticket. Sistem mencatat kehadiran bila peserta terdaftar; kasus khusus (belum terdaftar, sudah check-in) ditangani petugas di tempat.',
  steps:'Peserta datang ke lokasi event ↓ Membuka QR Profile di platform GSIH ↓ Petugas Spoke / Hub membuka menu Scan Ticket ↓ Memindai QR peserta ↓ Sistem memeriksa: QR valid & terdaftar di event? (tidak → petugas menangani: daftar di tempat jika kuota tersedia / sudah check-in / QR tidak valid) ↓ Sistem mencatat kehadiran ↓ Tanda tangan manual (opsional) ↓ Peserta mengikuti event  /  Petugas lanjut memindai peserta berikutnya',
@@ -777,7 +819,7 @@ const FLOWS=[
  ['h','Lanjut memindai peserta berikutnya',{c:7}]],
  edges:['0>1>2>3>4',[4,6,'Ya'],[4,5,'Tidak'],[5,6,'Didaftarkan di tempat'],'6>7>8',[6,9],[9,3,'Berikutnya','b']]},
 
-{id:'UF-17',name:'Job Opportunity: Posting & Melamar',who:'Corporation — Agung / Funder — Willy / Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra',
+{id:'UF-22',name:'Job Opportunity: Posting & Melamar',who:'Corporation — Agung / Funder — Willy / Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra',
  goal:'Memungkinkan Partner mempublikasikan lowongan kerja dan participant melamar dengan data profil yang sudah ada.',
  desc:'Partner terverifikasi (UF-02) memposting lowongan, lalu sistem menayangkannya dan merekomendasikan ke participant dengan skill yang sesuai. Participant melamar memakai profil yang ada; Partner menyaring pelamar dan mengundang yang lolos ke tahap berikutnya.',
  steps:'Partner membuka menu Job Opportunity ↓ Membuat lowongan (posisi, kualifikasi, skill, lokasi, tenggat) ↓ Publish lowongan ↓ Sistem menayangkan lowongan & merekomendasikan ke participant dengan skill sesuai ↓ Participant melihat lowongan (rekomendasi / pencarian) ↓ Membuka detail lowongan ↓ Klik "Lamar" (profil & CV terisi otomatis) ↓ Sistem mengirim lamaran ke Partner ↓ Partner mereviu pelamar ↓ Lolos screening? (tidak → pelamar menerima notifikasi) ↓ Sistem mengirim undangan tahap berikutnya ↓ Participant menerima undangan & melanjutkan proses rekrutmen',
@@ -790,7 +832,7 @@ const FLOWS=[
  ['p','Menerima notifikasi: tidak lolos',{c:10}]],
  edges:['0>1>2>3>4>5>6>7>8>9',[9,10,'Ya'],[9,12,'Tidak'],'10>11']},
 
-{id:'UF-18',name:'Ecosystem Registration (by Invitation)',who:'Spoke — Jessica / Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+{id:'UF-23',name:'Ecosystem Registration (by Invitation)',who:'Spoke — Jessica / Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
  goal:'Memastikan hanya pihak resmi yang masuk sebagai operator ekosistem melalui undangan dari Core Team, dengan role dan cakupan akses yang ditetapkan sejak awal.',
  desc:'Registrasi khusus undangan dari Core Team untuk Spoke, Hub Management, Core Team, dan Komdigi Official. Penerima membuat kata sandi baru, melengkapi profil, dan menyetujui kode etik; akun aktif sesuai role dan akses yang ditetapkan.',
  steps:'Core Team membuka manajemen pengguna (Admin Console) ↓ Klik "Undang Pengguna" ↓ Memilih role (Hub Management / Spoke / Core Team / Komdigi Official) ↓ Menentukan cakupan akses (Hub/wilayah, program) ↓ Mengisi data undangan (nama, email resmi, jabatan) ↓ Mengirim undangan ↓ Sistem membuat undangan & mengirim email (tautan berlaku terbatas) ↓ Penerima membuka email & tautan undangan ↓ Sistem memeriksa masa berlaku tautan (kedaluwarsa → penerima meminta undangan ulang ke Core Team) ↓ Membuat kata sandi baru ↓ Melengkapi profil (nama, jabatan, kontak, unit kerja) ↓ Menyetujui kode etik, kebijakan data & kerahasiaan ↓ Sistem mengaktifkan akun dengan role & akses sesuai undangan ↓ Core Team menerima notifikasi akun aktif ↓ Pengguna masuk dasbor sesuai role & checklist onboarding',
@@ -805,7 +847,7 @@ const FLOWS=[
  ['e','Meminta undangan ulang ke Core Team',{c:9,s:1}]],
  edges:['0>1>2>3>4>5>6>7>8',[8,9,'Ya'],'9>10>11>12',[12,13],[12,14],[8,15,'Tidak'],[15,5,'Undang ulang','b']]},
 
-{id:'UF-19',name:'Pengelolaan Program & Approval',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+{id:'UF-24',name:'Pengelolaan Program & Approval',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
  goal:'Memfasilitasi pengajuan program dengan approval dua tahap sesuai hierarki ekosistem: review oleh Core Team, lalu persetujuan akhir oleh Komdigi Official, serta visibility terhadap status proses.',
  desc:'Hub Management menyusun dan mengajukan program, lalu program direviu oleh Core Team dan disetujui akhir oleh Komdigi Official. Di setiap tahap, pengajuan dapat disetujui, diminta revisi (kembali ke Hub), atau ditolak.',
  steps:'Membuka manajemen program ↓ Memilih buat program baru ↓ Mengisi detail program ↓ Menentukan target & kebutuhan program ↓ Menambahkan jadwal / aktivitas ↓ Review draft ↓ Submit untuk approval ↓ Sistem meneruskan ke antrean review Core Team ↓ Core Team mereviu program ↓ Keputusan Core Team: Approve → diteruskan ke Komdigi / Revision → Hub merevisi & submit ulang / Reject → program ditolak ↓ Komdigi Official mereviu untuk persetujuan akhir ↓ Keputusan Komdigi: Approve → status Disetujui & notifikasi ke Hub / Revision → Hub merevisi & submit ulang / Reject → program ditolak ↓ Program disetujui',
@@ -818,7 +860,7 @@ const FLOWS=[
  ['c','Ditolak Core Team, notifikasi ke Hub',{c:10,s:1}],['h','Melakukan revisi',{c:12}],['k','Ditolak Komdigi, notifikasi ke Hub',{c:12,s:1}]],
  edges:['0>1>2>3>4>5>6>7>8>9',[9,10,'Approve'],[9,14,'Reject'],[9,15,'Revision'],'10>11',[11,12,'Approve'],[11,15,'Revision'],[11,16,'Reject'],[12,13],[15,6,'Submit ulang','b']]},
 
-{id:'UF-20',name:'Pelaksanaan & Monitoring Program',who:'Hub Management — Dimas / Spoke — Jessica',
+{id:'UF-25',name:'Pelaksanaan & Monitoring Program',who:'Hub Management — Dimas / Spoke — Jessica',
  goal:'Mengelola aktivitas program, participant, attendance, progress, dan kebutuhan operasional.',
  desc:'Menjalankan program yang telah disetujui: mengelola aktivitas, participant, attendance, mentor, dan memantau progress pelaksanaan.',
  lanes:[['h','Hub Management — Dimas','O'],['j','Spoke — Jessica','O'],SYS],
@@ -828,7 +870,7 @@ const FLOWS=[
  ['h','Perlu tindak lanjut?',{t:'d',i:1}],['h','Melakukan tindak lanjut',{c:10,s:1}],['h','Melihat progress program',{c:11}]],
  edges:['0>1>2>3>4>5>6>7>8>9',[9,10,'Ya'],[9,11,'Tidak'],[10,11]]},
 
-{id:'UF-21',name:'Program Reporting & Impact Tracking',who:'Hub Management — Dimas / Core Team — Steven',
+{id:'UF-26',name:'Program Reporting & Impact Tracking',who:'Hub Management — Dimas / Core Team — Steven',
  goal:'Mengurangi reporting manual dengan memanfaatkan data aktivitas dan transaksi sebagai sumber reporting.',
  desc:'Mengumpulkan, memvalidasi, dan menggunakan data program yang tercatat untuk reporting, monitoring KPI, evaluasi, dan pengukuran outcome/impact.',
  lanes:[['h','Hub Management — Dimas','O'],SYS,['c','Core Team — Steven','O']],
@@ -836,7 +878,7 @@ const FLOWS=[
  ['h','Melihat KPI / indikator'],['h','Mengidentifikasi data yang belum lengkap'],['h','Melengkapi / memvalidasi data'],['h','Review report'],
  ['h','Submit / finalize report'],['s','Data masuk ke monitoring Core Team'],['c','Melihat outcome / impact']]},
 
-{id:'UF-22',name:'Spoke Activity & Participant Management',who:'Spoke — Jessica',
+{id:'UF-27',name:'Spoke Activity & Participant Management',who:'Spoke — Jessica',
  goal:'Mendukung pengelolaan participant dan aktivitas program di level Spoke, termasuk attendance dan activity reporting.',
  desc:'Spoke mendukung pelaksanaan program di lapangan: participant, aktivitas, attendance, issue, dan pelaporan aktivitas kepada Hub.',
  lanes:[['j','Spoke — Jessica','O'],['h','Hub Management','O']],
@@ -844,7 +886,7 @@ const FLOWS=[
  ['j','Mencatat attendance'],['j','Mencatat aktivitas / issue'],['j','Memperbarui progress'],['j','Review aktivitas'],['j','Submit activity report'],
  ['h','Menerima activity report',{i:1}]]},
 
-{id:'UF-23',name:'Ecosystem & Program Monitoring',who:'Core Team — Steven',
+{id:'UF-28',name:'Ecosystem & Program Monitoring',who:'Core Team — Steven',
  goal:'Memberikan single view terhadap portfolio program, participant, activity, KPI, dan ecosystem performance.',
  desc:'Core Team memantau portfolio program dan kondisi ekosistem melalui consolidated view atas status program, participant, aktivitas, KPI, dan indikator performance.',
  lanes:[['c','Core Team — Steven','O'],SYS,['h','Hub Management terkait','O']],
@@ -852,7 +894,7 @@ const FLOWS=[
  ['c','Melihat participant & activity metrics'],['c','Mengidentifikasi program yang butuh perhatian'],['c','Membuka detail program'],
  ['c','Melihat KPI / progress'],['c','Melakukan follow-up / action'],['h','Menerima & menindaklanjuti follow-up',{i:1}]]},
 
-{id:'UF-24',name:'Program / Budget Approval & Oversight',who:'Komdigi Official — Sastro',
+{id:'UF-29',name:'Program / Budget Approval & Oversight',who:'Komdigi Official — Sastro',
  goal:'Mendukung oversight, approval yang relevan, monitoring budget/program, dan akses terhadap informasi impact.',
  desc:'Komdigi Official mereviu program dan informasi dalam kewenangannya, termasuk approval, budget, progress, dan impact monitoring.',
  lanes:[['k','Komdigi Official — Sastro','G'],SYS,['h','Pengaju (Hub / Core Team)','O']],
@@ -862,7 +904,7 @@ const FLOWS=[
  ['h','Merevisi & mengajukan ulang',{c:7,i:1}],['k','Program ditolak',{c:7,s:1}]],
  edges:['0>1>2>3>4>5>6',[6,7,'Approve'],'7>8>9>10',[6,11,'Revision'],[11,5,'Ajukan ulang','b'],[6,12,'Reject']]},
 
-{id:'UF-25',name:'Buat Event',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+{id:'UF-30',name:'Buat Event',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
  goal:'Membuat event dengan persetujuan dua tahap sesuai hierarki (Core Team lalu Komdigi Official), sambil mengunci jadwal agar tidak bentrok selama menunggu approval.',
  desc:'Hub Management membuat event beserta jadwalnya; sistem mengunci jadwal selama proses approval. Event direviu Core Team lalu disetujui akhir oleh Komdigi Official, dan Hub menerima notifikasi saat status berubah.',
  steps:'Membuka dashboard GSIH ↓ Membuka menu Event ↓ Create Event ↓ Mengisi data event & jadwal ↓ Submit ↓ Sistem mengunci jadwal dengan status Menunggu approval ↓ Core Team menerima notifikasi & mereviu event ↓ Disetujui Core Team? (revisi → Hub merevisi & submit ulang) ↓ Komdigi Official menerima notifikasi & mereviu detail event ↓ Disetujui Komdigi? (revisi → Hub merevisi & submit ulang) ↓ Sistem memperbarui status event: Disetujui ↓ Hub Management menerima notifikasi',
@@ -874,7 +916,7 @@ const FLOWS=[
  ['h','Merevisi event',{c:10}]],
  edges:['0>1>2>3>4>5>6>7',[7,8,'Ya'],'8>9',[9,10,'Ya'],'10>11',[7,12,'Revisi'],[9,12,'Revisi'],[12,4,'Submit ulang','b']]},
 
-{id:'UF-26',name:'Budget Approval',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+{id:'UF-31',name:'Budget Approval',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
  goal:'Mengajukan dan menyetujui Rencana Anggaran Biaya (RAB) secara transparan melalui approval berjenjang: Core Team lalu Komdigi Official.',
  desc:'Hub Management menyusun dan mengajukan RAB. Core Team mereviu terlebih dahulu, lalu Komdigi Official memberi persetujuan akhir; revisi dari kedua tahap dikembalikan ke Hub untuk diajukan ulang.',
  steps:'Hub Management menyusun draf anggaran (RAB) ↓ Submit pengajuan ↓ Sistem mengirim notifikasi ke Core Team ↓ Core Team mereviu detail & justifikasi item ↓ Disetujui Core Team? (revisi → Hub merevisi & submit ulang) ↓ Komdigi Official mereviu untuk persetujuan akhir ↓ Disetujui Komdigi? (revisi → Hub merevisi & submit ulang) ↓ Sistem memperbarui status anggaran: Disetujui ↓ Hub Management menerima notifikasi',
@@ -886,7 +928,7 @@ const FLOWS=[
  ['h','Merevisi draf anggaran sesuai catatan',{c:7}]],
  edges:['0>1>2>3>4',[4,5,'Ya'],'5>6',[6,7,'Ya'],'7>8',[4,9,'Revisi'],[6,9,'Revisi'],[9,1,'Submit ulang','b']]},
 
-{id:'UF-27',name:'Verifikasi & Kurasi Startup',who:'Hub Management — Dimas / Core Team — Steven',
+{id:'UF-32',name:'Verifikasi & Kurasi Startup',who:'Hub Management — Dimas / Core Team — Steven',
  goal:'Menentukan kelayakan profil startup sebelum tayang publik atau masuk ke direktori pendana.',
  desc:'Proses di balik layar oleh admin untuk memvalidasi legalitas dan kelengkapan data startup.',
  lanes:[['u','Startup (pendaftar)','P'],SYS,['a','Admin — Dimas / Steven','O']],
@@ -897,7 +939,7 @@ const FLOWS=[
 ];
 
 
-const INTERNAL=new Set(['UF-18','UF-19','UF-20','UF-21','UF-22','UF-23','UF-24','UF-25','UF-26','UF-27']);
+const INTERNAL=new Set(['UF-23','UF-24','UF-25','UF-26','UF-27','UF-28','UF-29','UF-30','UF-31','UF-32']);
 const TYPE_LABEL={pub:'Publik',int:'Internal'};
 const TYPE_SUB={pub:'Participant & Partner',int:'Spoke → Hub Management → Core Team → Komdigi Official'};
 FLOWS.forEach(f=>{ f.type=INTERNAL.has(f.id)?'int':'pub'; });
