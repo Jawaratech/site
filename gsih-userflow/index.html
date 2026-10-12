@@ -1,9 +1,10 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>GSIH User Flow UF-01 s.d. UF-27</title>
+<title>GSIH User Flow UF-01 s.d. UF-29</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -592,13 +593,13 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
 <script>
 const SYS=['s','Sistem GSIH','S'];
 const FLOWS=[
-{id:'UF-01',name:'Participant Registration',who:'Startup Founder — Rani / Digital Talent — Sari / SME Owner — Hendra / Mentor — Ferdi',
- goal:'Memungkinkan Startup Founder, Digital Talent, SME Owner, dan Mentor mendaftar secara mandiri melalui satu alur yang ringkas dan mulus, dengan verifikasi manual oleh Core Team khusus untuk Mentor, lalu langsung mendapatkan rekomendasi yang relevan berdasarkan interest.',
+{id:'UF-01',name:'Participant Registration',who:'Startup Founder — Rani / Digital Talent — Sari / SME Owner — Hendra / Researcher — Budi / Mentor — Ferdi',
+ goal:'Memungkinkan Startup Founder, Digital Talent, SME Owner, Researcher, dan Mentor mendaftar secara mandiri melalui satu alur yang ringkas dan mulus, dengan verifikasi manual oleh Core Team khusus untuk Mentor, lalu langsung mendapatkan rekomendasi yang relevan berdasarkan interest.',
  desc:'Registrasi mandiri untuk Participant dan Mentor: mengisi data diri & memilih role, verifikasi email, lalu profiling interest. Participant langsung masuk dashboard berisi rekomendasi, sedangkan Mentor perlu diverifikasi manual oleh Core Team terlebih dahulu.',
- steps:'Membuka portal GSIH ↓ Klik "Daftar" ↓ Sistem menampilkan form registrasi & pilihan role ↓ Masukkan data diri & pilih Role (Startup Founder / Digital Talent / SME Owner / Mentor) ↓ Sistem membuat akun & mengirim email verifikasi ↓ Verifikasi Email ↓ Sistem mengaktifkan akun & menyiapkan profiling sesuai role ↓ Profiling Interest ↓ Sistem memeriksa role ↓ [Mentor] Sistem menandai status "Menunggu verifikasi" & memberi notifikasi ke Core Team ↓ Core Team mereviu profil, keahlian & dokumen Mentor ↓ Layak → sistem memverifikasi Mentor & memberi badge Terverifikasi / Belum layak → Core Team meminta kelengkapan / revisi → Mentor melengkapi profil & kirim ulang ↓ Sistem menyusun rekomendasi berdasarkan interest ↓ Dashboard (Rekomendasi berdasarkan Interest) ↓ Selesai',
- lanes:[['p','Participant & Mentor (Rani / Sari / Hendra / Ferdi)','P'],SYS,['c','Core Team — Steven','O']],
+ steps:'Membuka portal GSIH ↓ Klik "Daftar" ↓ Sistem menampilkan form registrasi & pilihan role ↓ Masukkan data diri & pilih Role (Startup Founder / Digital Talent / SME Owner / Researcher / Mentor) ↓ Sistem membuat akun & mengirim email verifikasi ↓ Verifikasi Email ↓ Sistem mengaktifkan akun & menyiapkan profiling sesuai role ↓ Profiling Interest ↓ Sistem memeriksa role ↓ [Mentor] Sistem menandai status "Menunggu verifikasi" & memberi notifikasi ke Core Team ↓ Core Team mereviu profil, keahlian & dokumen Mentor ↓ Layak → sistem memverifikasi Mentor & memberi badge Terverifikasi / Belum layak → Core Team meminta kelengkapan / revisi → Mentor melengkapi profil & kirim ulang ↓ Sistem menyusun rekomendasi berdasarkan interest ↓ Dashboard (Rekomendasi berdasarkan Interest) ↓ Selesai',
+ lanes:[['p','Participant & Mentor (Rani / Sari / Hendra / Budi / Ferdi)','P'],SYS,['c','Core Team — Steven','O']],
  nodes:[['p','Membuka portal GSIH'],['p','Klik "Daftar"'],['s','Menampilkan form registrasi & pilihan role'],
- ['p','Masukkan data diri & pilih role (Startup Founder / Digital Talent / SME Owner / Mentor)'],
+ ['p','Masukkan data diri & pilih role (Startup Founder / Digital Talent / SME Owner / Researcher / Mentor)'],
  ['s','Membuat akun & mengirim email verifikasi'],['p','Verifikasi email'],
  ['s','Mengaktifkan akun & menyiapkan profiling sesuai role'],['p','Profiling interest (minat & kebutuhan / keahlian & ketersediaan Mentor)'],
  ['s','Role Mentor?',{t:'d'}],
@@ -645,15 +646,7 @@ const FLOWS=[
  ['r','Melihat feedback & rekomendasi program lain',{c:7,s:1,i:1}]],
  edges:['0>1>2>3>4>5>6',[6,7,'Ya'],'7>8>9>10>11>12',[6,13,'Tidak']]},
 
-{id:'UF-05',name:'Talent Profile, Privacy & Consent',who:'Digital Talent — Sari',
- goal:'Memberikan kontrol kepada talent terhadap profile, consent, dan penggunaan/visibilitas data pribadi.',
- desc:'Membuat dan mengelola profile Digital Talent, termasuk skill, interest, serta pengaturan consent dan visibilitas data untuk opportunity matching.',
- lanes:[['t','Digital Talent — Sari','P'],SYS],
- nodes:[['t','Membuka profile'],['t','Melengkapi informasi personal & profesional'],['t','Menambahkan skill / interest'],['t','Melihat penggunaan data'],
- ['t','Mengatur consent'],['t','Mengatur visibilitas profile'],['t','Review profile'],['t','Menyimpan profile'],
- ['s','Menyimpan consent & preferensi visibilitas',{i:1}],['s','Menggunakan profile untuk matching (sesuai consent)']]},
-
-{id:'UF-06',name:'Opportunity Discovery & Matching',who:'Digital Talent — Sari',
+{id:'UF-05',name:'Opportunity Discovery & Matching',who:'Digital Talent — Sari',
  goal:'Membantu talent menemukan opportunity yang relevan berdasarkan skill, minat, dan konteks profile.',
  desc:'Menemukan program, event, career, atau opportunity lain melalui recommendation, search, dan filter berdasarkan profile talent.',
  lanes:[['t','Digital Talent — Sari','P'],SYS],
@@ -661,7 +654,7 @@ const FLOWS=[
  ['t','Melihat detail opportunity'],['t','Memeriksa eligibility'],['t','Menyimpan opportunity'],['t','Apply / Register'],
  ['s','Mencatat aplikasi & mengirim status',{i:1}],['t','Melihat status aplikasi']]},
 
-{id:'UF-07',name:'Partnership / Pilot Tracking',who:'Startup Founder — Rani / Corporation — Agung',
+{id:'UF-06',name:'Partnership / Pilot Tracking',who:'Startup Founder — Rani / Corporation — Agung',
  goal:'Memudahkan startup mengelola pilot melalui milestone yang jelas dan disetujui Corporation.',
  desc:'Startup membuat milestone pilot dan Corporation menyetujuinya. Startup memperbarui progress tiap milestone hingga selesai, lalu Corporation mencatat outcome pilot.',
  steps:'Corporation memulai pilot dengan startup terpilih ↓ Startup membuat milestone (target, output, tenggat) ↓ Corporation menyetujui milestone (belum → startup merevisi) ↓ Startup memperbarui progress & bukti tiap milestone ↓ Corporation memantau progress ↓ Startup menandai semua milestone selesai ↓ Corporation mencatat outcome pilot',
@@ -671,32 +664,53 @@ const FLOWS=[
  ['u','Menandai semua milestone selesai'],['k','Mencatat outcome pilot']],
  edges:['0>1>2',[2,3,'Ya'],[2,1,'Revisi','b'],'3>4>5>6']},
 
-{id:'UF-08',name:'Researcher Profile & Knowledge / Collaboration Discovery',who:'Researcher — Budi',
+{id:'UF-07',name:'Researcher Profile & Knowledge / Collaboration Discovery',who:'Researcher — Budi',
  goal:'Memungkinkan Researcher memperkenalkan expertise dan menemukan opportunity untuk knowledge sharing atau collaboration.',
  desc:'Membangun profile expertise dan kontribusi riset/knowledge, lalu menemukan kebutuhan atau opportunity yang sesuai untuk berbagi pengetahuan atau berkolaborasi.',
  lanes:[['b','Researcher — Budi','R'],SYS],
- nodes:[['b','Membuka researcher profile'],['b','Melengkapi profile'],['b','Menambahkan expertise'],['b','Menambahkan research / knowledge'],
+ nodes:[['b','Membuka researcher profile'],['b','Melengkapi profile'],['b','Menambahkan expertise'],['b','Menampilkan riset yang dibagikan (UF-08)'],
  ['b','Publish profile'],['s','Menayangkan profile di direktori',{i:1}],['b','Mencari opportunity / collaboration'],
  ['b','Melihat detail opportunity'],['b','Mengajukan interest / collaboration'],['s','Meneruskan interest ke pemilik opportunity',{i:1}]]},
 
-{id:'UF-09',name:'Publikasi Hasil Riset',who:'Researcher — Budi / Core Team — Steven',
- goal:'Memungkinkan Researcher mempublikasikan hasil riset ke ekosistem GSIH setelah direviu Core Team, agar dapat ditemukan oleh pihak yang relevan.',
- desc:'Researcher mengunggah hasil riset beserta informasinya dan mengatur visibilitas. Core Team mereviu sebelum tayang; riset yang tayang direkomendasikan ke participant dan partner dengan topik yang relevan.',
- steps:'Membuka menu Riset ↓ Klik "Publikasikan Riset" ↓ Mengisi judul, abstrak, bidang/topik & penulis ↓ Mengunggah dokumen riset ↓ Mengatur visibilitas (publik / hanya anggota) ↓ Submit ↓ Sistem mengirim notifikasi ke Core Team ↓ Core Team mereviu riset ↓ Layak dipublikasikan? (belum → Researcher merevisi & submit ulang) ↓ Sistem menayangkan riset di direktori & merekomendasikan ke pengguna dengan topik relevan ↓ Researcher menerima notifikasi riset tayang',
- lanes:[['b','Researcher — Budi','R'],SYS,['c','Core Team — Steven','O']],
- nodes:[['b','Membuka menu Riset'],['b','Klik "Publikasikan Riset"'],['b','Mengisi judul, abstrak, bidang/topik & penulis'],
- ['b','Mengunggah dokumen riset'],['b','Mengatur visibilitas (publik / hanya anggota)'],['b','Submit'],
- ['s','Mengirim notifikasi ke Core Team'],['c','Mereviu riset'],['c','Layak dipublikasikan?',{t:'d'}],
- ['s','Menayangkan riset di direktori & merekomendasikan ke pengguna dengan topik relevan',{c:9}],
- ['b','Menerima notifikasi: riset tayang',{c:10}],['b','Merevisi riset sesuai catatan',{c:9}]],
- edges:['0>1>2>3>4>5>6>7>8',[8,9,'Ya'],'9>10',[8,11,'Revisi'],[11,5,'Submit ulang','b']]},
+{id:'UF-08',name:'Bagikan Riset',who:'Researcher — Budi (pemilik & collaborator)',
+ goal:'Memperluas jangkauan riset yang sudah dipublikasikan di luar GSIH, mengajak Researcher lain berkolaborasi, dan membuka ruang diskusi di ekosistem.',
+ desc:'Researcher membagikan riset yang sudah terbit dengan mengisi judul, deskripsi, dan URL publikasinya; sistem menolak link file-sharing seperti Google Docs / Drive. Riset langsung tayang beserta thread diskusinya, dan Researcher lain dapat diundang sebagai collaborator.',
+ steps:'Membuka menu Riset & klik "Bagikan Riset" ↓ Mengisi judul, deskripsi & URL riset yang sudah dipublikasikan (topik / tag opsional) ↓ Sistem memvalidasi URL: format benar, dapat diakses, bukan link file-sharing (Google Docs / Drive, Dropbox, OneDrive); disarankan DOI (tidak valid → pesan kesalahan, Researcher memperbaiki URL) ↓ Menambah collaborator? (ya → mencari & memilih collaborator, hanya akun Researcher) ↓ Submit ↓ Sistem langsung menayangkan riset di direktori, membuka thread diskusi & merekomendasikan ke pengguna dengan topik relevan (Core Team dapat menurunkan riset bila melanggar) ↓ Researcher menerima notifikasi riset tayang ↓ Jika ada collaborator: sistem mengirim undangan ↓ Collaborator menerima / menolak ↓ Collaborator yang menerima ditampilkan di halaman riset dan dapat membalas di thread diskusi',
+ lanes:[['b','Researcher — Budi (pemilik riset)','R'],SYS,['k','Collaborator (Researcher lain)','R']],
+ nodes:[['b','Membuka menu Riset & klik "Bagikan Riset"'],
+ ['b','Mengisi judul, deskripsi & URL riset yang sudah dipublikasikan (topik / tag opsional)'],
+ ['s','URL valid & bukan link file-sharing (Google Docs / Drive)?',{t:'d'}],
+ ['s','Menampilkan pesan: gunakan link publikasi / DOI',{c:3}],
+ ['b','Menambah collaborator?',{t:'d',c:3}],
+ ['b','Mencari & memilih collaborator (hanya akun Researcher)',{c:4,s:1}],
+ ['b','Submit',{c:5}],
+ ['s','Menayangkan riset, membuka thread diskusi & merekomendasikan ke pengguna dengan topik relevan',{c:6}],
+ ['s','Mengirim undangan ke collaborator',{c:7}],
+ ['k','Menerima undangan?',{t:'d',c:8}],
+ ['s','Collaborator ditampilkan di halaman riset',{c:9}],
+ ['k','Undangan ditolak',{c:9}],
+ ['b','Menerima notifikasi: riset tayang',{c:7}]],
+ edges:['0>1>2',[2,4,'Ya'],[2,3,'Tidak'],[3,1,'Perbaiki URL','b'],[4,5,'Ya'],[4,6,'Tidak'],'5>6>7',[7,12],[7,8,'Ada collaborator'],'8>9',[9,10,'Ya'],[9,11,'Tidak']]},
+
+{id:'UF-09',name:'Diskusi Riset',who:'Semua pengguna terdaftar / Researcher — Budi & collaborator / Core Team — Steven',
+ goal:'Membuka ruang diskusi seperti forum di setiap riset agar pengguna ekosistem dapat bertanya, memberi masukan, dan menjajaki kolaborasi.',
+ desc:'Siapa pun dapat membaca thread diskusi riset, tetapi hanya pengguna yang login yang dapat menulis komentar, membalas, dan me-mention. Researcher dan collaborator menerima notifikasi untuk membalas; komentar yang dilaporkan dimoderasi Core Team.',
+ steps:'Membuka halaman riset & thread diskusi ↓ Sudah login? (tidak → hanya dapat membaca diskusi) ↓ Menulis komentar / balasan (dapat me-mention pengguna) ↓ Sistem menayangkan komentar & mengirim notifikasi ke researcher, collaborator & pengguna yang di-mention ↓ Researcher / collaborator membalas di thread ↓ Pengguna menerima notifikasi balasan  /  [Moderasi] Pengguna melaporkan komentar tidak pantas ↓ Core Team menilai: melanggar aturan? (ya → sistem menyembunyikan komentar & memberi notifikasi ke penulis / tidak → komentar tetap tayang)',
+ lanes:[['u','Pengguna (semua role)','P'],SYS,['b','Researcher & collaborator','R'],['c','Core Team — Steven (Moderator)','O']],
+ nodes:[['u','Membuka halaman riset & thread diskusi'],['s','Sudah login?',{t:'d'}],
+ ['u','Hanya dapat membaca diskusi',{c:2,s:1}],['u','Menulis komentar / balasan (dapat me-mention pengguna)',{c:2}],
+ ['s','Menayangkan komentar & notifikasi ke researcher, collaborator & pengguna yang di-mention'],
+ ['b','Membalas di thread'],['u','Menerima notifikasi balasan'],
+ ['u','Melaporkan komentar tidak pantas (opsional)',{c:6}],['c','Komentar melanggar aturan?',{t:'d'}],
+ ['s','Menyembunyikan komentar & notifikasi ke penulis',{c:8}],['c','Komentar tetap tayang',{c:8}]],
+ edges:['0>1',[1,3,'Ya'],[1,2,'Tidak'],'3>4>5>6','7>8',[8,9,'Ya'],[8,10,'Tidak']]},
 
 {id:'UF-10',name:'Gabung Event',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Hub Management — Dimas / Core Team — Steven',
  goal:'Memudahkan peserta bergabung ke event dengan data profil yang sudah ada, termasuk seleksi peserta untuk Curated Event, serta memastikan kehadiran melalui konfirmasi H-1.',
  desc:'Peserta bergabung ke event memakai data profil yang ada. Untuk Curated Event (target audience tertentu), Hub Management / Core Team menyetujui atau menolak pendaftar; peserta terkonfirmasi menerima email dan reminder H-1 (Yes / No / Not Sure).',
- steps:'Membuka portal GSIH ↓ Membuka menu Event ↓ Membuka detail event ↓ Klik "Gabung Event" ↓ Sistem memeriksa status login (belum login → login / registrasi, UF-01) ↓ Sistem mencatat pendaftaran dari data profil ↓ Curated Event? (ya → status Menunggu persetujuan → Hub Management / Core Team mereviu profil pendaftar → disetujui / ditolak dengan notifikasi) ↓ Sistem mengonfirmasi peserta & mengirim email konfirmasi ↓ Peserta melihat status Terdaftar ↓ Sistem mengirim reminder & konfirmasi kehadiran H-1 ↓ Peserta menjawab Yes / No / Not Sure ↓ Sistem memperbarui daftar peserta sesuai jawaban',
+ steps:'Membuka portal GSIH ↓ Membuka menu Event ↓ Membuka detail event ↓ Klik "Gabung Event" (event hybrid: pilih ikut online / offline) ↓ Sistem memeriksa status login (belum login → login / registrasi, UF-01) ↓ Sistem mencatat pendaftaran dari data profil ↓ Curated Event? (ya → status Menunggu persetujuan → Hub Management / Core Team mereviu profil pendaftar → disetujui / ditolak dengan notifikasi) ↓ Sistem mengonfirmasi peserta & mengirim email konfirmasi ↓ Peserta melihat status Terdaftar ↓ Sistem mengirim reminder & konfirmasi kehadiran H-1 ↓ Peserta menjawab Yes / No / Not Sure ↓ Sistem memperbarui daftar peserta sesuai jawaban',
  lanes:[['p','Peserta (Sari / Rani / Hendra)','P'],SYS,['h','Kurator (Hub Management / Core Team)','O']],
- nodes:[['p','Membuka portal GSIH'],['p','Membuka menu Event'],['p','Membuka detail event'],['p','Klik "Gabung Event"'],
+ nodes:[['p','Membuka portal GSIH'],['p','Membuka menu Event'],['p','Membuka detail event'],['p','Klik "Gabung Event" (event hybrid: pilih online / offline)'],
  ['s','Sudah login?',{t:'d'}],['p','Login / registrasi (UF-01)',{c:5}],['s','Mencatat pendaftaran dari data profil',{c:6}],
  ['s','Curated Event?',{t:'d'}],['s','Status Menunggu persetujuan, notifikasi ke kurator',{c:8,s:1}],
  ['h','Mereviu profil pendaftar sesuai target audience',{c:9}],['h','Pendaftar disetujui?',{t:'d'}],
@@ -719,15 +733,15 @@ const FLOWS=[
  ['f','Diarahkan menyelesaikan verifikasi Partner (UF-02)',{c:5}],['r','Akses ditolak, Funder menerima notifikasi',{c:7}]],
  edges:['0>1>2>3>4',[4,5,'Ya'],[4,15,'Tidak'],'5>6',[6,7,'Ya'],[6,16,'Tidak'],'7>8>9',[9,10,'Ya'],[9,0,'Tidak','b'],'10>11>12>13>14']},
 
-{id:'UF-12',name:'Reservasi Fasilitas Hub',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Hub Management — Dimas',
- goal:'Memesan ruang di Hub lokal secara online maupun langsung di lokasi (walk-in), dengan persetujuan Hub Management agar jadwal tidak bentrok.',
- desc:'Peserta memesan space di Hub lokalnya lewat dashboard, atau datang langsung dan dibantu admin Hub (walk-in). Semua booking menunggu persetujuan Hub Management sebelum space digunakan.',
- steps:'[Online] Membuka dashboard GSIH ↓ Membuka menu Spaces (hanya space di Hub lokal) ↓ Melihat space yang tersedia ↓ Menambahkan booking space  /  [Walk-in] Datang ke lokasi Hub ↓ Admin Hub mengecek ketersediaan (tidak tersedia → menawarkan space / waktu lain) ↓ Admin Hub membuat booking atas nama peserta ↓ Sistem mencatat booking (Menunggu approval) ↓ Hub Management menyetujui (ditolak → peserta memilih space / jadwal lain) ↓ Konfirmasi booking masuk ke dashboard ↓ Menggunakan space sesuai jadwal',
- lanes:[['p','Peserta (Sari / Rani / Hendra)','P'],SYS,['a','Hub Management — Dimas (Admin Hub)','O']],
+{id:'UF-12',name:'Reservasi Fasilitas Hub',who:'Participant (Sari / Rani / Hendra / Budi / Ferdi) / Partner (Agung / Willy) / Hub Management — Dimas / Core Team — Steven',
+ goal:'Memungkinkan Participant dan Partner memesan ruang di Hub lokal secara online maupun walk-in, dengan persetujuan Hub Management atau Core Team agar jadwal tidak bentrok.',
+ desc:'Participant dan Partner memesan space di Hub lokal lewat dashboard, atau datang langsung dan dibantu admin Hub (walk-in). Semua booking menunggu persetujuan Hub Management atau Core Team sebelum space digunakan.',
+ steps:'[Online] Membuka dashboard GSIH ↓ Membuka menu Spaces (hanya space di Hub lokal) ↓ Melihat space yang tersedia ↓ Menambahkan booking space  /  [Walk-in] Datang ke lokasi Hub ↓ Admin Hub mengecek ketersediaan (tidak tersedia → menawarkan space / waktu lain) ↓ Admin Hub membuat booking atas nama pemesan ↓ Sistem mencatat booking (Menunggu approval) ↓ Hub Management / Core Team menyetujui (ditolak → pemesan memilih space / jadwal lain) ↓ Konfirmasi booking masuk ke dashboard ↓ Menggunakan space sesuai jadwal',
+ lanes:[['p','Pemesan (Participant & Partner)','P'],SYS,['a','Approver (Hub Management — Dimas / Core Team — Steven)','O']],
  nodes:[['p','Membuka dashboard GSIH'],['p','Membuka menu Spaces (hanya space di Hub lokal)'],['p','Melihat space yang tersedia'],
  ['p','Menambahkan booking space'],
  ['p','Walk-in: datang ke lokasi Hub',{c:0,s:1}],['a','Mengecek ketersediaan space',{c:1}],['a','Space tersedia?',{t:'d'}],
- ['a','Membuat booking atas nama peserta'],['a','Menawarkan space / waktu lain',{c:3,s:1}],
+ ['a','Membuat booking atas nama pemesan'],['a','Menawarkan space / waktu lain',{c:3,s:1}],
  ['s','Mencatat booking: Menunggu approval',{c:4}],['a','Menyetujui booking?',{t:'d'}],
  ['s','Konfirmasi booking masuk ke dashboard'],['p','Menggunakan space sesuai jadwal'],
  ['p','Menerima notifikasi, memilih space / jadwal lain',{c:6}]],
@@ -742,13 +756,13 @@ const FLOWS=[
  ['s','Mengirim konfirmasi ke peserta & laporan ke Hub'],['u','Menerima konfirmasi pembatalan',{c:4}],['h','Menerima laporan pembatalan (informasi)',{c:4}]],
  edges:['0>1>2>3',[3,4],[3,5]]},
 
-{id:'UF-14',name:'Tambah Role Baru',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Mentor — Ferdi',
+{id:'UF-14',name:'Tambah Role Baru',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Researcher — Budi / Mentor — Ferdi',
  goal:'Memungkinkan pengguna yang sudah terdaftar menambah role lain tanpa membuat akun baru.',
  desc:'Dari menu Profile, pengguna memilih role tambahan dan mengisi data sesuai role tersebut. Role langsung aktif, kecuali Mentor yang perlu diverifikasi Core Team terlebih dahulu. Setelah role aktif, pengguna mengisi profiling interest sebelum masuk dashboard.',
- steps:'Membuka dashboard ↓ Membuka menu Profile ↓ Klik "Tambah Role" ↓ Memilih role (Digital Talent / Startup Founder / SME Owner / Mentor) ↓ Sistem menampilkan form sesuai role (data profil terisi otomatis) ↓ Mengisi data sesuai role ↓ Jika Mentor → menunggu verifikasi Core Team (belum layak → melengkapi data & kirim ulang) ↓ Role baru aktif ↓ Mengisi profiling interest sesuai role ↓ Masuk dashboard (rekomendasi sesuai interest)',
- lanes:[['p','Pengguna terdaftar (Sari / Rani / Hendra / Ferdi)','P'],SYS,['c','Core Team — Steven','O']],
+ steps:'Membuka dashboard ↓ Membuka menu Profile ↓ Klik "Tambah Role" ↓ Memilih role (Digital Talent / Startup Founder / SME Owner / Researcher / Mentor) ↓ Sistem menampilkan form sesuai role (data profil terisi otomatis) ↓ Mengisi data sesuai role ↓ Jika Mentor → menunggu verifikasi Core Team (belum layak → melengkapi data & kirim ulang) ↓ Role baru aktif ↓ Mengisi profiling interest sesuai role ↓ Masuk dashboard (rekomendasi sesuai interest)',
+ lanes:[['p','Pengguna terdaftar (Sari / Rani / Hendra / Budi / Ferdi)','P'],SYS,['c','Core Team — Steven','O']],
  nodes:[['p','Membuka dashboard'],['p','Membuka menu Profile'],['p','Klik "Tambah Role"'],
- ['p','Memilih role: Digital Talent / Startup Founder / SME Owner / Mentor'],['s','Menampilkan form sesuai role (data profil terisi otomatis)'],
+ ['p','Memilih role: Digital Talent / Startup Founder / SME Owner / Researcher / Mentor'],['s','Menampilkan form sesuai role (data profil terisi otomatis)'],
  ['p','Mengisi data sesuai role'],['s','Role Mentor?',{t:'d'}],
  ['s','Status Menunggu verifikasi, notifikasi ke Core Team',{c:7,s:1}],['c','Mereviu profil & keahlian Mentor',{c:8}],['c','Layak sebagai Mentor?',{t:'d'}],
  ['s','Role Mentor diaktifkan',{c:10,s:1}],['c','Meminta kelengkapan / revisi',{c:10}],['p','Melengkapi data Mentor',{c:11}],
@@ -767,30 +781,52 @@ const FLOWS=[
  edges:['0>1>2>3>4',[4,5,'Ya'],[4,6,'Tidak'],[6,7],'5>8>9']},
 
 {id:'UF-16',name:'Check-in Event',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Spoke — Jessica / Hub Management — Dimas',
- goal:'Mencatat kehadiran peserta event offline dengan cepat melalui satu QR Profile yang sama untuk semua event.',
- desc:'Peserta menunjukkan QR Profile, lalu petugas Spoke / Hub memindainya lewat menu Scan Ticket. Sistem mencatat kehadiran bila peserta terdaftar; kasus khusus (belum terdaftar, sudah check-in) ditangani petugas di tempat.',
- steps:'Peserta datang ke lokasi event ↓ Membuka QR Profile di platform GSIH ↓ Petugas Spoke / Hub membuka menu Scan Ticket ↓ Memindai QR peserta ↓ Sistem memeriksa: QR valid & terdaftar di event? (tidak → petugas menangani: daftar di tempat jika kuota tersedia / sudah check-in / QR tidak valid) ↓ Sistem mencatat kehadiran ↓ Tanda tangan manual (opsional) ↓ Peserta mengikuti event  /  Petugas lanjut memindai peserta berikutnya',
+ goal:'Mencatat kehadiran peserta event online maupun offline, lalu memberikan poin kepada peserta yang benar-benar hadir.',
+ desc:'Peserta online check-in lewat halaman event dalam batas waktu, lalu URL meeting ditampilkan. Peserta offline menunjukkan QR Profile untuk dipindai petugas. Setelah event selesai, sistem menambahkan poin ke peserta yang sudah check-in.',
+ steps:'Hari H: peserta membuka event yang diikuti ↓ Mode kehadiran sesuai pilihan saat daftar? [Online] Klik "Check-in" di halaman event ↓ Masih dalam batas waktu? (tidak → check-in ditutup, URL tidak ditampilkan) ↓ Sistem mencatat check-in & menampilkan URL meeting ↓ Bergabung ke meeting online  /  [Offline] Datang ke lokasi & membuka QR Profile ↓ Petugas Spoke / Hub memindai QR (Scan Ticket) ↓ QR valid & terdaftar? (tidak → petugas menangani: daftar di tempat jika kuota tersedia / sudah check-in / QR tidak valid) ↓ Sistem mencatat kehadiran ↓ Tanda tangan manual (opsional); petugas lanjut memindai peserta berikutnya ↓ Setelah event selesai, sistem menambahkan poin ke peserta yang check-in ↓ Peserta menerima notifikasi poin',
  lanes:[['p','Peserta (Sari / Rani / Hendra)','P'],SYS,['h','Petugas (Spoke — Jessica / Hub Management — Dimas)','O']],
- nodes:[['p','Datang ke lokasi event'],['p','Membuka QR Profile di platform GSIH'],['h','Membuka menu Scan Ticket'],['h','Memindai QR peserta'],
- ['s','QR valid & terdaftar di event?',{t:'d'}],['h','Menangani kasus: belum terdaftar / sudah check-in / QR tidak valid',{c:5}],
- ['s','Mencatat kehadiran (check-in)',{c:6}],['p','Tanda tangan manual (opsional)'],['p','Mengikuti event'],
+ nodes:[['p','Hari H: membuka event yang diikuti'],
+ ['s','Mode kehadiran sesuai pilihan saat daftar?',{t:'d'}],
+ ['p','Klik "Check-in" di halaman event'],
+ ['s','Masih dalam batas waktu check-in?',{t:'d'}],
+ ['s','Mencatat check-in & menampilkan URL meeting'],
+ ['p','Check-in ditutup, URL tidak ditampilkan',{c:4}],
+ ['p','Bergabung ke meeting online',{c:5}],
+ ['p','Datang ke lokasi & membuka QR Profile',{c:2,s:1}],
+ ['h','Memindai QR peserta (Scan Ticket)',{c:3}],
+ ['s','QR valid & terdaftar di event?',{t:'d',c:4,s:1}],
+ ['h','Menangani kasus: belum terdaftar / sudah check-in / QR tidak valid',{c:5}],
+ ['s','Mencatat kehadiran (check-in)',{c:6,s:1}],
+ ['s','Setelah event selesai: menambahkan poin ke peserta yang check-in',{c:8}],
+ ['p','Menerima notifikasi poin',{c:9}],
+ ['p','Tanda tangan manual (opsional)',{c:7,s:1}],
  ['h','Lanjut memindai peserta berikutnya',{c:7}]],
- edges:['0>1>2>3>4',[4,6,'Ya'],[4,5,'Tidak'],[5,6,'Didaftarkan di tempat'],'6>7>8',[6,9],[9,3,'Berikutnya','b']]},
+ edges:['0>1',[1,2,'Online'],[1,7,'Offline'],'2>3',[3,4,'Ya'],[3,5,'Tidak'],'4>6',[6,12],
+ '7>8>9',[9,11,'Ya'],[9,10,'Tidak'],[10,11,'Didaftarkan di tempat'],[11,14],[11,15],[15,8,'Berikutnya','b'],[14,12],'12>13']},
 
-{id:'UF-17',name:'Job Opportunity: Posting & Melamar',who:'Corporation — Agung / Funder — Willy / Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra',
- goal:'Memungkinkan Partner mempublikasikan lowongan kerja dan participant melamar dengan data profil yang sudah ada.',
- desc:'Partner terverifikasi (UF-02) memposting lowongan, lalu sistem menayangkannya dan merekomendasikan ke participant dengan skill yang sesuai. Participant melamar memakai profil yang ada; Partner menyaring pelamar dan mengundang yang lolos ke tahap berikutnya.',
- steps:'Partner membuka menu Job Opportunity ↓ Membuat lowongan (posisi, kualifikasi, skill, lokasi, tenggat) ↓ Publish lowongan ↓ Sistem menayangkan lowongan & merekomendasikan ke participant dengan skill sesuai ↓ Participant melihat lowongan (rekomendasi / pencarian) ↓ Membuka detail lowongan ↓ Klik "Lamar" (profil & CV terisi otomatis) ↓ Sistem mengirim lamaran ke Partner ↓ Partner mereviu pelamar ↓ Lolos screening? (tidak → pelamar menerima notifikasi) ↓ Sistem mengirim undangan tahap berikutnya ↓ Participant menerima undangan & melanjutkan proses rekrutmen',
+{id:'UF-17',name:'Tukar Poin (Redeem Benefit)',who:'Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra / Researcher — Budi / Mentor — Ferdi',
+ goal:'Memberi insentif partisipasi dengan memungkinkan peserta menukar poin event menjadi benefit internal (working space, meeting room) maupun eksternal dari partner.',
+ desc:'Peserta melihat saldo poin dan katalog benefit, lalu menukar poin bila mencukupi. Benefit internal langsung dipakai untuk booking space (UF-12), sedangkan benefit eksternal berupa kode / QR voucher untuk merchant partner. Poin berlaku 12 bulan.',
+ steps:'Membuka menu "Poin & Benefit" ↓ Sistem menampilkan saldo poin, riwayat & katalog benefit ↓ Memilih benefit ↓ Poin mencukupi? (tidak → melihat kekurangan poin & event yang bisa diikuti) ↓ Sistem memotong poin & menerbitkan voucher ↓ Jenis benefit? [Internal] Booking working space / meeting room dengan voucher (UF-12)  /  [Eksternal] Menunjukkan kode / QR voucher ke merchant partner',
+ lanes:[['p','Peserta (Sari / Rani / Hendra / Budi / Ferdi)','P'],SYS],
+ nodes:[['p','Membuka menu "Poin & Benefit"'],['s','Menampilkan saldo poin, riwayat & katalog benefit'],['p','Memilih benefit'],
+ ['s','Poin mencukupi?',{t:'d'}],['p','Melihat kekurangan poin & event yang bisa diikuti',{c:4}],
+ ['s','Memotong poin & menerbitkan voucher',{c:4}],['s','Jenis benefit?',{t:'d'}],
+ ['p','Booking working space / meeting room dengan voucher (UF-12)'],['p','Menunjukkan kode / QR voucher ke merchant partner',{c:6,s:1}]],
+ edges:['0>1>2>3',[3,5,'Ya'],[3,4,'Tidak'],'5>6',[6,7,'Internal'],[6,8,'Eksternal']]},
+
+{id:'UF-18',name:'Job Opportunity: Posting & Melamar',who:'Corporation — Agung / Funder — Willy / Digital Talent — Sari / Startup Founder — Rani / SME Owner — Hendra',
+ goal:'Memungkinkan Partner mempublikasikan lowongan kerja secara sederhana, sementara proses lamaran ditangani langsung oleh Partner di luar platform.',
+ desc:'Partner terverifikasi (UF-02) memposting lowongan beserta cara melamar: link job portal atau email. Sistem menayangkan dan merekomendasikan lowongan ke participant yang sesuai; participant melamar langsung lewat link atau email tersebut.',
+ steps:'Partner membuka menu Job Opportunity ↓ Mengisi info lowongan (posisi, kualifikasi, lokasi, tenggat) ↓ Mencantumkan cara melamar: link job portal / email ↓ Publish lowongan ↓ Sistem menayangkan lowongan & merekomendasikan ke participant dengan skill sesuai ↓ Participant melihat lowongan (rekomendasi / pencarian) ↓ Membuka detail lowongan ↓ Klik "Lamar" ↓ Sistem mengarahkan ke link job portal / email Partner ↓ Participant melamar langsung lewat job portal atau mengirim CV via email',
  lanes:[['k','Partner (Agung / Willy)','R'],SYS,['p','Participant (Sari / Rani / Hendra)','P']],
- nodes:[['k','Membuka menu Job Opportunity'],['k','Membuat lowongan (posisi, kualifikasi, skill, lokasi, tenggat)'],['k','Publish lowongan'],
+ nodes:[['k','Membuka menu Job Opportunity'],['k','Mengisi info lowongan (posisi, kualifikasi, lokasi, tenggat)'],
+ ['k','Mencantumkan cara melamar: link job portal / email'],['k','Publish lowongan'],
  ['s','Menayangkan lowongan & merekomendasikan ke participant dengan skill sesuai'],['p','Melihat lowongan (rekomendasi / pencarian)'],
- ['p','Membuka detail lowongan'],['p','Klik "Lamar" (profil & CV terisi otomatis)'],['s','Mengirim lamaran ke Partner & notifikasi'],
- ['k','Mereviu pelamar'],['k','Lolos screening?',{t:'d'}],
- ['s','Mengirim undangan tahap berikutnya (interview)',{c:10}],['p','Menerima undangan & melanjutkan proses rekrutmen',{c:11}],
- ['p','Menerima notifikasi: tidak lolos',{c:10}]],
- edges:['0>1>2>3>4>5>6>7>8>9',[9,10,'Ya'],[9,12,'Tidak'],'10>11']},
+ ['p','Membuka detail lowongan'],['p','Klik "Lamar"'],['s','Mengarahkan ke link job portal / email Partner'],
+ ['p','Melamar via job portal / mengirim CV via email']]},
 
-{id:'UF-18',name:'Ecosystem Registration (by Invitation)',who:'Spoke — Jessica / Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+{id:'UF-19',name:'Ecosystem Registration (by Invitation)',who:'Spoke — Jessica / Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
  goal:'Memastikan hanya pihak resmi yang masuk sebagai operator ekosistem melalui undangan dari Core Team, dengan role dan cakupan akses yang ditetapkan sejak awal.',
  desc:'Registrasi khusus undangan dari Core Team untuk Spoke, Hub Management, Core Team, dan Komdigi Official. Penerima membuat kata sandi baru, melengkapi profil, dan menyetujui kode etik; akun aktif sesuai role dan akses yang ditetapkan.',
  steps:'Core Team membuka manajemen pengguna (Admin Console) ↓ Klik "Undang Pengguna" ↓ Memilih role (Hub Management / Spoke / Core Team / Komdigi Official) ↓ Menentukan cakupan akses (Hub/wilayah, program) ↓ Mengisi data undangan (nama, email resmi, jabatan) ↓ Mengirim undangan ↓ Sistem membuat undangan & mengirim email (tautan berlaku terbatas) ↓ Penerima membuka email & tautan undangan ↓ Sistem memeriksa masa berlaku tautan (kedaluwarsa → penerima meminta undangan ulang ke Core Team) ↓ Membuat kata sandi baru ↓ Melengkapi profil (nama, jabatan, kontak, unit kerja) ↓ Menyetujui kode etik, kebijakan data & kerahasiaan ↓ Sistem mengaktifkan akun dengan role & akses sesuai undangan ↓ Core Team menerima notifikasi akun aktif ↓ Pengguna masuk dasbor sesuai role & checklist onboarding',
@@ -805,20 +841,27 @@ const FLOWS=[
  ['e','Meminta undangan ulang ke Core Team',{c:9,s:1}]],
  edges:['0>1>2>3>4>5>6>7>8',[8,9,'Ya'],'9>10>11>12',[12,13],[12,14],[8,15,'Tidak'],[15,5,'Undang ulang','b']]},
 
-{id:'UF-19',name:'Pengelolaan Program & Approval',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
- goal:'Memfasilitasi pengajuan program dengan approval dua tahap sesuai hierarki ekosistem: review oleh Core Team, lalu persetujuan akhir oleh Komdigi Official, serta visibility terhadap status proses.',
- desc:'Hub Management menyusun dan mengajukan program, lalu program direviu oleh Core Team dan disetujui akhir oleh Komdigi Official. Di setiap tahap, pengajuan dapat disetujui, diminta revisi (kembali ke Hub), atau ditolak.',
- steps:'Membuka manajemen program ↓ Memilih buat program baru ↓ Mengisi detail program ↓ Menentukan target & kebutuhan program ↓ Menambahkan jadwal / aktivitas ↓ Review draft ↓ Submit untuk approval ↓ Sistem meneruskan ke antrean review Core Team ↓ Core Team mereviu program ↓ Keputusan Core Team: Approve → diteruskan ke Komdigi / Revision → Hub merevisi & submit ulang / Reject → program ditolak ↓ Komdigi Official mereviu untuk persetujuan akhir ↓ Keputusan Komdigi: Approve → status Disetujui & notifikasi ke Hub / Revision → Hub merevisi & submit ulang / Reject → program ditolak ↓ Program disetujui',
- lanes:[['h','Hub Management — Dimas','O'],SYS,['c','Core Team — Steven (Reviewer)','O'],['k','Komdigi Official — Sastro (Pemberi Persetujuan)','G']],
- nodes:[['h','Membuka manajemen program'],['h','Memilih buat program baru'],['h','Mengisi detail program'],['h','Menentukan target & kebutuhan program'],
- ['h','Menambahkan jadwal / aktivitas'],['h','Review draft'],['h','Submit untuk approval'],['s','Meneruskan ke antrean review Core Team',{i:1}],
- ['c','Mereviu program & kelengkapan'],['c','Keputusan Core Team?',{t:'d'}],
- ['k','Mereviu program untuk persetujuan akhir',{c:10}],['k','Keputusan Komdigi?',{t:'d'}],
- ['s','Status Disetujui & notifikasi ke Hub',{c:12}],['h','Program disetujui',{c:13}],
- ['c','Ditolak Core Team, notifikasi ke Hub',{c:10,s:1}],['h','Melakukan revisi',{c:12}],['k','Ditolak Komdigi, notifikasi ke Hub',{c:12,s:1}]],
- edges:['0>1>2>3>4>5>6>7>8>9',[9,10,'Approve'],[9,14,'Reject'],[9,15,'Revision'],'10>11',[11,12,'Approve'],[11,15,'Revision'],[11,16,'Reject'],[12,13],[15,6,'Submit ulang','b']]},
+{id:'UF-20',name:'Create Program & Approval',who:'Spoke — Jessica / Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+ goal:'Memungkinkan Spoke dan Hub Management mengajukan program sekaligus booking space, dengan approval berjenjang Spoke → Hub Management → Core Team, dan Komdigi Official hanya untuk program yang memiliki anggaran.',
+ desc:'Spoke atau Hub mengajukan program sekaligus memilih space dari jadwal yang tersedia. Pengajuan Spoke disetujui Hub dulu, lalu semua direviu Core Team; program beranggaran diteruskan ke Komdigi yang menyetujui atau menetapkan anggaran, dan pengaju cukup menerima atau menolak anggaran tersebut.',
+ steps:'Spoke / Hub Management membuka manajemen program & klik "Buat Program" ↓ Mengisi detail, target & jadwal program ↓ Sistem menampilkan daftar space & jadwal ketersediaan ↓ Memilih space & slot waktu (booking) ↓ Mengisi anggaran (jika ada) ↓ Submit pengajuan ↓ Sistem mengunci slot space sementara (status Menunggu approval) ↓ Pengaju dari Spoke? (ya → Hub Management mereviu & menyetujui terlebih dahulu) ↓ Core Team mereviu program ↓ Program memiliki anggaran? (tidak → langsung disetujui setelah Core Team) ↓ Komdigi Official mereviu program & anggaran: Setujui / Sesuaikan anggaran / Revisi ↓ Jika anggaran disesuaikan → Komdigi menetapkan anggaran yang disetujui → pengaju menerima atau menolak (menolak → pengajuan dibatalkan) ↓ Sistem menyetujui program, mengonfirmasi booking space & mengirim notifikasi ↓ Program disetujui. Revisi di tahap mana pun kembali ke pengaju untuk submit ulang.',
+ lanes:[['p','Pengaju (Spoke — Jessica / Hub Management — Dimas)','O'],SYS,['h','Hub Management — Dimas (Approver pengajuan Spoke)','O'],['c','Core Team — Steven (Reviewer)','O'],['k','Komdigi Official — Sastro (Approver anggaran)','G']],
+ nodes:[['p','Membuka manajemen program & klik "Buat Program"'],['p','Mengisi detail, target & jadwal program'],
+ ['s','Menampilkan daftar space & jadwal ketersediaan'],['p','Memilih space & slot waktu (booking)'],['p','Mengisi anggaran (jika ada)'],
+ ['p','Submit pengajuan'],['s','Mengunci slot space sementara, status Menunggu approval'],['s','Pengaju dari Spoke?',{t:'d'}],
+ ['h','Mereviu pengajuan Spoke'],['h','Disetujui Hub?',{t:'d'}],
+ ['c','Mereviu program'],['c','Disetujui Core Team?',{t:'d'}],
+ ['s','Program memiliki anggaran?',{t:'d'}],
+ ['k','Mereviu program & anggaran'],['k','Keputusan Komdigi?',{t:'d'}],
+ ['k','Menetapkan anggaran yang disetujui'],['p','Menerima anggaran yang ditetapkan?',{t:'d'}],
+ ['s','Program disetujui, booking space dikonfirmasi & notifikasi ke pengaju'],['p','Program disetujui'],
+ ['p','Merevisi pengajuan',{c:15,s:1}],['p','Pengajuan dibatalkan, slot space dilepas',{c:17,s:1}]],
+ edges:['0>1>2>3>4>5>6>7',[7,8,'Ya'],[7,10,'Tidak'],'8>9',[9,10,'Ya'],[9,19,'Revisi'],
+ '10>11',[11,12,'Ya'],[11,19,'Revisi'],
+ [12,13,'Ya'],[12,17,'Tidak'],'13>14',[14,17,'Setujui'],[14,15,'Sesuaikan anggaran'],[14,19,'Revisi'],
+ '15>16',[16,17,'Ya'],[16,20,'Tidak'],'17>18',[19,5,'Submit ulang','b']]},
 
-{id:'UF-20',name:'Pelaksanaan & Monitoring Program',who:'Hub Management — Dimas / Spoke — Jessica',
+{id:'UF-21',name:'Pelaksanaan & Monitoring Program',who:'Hub Management — Dimas / Spoke — Jessica',
  goal:'Mengelola aktivitas program, participant, attendance, progress, dan kebutuhan operasional.',
  desc:'Menjalankan program yang telah disetujui: mengelola aktivitas, participant, attendance, mentor, dan memantau progress pelaksanaan.',
  lanes:[['h','Hub Management — Dimas','O'],['j','Spoke — Jessica','O'],SYS],
@@ -828,15 +871,15 @@ const FLOWS=[
  ['h','Perlu tindak lanjut?',{t:'d',i:1}],['h','Melakukan tindak lanjut',{c:10,s:1}],['h','Melihat progress program',{c:11}]],
  edges:['0>1>2>3>4>5>6>7>8>9',[9,10,'Ya'],[9,11,'Tidak'],[10,11]]},
 
-{id:'UF-21',name:'Program Reporting & Impact Tracking',who:'Hub Management — Dimas / Core Team — Steven',
+{id:'UF-22',name:'Program Reporting & Impact Tracking',who:'Spoke — Jessica / Hub Management — Dimas / Core Team — Steven',
  goal:'Mengurangi reporting manual dengan memanfaatkan data aktivitas dan transaksi sebagai sumber reporting.',
- desc:'Mengumpulkan, memvalidasi, dan menggunakan data program yang tercatat untuk reporting, monitoring KPI, evaluasi, dan pengukuran outcome/impact.',
- lanes:[['h','Hub Management — Dimas','O'],SYS,['c','Core Team — Steven','O']],
+ desc:'Spoke dan Hub Management mengumpulkan, memvalidasi, dan menggunakan data program yang tercatat untuk reporting, monitoring KPI, evaluasi, dan pengukuran outcome/impact.',
+ lanes:[['h','Pelapor (Spoke — Jessica / Hub Management — Dimas)','O'],SYS,['c','Core Team — Steven','O']],
  nodes:[['h','Membuka reporting program'],['s','Mengagregasi data aktivitas & participant',{i:1}],['h','Melihat data aktivitas & participant'],
  ['h','Melihat KPI / indikator'],['h','Mengidentifikasi data yang belum lengkap'],['h','Melengkapi / memvalidasi data'],['h','Review report'],
  ['h','Submit / finalize report'],['s','Data masuk ke monitoring Core Team'],['c','Melihat outcome / impact']]},
 
-{id:'UF-22',name:'Spoke Activity & Participant Management',who:'Spoke — Jessica',
+{id:'UF-23',name:'Spoke Activity & Participant Management',who:'Spoke — Jessica',
  goal:'Mendukung pengelolaan participant dan aktivitas program di level Spoke, termasuk attendance dan activity reporting.',
  desc:'Spoke mendukung pelaksanaan program di lapangan: participant, aktivitas, attendance, issue, dan pelaporan aktivitas kepada Hub.',
  lanes:[['j','Spoke — Jessica','O'],['h','Hub Management','O']],
@@ -844,7 +887,7 @@ const FLOWS=[
  ['j','Mencatat attendance'],['j','Mencatat aktivitas / issue'],['j','Memperbarui progress'],['j','Review aktivitas'],['j','Submit activity report'],
  ['h','Menerima activity report',{i:1}]]},
 
-{id:'UF-23',name:'Ecosystem & Program Monitoring',who:'Core Team — Steven',
+{id:'UF-24',name:'Ecosystem & Program Monitoring',who:'Core Team — Steven',
  goal:'Memberikan single view terhadap portfolio program, participant, activity, KPI, dan ecosystem performance.',
  desc:'Core Team memantau portfolio program dan kondisi ekosistem melalui consolidated view atas status program, participant, aktivitas, KPI, dan indikator performance.',
  lanes:[['c','Core Team — Steven','O'],SYS,['h','Hub Management terkait','O']],
@@ -852,7 +895,7 @@ const FLOWS=[
  ['c','Melihat participant & activity metrics'],['c','Mengidentifikasi program yang butuh perhatian'],['c','Membuka detail program'],
  ['c','Melihat KPI / progress'],['c','Melakukan follow-up / action'],['h','Menerima & menindaklanjuti follow-up',{i:1}]]},
 
-{id:'UF-24',name:'Program / Budget Approval & Oversight',who:'Komdigi Official — Sastro',
+{id:'UF-25',name:'Program / Budget Approval & Oversight',who:'Komdigi Official — Sastro',
  goal:'Mendukung oversight, approval yang relevan, monitoring budget/program, dan akses terhadap informasi impact.',
  desc:'Komdigi Official mereviu program dan informasi dalam kewenangannya, termasuk approval, budget, progress, dan impact monitoring.',
  lanes:[['k','Komdigi Official — Sastro','G'],SYS,['h','Pengaju (Hub / Core Team)','O']],
@@ -862,19 +905,40 @@ const FLOWS=[
  ['h','Merevisi & mengajukan ulang',{c:7,i:1}],['k','Program ditolak',{c:7,s:1}]],
  edges:['0>1>2>3>4>5>6',[6,7,'Approve'],'7>8>9>10',[6,11,'Revision'],[11,5,'Ajukan ulang','b'],[6,12,'Reject']]},
 
-{id:'UF-25',name:'Buat Event',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
- goal:'Membuat event dengan persetujuan dua tahap sesuai hierarki (Core Team lalu Komdigi Official), sambil mengunci jadwal agar tidak bentrok selama menunggu approval.',
- desc:'Hub Management membuat event beserta jadwalnya; sistem mengunci jadwal selama proses approval. Event direviu Core Team lalu disetujui akhir oleh Komdigi Official, dan Hub menerima notifikasi saat status berubah.',
- steps:'Membuka dashboard GSIH ↓ Membuka menu Event ↓ Create Event ↓ Mengisi data event & jadwal ↓ Submit ↓ Sistem mengunci jadwal dengan status Menunggu approval ↓ Core Team menerima notifikasi & mereviu event ↓ Disetujui Core Team? (revisi → Hub merevisi & submit ulang) ↓ Komdigi Official menerima notifikasi & mereviu detail event ↓ Disetujui Komdigi? (revisi → Hub merevisi & submit ulang) ↓ Sistem memperbarui status event: Disetujui ↓ Hub Management menerima notifikasi',
- lanes:[['h','Hub Management — Dimas','O'],SYS,['c','Core Team — Steven (Reviewer)','O'],['k','Komdigi Official — Sastro (Pemberi Persetujuan)','G']],
- nodes:[['h','Membuka dashboard GSIH'],['h','Membuka menu Event'],['h','Create Event'],['h','Mengisi data event & jadwal'],['h','Submit'],
- ['s','Mengunci jadwal: status Menunggu approval'],['c','Menerima notifikasi & mereviu event'],['c','Disetujui Core Team?',{t:'d'}],
- ['k','Menerima notifikasi & mereviu detail event'],['k','Disetujui Komdigi?',{t:'d'}],
- ['s','Memperbarui status event: Disetujui'],['h','Menerima notifikasi event disetujui'],
- ['h','Merevisi event',{c:10}]],
- edges:['0>1>2>3>4>5>6>7',[7,8,'Ya'],'8>9',[9,10,'Ya'],'10>11',[7,12,'Revisi'],[9,12,'Revisi'],[12,4,'Submit ulang','b']]},
+{id:'UF-26',name:'Buat Event',who:'Spoke — Jessica / Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+ goal:'Memungkinkan Spoke dan Hub Management membuat event online, offline, atau hybrid dengan approval berjenjang, sekaligus memastikan laporan event sebelumnya sudah diselesaikan.',
+ desc:'Sistem memperingatkan bila masih ada event berjalan atau laporan belum disubmit. Pengaju memilih format event (URL meeting untuk online, booking event space untuk offline), lalu approval Spoke → Hub → Core Team; event beranggaran diputuskan Komdigi, yang dapat menolak dengan nominal yang disetujui.',
+ steps:'Membuka menu Event & klik "Create Event" ↓ Sistem memeriksa event berjalan / laporan belum disubmit (ada → peringatan & daftar event; laporan melewati batas waktu → diarahkan menyelesaikan laporan, UF-22) ↓ Mengisi data event, jadwal & poin (default sesuai kategori) ↓ Ada sesi online? (ya → mengisi URL meeting & batas waktu check-in → sistem membuat link check-in otomatis) ↓ Ada sesi offline? (ya → sistem menampilkan event space & jadwal ketersediaan → memilih space & slot waktu) ↓ Mengisi anggaran (jika ada) ↓ Submit ↓ Sistem mengunci jadwal & space (status Menunggu approval) ↓ Pengaju dari Spoke? (ya → Hub Management menyetujui terlebih dahulu) ↓ Core Team mereviu ↓ Event memiliki anggaran? (tidak → disetujui) ↓ Komdigi Official: Setujui / Tolak dengan nominal yang disetujui (mis. diajukan Rp10 jt, disetujui Rp7 jt) ↓ Pengaju menerima nominal tersebut atau tidak (tidak → pengajuan dibatalkan, jadwal & space dilepas) ↓ Sistem menyetujui event & mengirim notifikasi ↓ Event tayang di kalender. Revisi dari Hub / Core Team kembali ke pengaju untuk submit ulang.',
+ lanes:[['p','Pengaju (Spoke — Jessica / Hub Management — Dimas)','O'],SYS,['h','Hub Management — Dimas (Approver pengajuan Spoke)','O'],['c','Core Team — Steven (Reviewer)','O'],['k','Komdigi Official — Sastro (Approver anggaran)','G']],
+ nodes:[['p','Membuka menu Event & klik "Create Event"'],
+ ['s','Ada event berjalan / laporan belum disubmit?',{t:'d'}],
+ ['s','Laporan melewati batas waktu?',{t:'d'}],
+ ['s','Menampilkan peringatan & daftar event terkait',{c:3}],
+ ['p','Diarahkan menyelesaikan laporan (UF-22)',{c:3}],
+ ['p','Mengisi data event, jadwal & poin (default sesuai kategori)',{c:4}],
+ ['p','Ada sesi online? (online / hybrid)',{t:'d'}],
+ ['p','Mengisi URL meeting & batas waktu check-in',{s:1}],
+ ['s','Membuat link check-in otomatis'],
+ ['p','Ada sesi offline? (offline / hybrid)',{t:'d'}],
+ ['s','Menampilkan event space & jadwal ketersediaan'],
+ ['p','Memilih event space & slot waktu',{s:1}],
+ ['p','Mengisi anggaran (jika ada)'],['p','Submit'],
+ ['s','Mengunci jadwal & space, status Menunggu approval'],
+ ['s','Pengaju dari Spoke?',{t:'d'}],
+ ['h','Disetujui Hub?',{t:'d'}],
+ ['c','Disetujui Core Team?',{t:'d'}],
+ ['s','Event memiliki anggaran?',{t:'d'}],
+ ['k','Keputusan Komdigi?',{t:'d'}],
+ ['p','Menerima nominal yang disetujui Komdigi?',{t:'d'}],
+ ['s','Event disetujui & notifikasi ke pengaju'],
+ ['p','Event tayang di kalender'],
+ ['p','Merevisi pengajuan',{c:17}],
+ ['p','Pengajuan dibatalkan, jadwal & space dilepas',{c:20,s:1}]],
+ edges:['0>1',[1,2,'Ya'],[1,5,'Tidak'],[2,4,'Ya'],[2,3,'Tidak'],[3,5],'5>6',[6,7,'Ya'],[6,9,'Tidak'],'7>8>9',[9,10,'Ya'],[9,12,'Tidak'],
+ '10>11>12>13>14>15',[15,16,'Ya'],[15,17,'Tidak'],[16,17,'Ya'],[16,23,'Revisi'],[17,18,'Ya'],[17,23,'Revisi'],
+ [18,19,'Ya'],[18,21,'Tidak'],[19,21,'Setujui'],[19,20,'Tolak + nominal disetujui'],[20,21,'Ya'],[20,24,'Tidak'],'21>22',[23,13,'Submit ulang','b']]},
 
-{id:'UF-26',name:'Budget Approval',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
+{id:'UF-27',name:'Budget Approval',who:'Hub Management — Dimas / Core Team — Steven / Komdigi Official — Sastro',
  goal:'Mengajukan dan menyetujui Rencana Anggaran Biaya (RAB) secara transparan melalui approval berjenjang: Core Team lalu Komdigi Official.',
  desc:'Hub Management menyusun dan mengajukan RAB. Core Team mereviu terlebih dahulu, lalu Komdigi Official memberi persetujuan akhir; revisi dari kedua tahap dikembalikan ke Hub untuk diajukan ulang.',
  steps:'Hub Management menyusun draf anggaran (RAB) ↓ Submit pengajuan ↓ Sistem mengirim notifikasi ke Core Team ↓ Core Team mereviu detail & justifikasi item ↓ Disetujui Core Team? (revisi → Hub merevisi & submit ulang) ↓ Komdigi Official mereviu untuk persetujuan akhir ↓ Disetujui Komdigi? (revisi → Hub merevisi & submit ulang) ↓ Sistem memperbarui status anggaran: Disetujui ↓ Hub Management menerima notifikasi',
@@ -886,18 +950,29 @@ const FLOWS=[
  ['h','Merevisi draf anggaran sesuai catatan',{c:7}]],
  edges:['0>1>2>3>4',[4,5,'Ya'],'5>6',[6,7,'Ya'],'7>8',[4,9,'Revisi'],[6,9,'Revisi'],[9,1,'Submit ulang','b']]},
 
-{id:'UF-27',name:'Verifikasi & Kurasi Startup',who:'Hub Management — Dimas / Core Team — Steven',
+{id:'UF-28',name:'Verifikasi & Kurasi Startup',who:'Hub Management — Dimas / Core Team — Steven',
  goal:'Menentukan kelayakan profil startup sebelum tayang publik atau masuk ke direktori pendana.',
  desc:'Proses di balik layar oleh admin untuk memvalidasi legalitas dan kelengkapan data startup.',
  lanes:[['u','Startup (pendaftar)','P'],SYS,['a','Admin — Dimas / Steven','O']],
  nodes:[['u','Mendaftarkan akun & profil startup',{i:1}],['s','Notifikasi pendaftaran akun baru'],['a','Memeriksa profil & dokumen'],
  ['a','Data valid & lengkap?',{t:'d',i:1}],['a','Memberikan status Verified'],['s','Profil tayang dengan badge terverifikasi'],
  ['a','Meminta revisi',{c:4,s:1}],['u','Merevisi profil & dokumen',{c:5,i:1}]],
- edges:['0>1>2>3',[3,4,'Ya'],'4>5',[3,6,'Tidak'],[6,7],[7,1,'Kirim ulang','b']]}
+ edges:['0>1>2>3',[3,4,'Ya'],'4>5',[3,6,'Tidak'],[6,7],[7,1,'Kirim ulang','b']]},
+
+{id:'UF-29',name:'Kelola Poin & Katalog Benefit',who:'Core Team — Steven',
+ goal:'Memungkinkan Core Team mengatur aturan poin event dan mengelola katalog benefit yang bisa ditukar peserta.',
+ desc:'Core Team menetapkan poin default per kategori event, lalu menambah benefit internal (space Hub) atau eksternal (voucher partner) beserta harga poin, stok, dan masa berlaku. Benefit yang dipublikasikan tampil di katalog Poin & Benefit.',
+ steps:'Membuka menu Poin & Benefit (admin) ↓ Mengatur poin default per kategori event ↓ Menambah / mengubah benefit ↓ Jenis benefit? [Internal] Memilih space / layanan Hub  /  [Eksternal] Mengisi partner merchant & kuota voucher ↓ Menentukan harga poin, stok & masa berlaku ↓ Publish benefit ↓ Sistem menayangkan benefit di katalog ↓ Memantau penukaran & stok',
+ lanes:[['c','Core Team — Steven','O'],SYS],
+ nodes:[['c','Membuka menu Poin & Benefit (admin)'],['c','Mengatur poin default per kategori event'],['c','Menambah / mengubah benefit'],
+ ['c','Jenis benefit?',{t:'d'}],['c','Internal: memilih space / layanan Hub'],['c','Eksternal: mengisi partner merchant & kuota voucher',{c:4,s:1}],
+ ['c','Menentukan harga poin, stok & masa berlaku',{c:5}],['c','Publish benefit'],['s','Menayangkan benefit di katalog Poin & Benefit'],
+ ['c','Memantau penukaran & stok']],
+ edges:['0>1>2>3',[3,4,'Internal'],[3,5,'Eksternal'],[4,6],[5,6],'6>7>8>9']}
 ];
 
 
-const INTERNAL=new Set(['UF-18','UF-19','UF-20','UF-21','UF-22','UF-23','UF-24','UF-25','UF-26','UF-27']);
+const INTERNAL=new Set(['UF-19','UF-20','UF-21','UF-22','UF-23','UF-24','UF-25','UF-26','UF-27','UF-28','UF-29']);
 const TYPE_LABEL={pub:'Publik',int:'Internal'};
 const TYPE_SUB={pub:'Participant & Partner',int:'Spoke → Hub Management → Core Team → Komdigi Official'};
 FLOWS.forEach(f=>{ f.type=INTERNAL.has(f.id)?'int':'pub'; });
@@ -910,7 +985,7 @@ const TYPES={
   sys:{lab:'Otomatis · Sistem',k:'sys'}, not:{lab:'Notifikasi',k:'not'}, end:{lab:'Selesai',k:'end'}, alt:{lab:'Berakhir',k:'alt'}
 };
 const TW=118, LANEW=380, CW=268, SG=36, PADX=34, HEADH=96, RP=28;
-const POS=/^(Ya|Approved?|Final|Deal)$/;
+const POS=/^(Ya|Approved?|Final|Deal|Setujui|Disetujui|Online|Offline|Internal|Eksternal)$/;
 const ctx=document.createElement('canvas').getContext('2d');
 const FONT='Inter, system-ui, sans-serif';
 function wrap(text,maxW,size,weight){
@@ -985,7 +1060,7 @@ function svgFor(f,uid){
     o.push(`<text class="s-tahap" x="26" y="${r.top+RP+6}">TAHAP</text><text class="s-num" x="25" y="${r.top+RP+38}">${i+1}</text>`);
   });
   // edges
-  const pills=[];
+  const pills=[]; const atDest={};
   const hits=(pts,skip)=>{
     for(let k=0;k<pts.length-1;k++){
       const [x1,y1]=pts[k],[x2,y2]=pts[k+1];
@@ -1012,11 +1087,11 @@ function svgFor(f,uid){
       if(neg) cls='e cond';
     } else if(A.type==='dec' && B.row===A.row+1){
       const sx = B.cx>A.cx ? A.right : A.left;
-      pts=[[sx,A.cy],[B.cx,A.cy],[B.cx,B.top]]; lab={x:B.cx+12,y:(A.bottom+B.top)/2+4};
+      pts=[[sx,A.cy],[B.cx,A.cy],[B.cx,B.top]]; lab={x:B.cx+12,y:B.top-12,dest:B.idx};
       if(neg) cls='e cond';
     } else {
       const ym=rows[B.row].top+6+((li[B.lane]+A.s)%3)*9;
-      pts=[[A.cx,A.bottom],[A.cx,ym],[B.cx,ym],[B.cx,B.top]]; lab={x:A.cx+12,y:A.bottom+20};
+      pts=[[A.cx,A.bottom],[A.cx,ym],[B.cx,ym],[B.cx,B.top]]; lab={x:B.cx+12,y:B.top-12,dest:B.idx};
       if(neg) cls='e cond';
     }
     o.push(`<path class="${cls}" d="M${pts.map(p=>p.join(',')).join(' L')}" marker-end="url(#${mk}${uid})"/>`);
@@ -1025,6 +1100,9 @@ function svgFor(f,uid){
       let px = lab.c ? lab.x-tw/2 : lab.x; const py=lab.y-10;
       if(lab.side==='L' && lab.x-tw-6>TW+4) px=lab.x-tw-6;
       else if(lab.side==='R' && lab.x+tw+6<W-4) px=lab.x+6;
+      if(lab.dest!==undefined){ const d=atDest[lab.dest]||(atDest[lab.dest]={end:null,seen:new Set()});
+        if(d.seen.has(e.label)) return; d.seen.add(e.label);
+        if(d.end!==null) px=d.end+6; d.end=px+tw; }
       const k = cls.includes('back')?'r':(neg?'n':'g');
       pills.push(`<g class="pill pill-${k}"><rect x="${px}" y="${py}" width="${tw}" height="20" rx="6"/><text x="${px+tw/2}" y="${py+14}" text-anchor="middle">${esc(e.label)}</text></g>`);
     }
@@ -1295,3 +1373,5 @@ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(render);
 </script>
 </body>
 </html>
+
+</body></html>
