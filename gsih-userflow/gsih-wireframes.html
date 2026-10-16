@@ -42,6 +42,7 @@
         href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js" defer></script>
     <script>
         tailwind.config = {
             theme: {
@@ -90,6 +91,14 @@
             color: #525252;
             background: #e5e5e5;
             padding: 0 4px;
+        }
+
+        #screen {
+            position: relative;
+        }
+
+        [hidden] {
+            display: none !important;
         }
 
         .line {
@@ -151,6 +160,14 @@
                         <button id="vpMobile" class="px-3 py-1.5 text-sm border-l border-neutral-400"
                             aria-pressed="false">Mobile</button>
                     </div>
+                    <button id="pngBtn" type="button" hidden
+                        class="ml-2 inline-flex items-center gap-1.5 border border-neutral-400 rounded px-3 py-1.5 text-sm hover:bg-neutral-100"
+                        title="Unduh layar yang sedang tampil sebagai PNG">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 4v11M7 10l5 5 5-5M5 20h14" />
+                        </svg>Unduh PNG</button>
+                    <span id="pngMsg" class="text-xs text-neutral-600" role="status" hidden></span>
                     <label class="flex items-center gap-2 text-sm ml-2 cursor-pointer select-none">
                         <input id="notesToggle" type="checkbox" class="accent-neutral-900" checked>
                         Catatan
@@ -192,7 +209,7 @@
                     <!-- Device frame -->
                     <div class="min-w-0 flex justify-center">
                         <div id="frame"
-                            class="w-full bg-white border border-neutral-400 rounded-md shadow-sm overflow-hidden transition-[max-width] duration-300"
+                            class="w-full bg-white border border-neutral-400 rounded-md shadow-sm overflow-clip transition-[max-width] duration-300"
                             style="max-width:1100px">
                             <div class="flex items-center gap-2 px-3 py-2 border-b border-neutral-300 bg-neutral-100">
                                 <span class="w-2.5 h-2.5 rounded-full border border-neutral-400"></span>
@@ -268,6 +285,16 @@
             voucherStock: 'yes', benefitType: 'internal',      // UF-17
             linkValid: 'yes',                                 // UF-18
             proposer: 'spoke', hasBudget: 'yes', komdigiDec: 'amount', // UF-19 & UF-23
+            progView: 'table', progFilter: 'Semua',            // UF-19 daftar program
+            evView: 'table', evFilter: 'Semua',                // UF-23 daftar event
+            vfView: 'table', vfFilter: 'Semua',                // UF-24 antrean verifikasi
+            kgView: 'table', kgFilter: 'Semua',                // UF-13 kegiatan saya
+            usrRole: 'Semua', usrLoc: 'Semua', usrStatus: 'Semua', usrSheet: 'closed', // UF-18 pengguna ekosistem
+            rpRole: 'Semua', rpMode: 'Semua', rpHadir: 'Semua', // UF-21 peserta laporan
+            spSek: 'Semua', spKeh: 'Semua', spSt: 'Semua',      // UF-22 participant program
+            arSpoke: 'Semua', arProg: 'Semua', arProgress: 'Semua', // UF-22 activity report (Hub)
+            bgStatus: 'Semua', bgPoin: 'Semua', bgMenu: 'none',  // UF-25 badge list
+            sdSheet: 'closed', sheet: 'none',  // sheet = bottom sheet filter yang terbuka (mobile)                                // UF-11 filter direktori (mobile)
             photosOk: 'yes', prevReport: 'done', eventFormat: 'hybrid', verifyDec: 'approve' // UF-21, UF-23, UF-24
         };
         let picks = { interests: new Set(), needs: new Set() };
@@ -282,12 +309,85 @@
             return `<button type="button" ${go ? `data-go="${go}"` : ''} ${attrs} class="inline-flex items-center justify-center gap-2 border rounded px-4 py-2 text-sm font-medium ${k} ${extra}">${label}</button>`;
         };
         const flowLink = (label, flow, kind = 'secondary') => btn(label, null, kind, '', `data-flow="${flow}"`);
-        const field = (id, label, type = 'text', ph = '', hint = '', value = '') => `
+        /* Search inputs: label "Cari…" is visually hidden (kept for screen readers) and a search icon sits inside the field. */
+
+
+        /* ===== Generic footer: dipasang otomatis di layar ber-header horizontal (lihat withFooter) ===== */
+
+        /* Footer otomatis untuk setiap layar ber-header horizontal (appHeader) tanpa sidebar dan bukan mock email.
+           Menu footer = menu header layar tsb (+ "Untuk Partner" di header publik); header tanpa menu memakai menu publik. */
+        const PUBLIC_MENU = ['Program', 'Event', 'Opportunity', 'Riset'];
+        const withFooter = (html) => {
+            const isApp = html.includes('<span class="font-semibold">GSIH</span></div>\n    <nav class="hidden md:flex');
+            if (!isApp || html.includes('w-48 shrink-0 border-r') || html.includes('Kotak masuk')) return html;
+            const m = html.match(/<nav class="hidden md:flex[^>]*>([\s\S]*?)<\/nav>/);
+            let menu = m ? [...m[1].matchAll(/<span>(.*?)<\/span>/g)].map(x => x[1]) : [];
+            if (!menu.length) menu = PUBLIC_MENU;
+            if (menu.join('|') === PUBLIC_MENU.join('|')) menu = [...menu, 'Untuk Partner'];
+            return html + siteFooter(menu);
+        };
+        const SOCIALS = [['IG', 'Instagram'], ['in', 'LinkedIn'], ['YT', 'YouTube'], ['X', 'X'], ['TT', 'TikTok']];
+        const siteFooter = (menu) => `
+  <footer class="mt-10 border-t border-neutral-300 bg-neutral-50 px-5 pt-8 pb-6" aria-label="Footer situs">
+    <div class="grid gap-8 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)]">
+      <div class="flex flex-col gap-3 min-w-0">
+        <div class="flex items-center gap-2"><div class="ph w-7 h-7 rounded-sm" aria-hidden="true"></div><span class="font-semibold">GSIH</span></div>
+        <p class="text-sm text-neutral-600 max-w-xs">Garuda Spark Innovation Hub — satu tempat untuk startup, talenta digital, UMKM, peneliti & mentor.</p>
+      </div>
+      <nav aria-label="Menu footer" class="flex flex-col gap-2 text-sm">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-neutral-500 mb-1">Jelajahi</p>
+        ${menu.map(t => `<a class="text-neutral-700 hover:underline w-fit" href="#" onclick="return false">${t}</a>`).join('')}
+      </nav>
+      <div class="flex flex-col gap-2">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-neutral-500 mb-1">Ikuti kami</p>
+        <div class="flex flex-wrap gap-2">${SOCIALS.map(([a, n]) => `<a href="#" onclick="return false" aria-label="${n}" title="${n}" class="w-9 h-9 rounded-full border border-neutral-400 bg-white inline-flex items-center justify-center font-mono text-xs text-neutral-700 hover:border-neutral-900">${a}</a>`).join('')}</div>
+      </div>
+    </div>
+    <div class="mt-8 pt-4 border-t border-neutral-300 text-xs text-neutral-500">© 2026 Garuda Spark Innovation Hub · Kementerian Komunikasi dan Digital</div>
+  </footer>`;
+        /* ===== Mobile filter: tombol Filter + bottom sheet (dipakai semua halaman yang punya filter) ===== */
+        const FILTER_ICON = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>`;
+        const isMob = () => viewport === 'mobile';
+        const mFilterBtn = (id, n = 0) => `<button type="button" data-set="sheet:${id}" class="shrink-0 inline-flex items-center gap-2 border ${n ? 'border-neutral-900 border-2' : 'border-neutral-400'} rounded px-3 py-2 text-sm bg-white">${FILTER_ICON}Filter${n ? ` <span class="bg-neutral-900 text-white text-[10px] font-mono rounded-full px-1.5">${n}</span>` : ''}</button>`;
+        const mSearchFilter = (searchHtml, id, n = 0) => `<div class="flex items-end gap-2"><div class="flex-1 min-w-0">${searchHtml}</div>${mFilterBtn(id, n)}</div>`;
+        /* groups: [legend, [[label, count|null, pressed, 'key:value'|null], ...]] */
+        const mSheet = (id, title, groups, cta, resetSet = '') => state.sheet !== id ? '' : `
+  <div class="absolute inset-0 z-10 bg-neutral-900/40 flex items-end" role="dialog" aria-label="${title}">
+    <div class="w-full bg-white rounded-t-xl border-t border-neutral-900 px-5 pt-2 pb-5 flex flex-col gap-4 max-h-[85%] overflow-y-auto">
+      <span class="self-center w-10 h-1 rounded-full bg-neutral-300" aria-hidden="true"></span>
+      <div class="flex items-center"><h3 class="font-semibold">${title}</h3><button type="button" data-set="sheet:none" class="ml-auto text-neutral-500" aria-label="Tutup">✕</button></div>
+      ${groups.map(([lg, chips]) => `<fieldset><legend class="text-sm font-medium mb-2">${lg}</legend><div class="flex flex-wrap gap-2">${chips.map(([l, c, p, st]) => `<button type="button" ${st ? `data-set="${st}"` : ''} class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${!!p}">${l}${c != null ? ` <span class="font-mono text-xs opacity-70">${c}</span>` : ''}</button>`).join('')}</div></fieldset>`).join('')}
+      <div class="flex gap-3 border-t border-neutral-200 pt-4">${btn('Reset', null, 'secondary', '', resetSet ? `data-set="${resetSet}"` : '')}${btn(cta, null, 'primary', 'flex-1', 'data-set="sheet:none"')}</div>
+    </div>
+  </div>`;
+
+        /* Responsive list: table on desktop, card list on mobile (first column = title, "Aksi"/last empty header = footer action) */
+        const rTable = (heads, rows, minw = 'min-w-[560px]') => !isMob() ? table(heads, rows, minw) : `
+  <ul class="flex flex-col gap-3">${rows.map(r => {
+            const actIdx = heads.findIndex(h => h === '' || h === 'Aksi'); return `
+    <li class="border border-neutral-300 rounded p-4 flex flex-col gap-2 min-w-0">
+      <div class="text-sm font-medium">${r[0]}</div>
+      <dl class="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm">${heads.map((h, i) => i === 0 || i === actIdx ? '' : `<dt class="text-xs text-neutral-500 self-center">${h}</dt><dd class="min-w-0">${r[i]}</dd>`).join('')}</dl>
+      ${actIdx > 0 && r[actIdx] && r[actIdx] !== '—' ? `<div class="border-t border-neutral-200 pt-2">${r[actIdx]}</div>` : ''}
+    </li>`;
+        }).join('')}</ul>`;
+        /* Search + filter toolbar: desktop = search + dropdowns, mobile = search + Filter button + bottom sheet */
+        const fSelect = (id, label, opts) => `<div class="flex flex-col gap-1 min-w-0"><label for="${id}" class="sr-only">${label}</label><select id="${id}" class="border border-neutral-400 rounded px-3 py-2 text-sm bg-white">${opts.map(o => `<option>${label}: ${o}</option>`).join('')}</select></div>`;
+        const listTools = (id, searchHtml, filters, cta, title = 'Filter') => isMob()
+            ? mSearchFilter(searchHtml, id) + mSheet(id, title, filters.map(([lb, opts]) => [lb, opts.map((o, i) => [o, null, i === 0])]), cta)
+            : `<div class="flex flex-wrap items-end gap-3"><div class="w-full sm:w-56">${searchHtml}</div>${filters.map(([lb, opts], i) => fSelect(id + 'F' + i, lb, opts)).join('')}</div>`;
+        /* Status filter (state-backed) -> sheet chips */
+        const statusChips = (key, ST, countFn) => ST.map(x => [x, countFn(x), state[key] === x, `${key}:${x}`]);
+        const searchIcon = `<svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>`;
+        const field = (id, label, type = 'text', ph = '', hint = '', value = '') => {
+            const s = type === 'search', hideLabel = s && /^Cari/.test(label);
+            return `
   <div class="flex flex-col gap-1 min-w-0">
-    <label for="${id}" class="text-sm font-medium">${label}</label>
-    <input id="${id}" type="${type}" placeholder="${ph}" ${value ? `value="${value}"` : ''} class="border border-neutral-400 rounded px-3 py-2 text-sm bg-white placeholder:text-neutral-400">
+    <label for="${id}" class="${hideLabel ? 'sr-only' : 'text-sm font-medium'}">${label}</label>
+    <div class="relative">${s ? searchIcon : ''}<input id="${id}" type="${type}" placeholder="${ph}" ${value ? `value="${value}"` : ''} class="w-full border border-neutral-400 rounded ${s ? 'pl-9 pr-3' : 'px-3'} py-2 text-sm bg-white placeholder:text-neutral-400"></div>
     ${hint ? `<span class="text-xs text-neutral-500">${hint}</span>` : ''}
   </div>`;
+        };
         const area = (id, label, ph = '', rows = 3) => `
   <div class="flex flex-col gap-1 min-w-0">
     <label for="${id}" class="text-sm font-medium">${label}</label>
@@ -536,8 +636,10 @@
         <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_260px]">
           <div class="flex flex-col gap-3 min-w-0">
             <div class="flex flex-wrap items-baseline justify-between gap-2"><p class="text-sm font-semibold">Rekomendasi untuk Anda</p><span class="text-xs text-neutral-500">Berdasarkan minat: ${[...picks.interests].slice(0, 2).join(', ') || 'umum'}</span></div>
-            <div class="grid gap-3 sm:grid-cols-3">
-              ${recs.map(([k, t]) => `<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2 min-w-0">${ph(k, 'aspect-video w-full rounded-sm')}<span class="font-mono text-[11px] text-neutral-500 uppercase">${k}</span><span class="text-sm font-medium">${t}</span>${lines(1, ['w-3/4'])}<div class="pt-1">${btn('Lihat detail', null, 'secondary', 'w-full')}</div></div>`).join('')}
+            <div class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-px-5 -mx-5 px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:px-0 sm:pb-0 sm:grid sm:grid-cols-3 sm:overflow-visible" role="region" aria-label="Rekomendasi, geser untuk melihat lainnya">
+              ${recs.map(([k, t]) => `<div class="w-[72%] shrink-0 snap-start sm:w-auto border border-neutral-300 rounded p-3 flex flex-col gap-2 min-w-0">${ph(k, 'aspect-video w-full rounded-sm')}<span class="font-mono text-[11px] text-neutral-500 uppercase">${k}</span><span class="text-sm font-medium">${t}</span>${lines(1, ['w-3/4'])}<div class="pt-1 mt-auto">${btn('Lihat detail', null, 'secondary', 'w-full')}</div></div>`).join('')}
+            </div>
+            <div class="flex justify-center gap-1.5 sm:hidden" aria-hidden="true">${recs.map((_, i) => `<span class="h-1.5 rounded-full ${i === 0 ? 'w-4 bg-neutral-900' : 'w-1.5 bg-neutral-300'}"></span>`).join('')}
             </div>
           </div>
           <div class="border border-neutral-300 rounded p-4 flex flex-col gap-3 self-start">
@@ -589,15 +691,15 @@
             screens: {
                 landing: {
                     title: 'Halaman Partner', url: 'gsih.id/partner', steps: 'T1–T2', actor: 'Partner',
-                    notes: [['T1', 'Calon partner membuka halaman Partner dari portal publik.'], ['T2', 'CTA "Daftar sebagai Partner" membuka form akun PIC.'], ['Konten', 'Jelaskan manfaat per tipe partner dan bahwa organisasi akan diverifikasi.']],
+                    notes: [['T1', 'Calon partner membuka halaman Partner dari portal publik.'], ['T2', 'CTA "Daftar Partner" membuka form akun PIC.'], ['Konten', 'Jelaskan manfaat per tipe partner dan bahwa organisasi akan diverifikasi.']],
                     render: () => `
-      ${appHeader(btn('Masuk', null, 'secondary') + btn('Daftar sebagai Partner', 'account'), ['Program', 'Event', 'Untuk Partner'])}
+      ${appHeader(btn('Masuk', null, 'secondary') + btn('Daftar Partner', 'account'), ['Program', 'Event', 'Untuk Partner'])}
       <section class="px-5 py-10 grid gap-8 md:grid-cols-2 items-center">
         <div class="flex flex-col gap-4">
           <p class="font-mono text-xs text-neutral-500">Untuk Funder, Korporasi & BUMN</p>
           <h2 class="text-3xl font-semibold leading-tight" style="text-wrap:balance">Temukan startup terkurasi untuk pendanaan dan kolaborasi</h2>
           ${lines(2, ['w-full', 'w-3/4'])}
-          <div class="flex flex-wrap gap-2 pt-2">${btn('Daftar sebagai Partner', 'account')}${btn('Pelajari proses verifikasi', null, 'ghost')}</div>
+          <div class="flex flex-wrap gap-2 pt-2">${btn('Daftar Partner', 'account')}${btn('Pelajari proses verifikasi', null, 'ghost')}</div>
         </div>
         ${ph('Hero image', 'aspect-[4/3] w-full rounded')}
       </section>
@@ -733,7 +835,8 @@
         <div class="flex flex-wrap items-center gap-3"><div><h2 class="text-xl font-semibold">${isFunder() ? 'Nusantara Ventures' : 'Telko Raya'}</h2><p class="text-sm text-neutral-600">${isFunder() ? 'Funder' : 'Korporasi & BUMN'}</p></div>${pill('✓ VERIFIED')}</div>
         <div class="grid gap-3 sm:grid-cols-3">${tiles.map(([t, d, f]) => `<div class="border border-neutral-300 rounded p-4 flex flex-col gap-2 min-w-0">${ph('', 'w-8 h-8 rounded-sm')}<p class="font-semibold">${t}</p><p class="text-sm text-neutral-600">${d}</p><div class="pt-1">${flowLink('Buka (' + f + ')', f)}</div></div>`).join('')}</div>
         <div class="border border-neutral-300 rounded p-4"><p class="text-sm font-semibold mb-3">Startup direkomendasikan</p>
-          <div class="grid gap-3 sm:grid-cols-4">${[1, 2, 3, 4].map(() => `<div class="flex flex-col gap-2">${ph('Logo', 'aspect-square w-full rounded-sm')}${lines(2, ['w-full', 'w-1/2'])}</div>`).join('')}</div></div>
+          <div class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-px-4 -mx-4 px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:px-0 sm:pb-0 sm:grid sm:grid-cols-4 sm:overflow-visible" role="region" aria-label="Startup direkomendasikan, geser untuk melihat lainnya">${[1, 2, 3, 4].map(() => `<div class="w-[64%] shrink-0 snap-start sm:w-auto flex flex-col gap-2">${ph('Logo', 'aspect-square w-full rounded-sm')}${lines(2, ['w-full', 'w-1/2'])}</div>`).join('')}</div>
+          <div class="flex justify-center gap-1.5 mt-2 sm:hidden" aria-hidden="true">${[1, 2, 3, 4].map((_, i) => `<span class="h-1.5 rounded-full ${i === 0 ? 'w-4 bg-neutral-900' : 'w-1.5 bg-neutral-300'}"></span>`).join('')}</div></div>
       </div>`;
                     }
                 }
@@ -756,14 +859,18 @@
                     render: () => `
       ${appHeader(avatar('Rani'))}
       <div class="px-5 py-6 flex flex-col gap-5">
+        ${isMob() ? `<div><h2 class="text-xl font-semibold">Program</h2><p class="text-sm text-neutral-600">Inkubasi, akselerasi, dan pendampingan untuk startup.</p></div>
+        ${mSearchFilter(field('pSearch', 'Cari program', 'search', 'Cari nama program'), 'catalog', 1)}
+        <div class="flex flex-wrap items-center gap-2 text-xs"><span class="text-neutral-500">3 program</span>${pill('PENDAFTARAN DIBUKA')}<span class="underline">Hapus filter</span></div>` : `
         <div class="flex flex-wrap items-end gap-3"><div><h2 class="text-xl font-semibold">Program</h2><p class="text-sm text-neutral-600">Inkubasi, akselerasi, dan pendampingan untuk startup.</p></div>
           <div class="ml-auto w-full sm:w-64">${field('pSearch', 'Cari program', 'search', 'Cari nama program')}</div></div>
-        <div class="flex flex-wrap gap-2">${['Semua', 'Pendaftaran dibuka', 'Inkubasi', 'Akselerasi', 'Fintech', 'Tahap MVP'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 1}">${t}</button>`).join('')}</div>
+        <div class="flex flex-wrap gap-2">${['Semua', 'Pendaftaran dibuka', 'Inkubasi', 'Akselerasi', 'Fintech', 'Tahap MVP'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 1}">${t}</button>`).join('')}</div>`}
         <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
           ${programCard('Inkubasi Startup Batch 5', 'Dibuka s.d. 30 Okt · Cocok untuk Anda', 'detail')}
           ${programCard('Akselerasi Fintech 2026', 'Dibuka s.d. 15 Nov', 'detail')}
           ${programCard('Go Digital UMKM', 'Dibuka s.d. 5 Nov', 'detail')}
         </div>
+        ${mSheet('catalog', 'Filter program', [['Status pendaftaran', [['Semua', null, 0], ['Dibuka', 3, 1], ['Segera dibuka', 2, 0], ['Ditutup', 5, 0]]], ['Jenis', [['Inkubasi', null, 0], ['Akselerasi', null, 0], ['Pendampingan', null, 0]]], ['Sektor', [['Fintech', null, 0], ['Agritech', null, 0], ['Healthtech', null, 0], ['Edutech', null, 0]]], ['Tahap startup', [['Ide', null, 0], ['MVP', null, 0], ['Early revenue', null, 0], ['Growth', null, 0]]]], 'Tampilkan 3 program')}
       </div>`
                 },
                 detail: {
@@ -921,7 +1028,7 @@
         <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Inkubasi Startup Batch 5</h2>${pill('AKTIF', true)}<span class="text-sm text-neutral-600">Minggu 1 dari 12</span></div>
         <div class="grid gap-4 md:grid-cols-[minmax(0,1fr)_280px]">
           <div class="border border-neutral-300 rounded p-4 min-w-0"><p class="text-sm font-semibold mb-3">Agenda minggu ini</p>
-            <ul class="flex flex-col divide-y divide-neutral-200">${[['Sen, 18 Nov · 09.00', 'Kickoff & orientasi'], ['Rab, 20 Nov · 14.00', 'Workshop: problem-solution fit'], ['Jum, 22 Nov · 10.00', 'Mentoring 1:1']].map(([d, t]) => `<li class="py-2 flex flex-wrap gap-x-4"><span class="font-mono text-xs text-neutral-500 w-40">${d}</span><span class="text-sm">${t}</span></li>`).join('')}</ul></div>
+            <ul class="flex flex-col divide-y divide-neutral-200">${[['Sen, 18 Nov · 09.00', 'Kickoff & orientasi'], ['Rab, 20 Nov · 14.00', 'Workshop: problem-solution fit'], ['Jum, 22 Nov · 10.00', 'Mentoring 1:1']].map(([d, t]) => `<li class="py-2 flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-x-4"><span class="font-mono text-xs text-neutral-500 sm:w-40 sm:shrink-0">${d}</span><span class="text-sm">${t}</span></li>`).join('')}</ul></div>
           <div class="flex flex-col gap-4">
             <div class="border border-neutral-300 rounded p-4 flex items-center gap-3">${ph('', 'w-10 h-10 rounded-full')}<div><p class="text-xs text-neutral-500">Mentor Anda</p><p class="text-sm font-medium">Ferdi Kurniawan</p></div></div>
             <div class="border border-neutral-300 rounded p-4"><p class="text-sm font-semibold mb-2">Materi</p>${lines(3)}</div>
@@ -944,14 +1051,20 @@
             screens: {
                 jobs: {
                     title: 'Partner: daftar lowongan', url: 'gsih.id/partner/lowongan', steps: 'T1', actor: 'Partner',
-                    notes: [['T1', 'Partner terverifikasi (UF-02) membuka menu Job Opportunity.'], ['Lingkup', 'GSIH hanya menayangkan lowongan; seleksi pelamar dilakukan Partner di luar platform.']],
+                    notes: [['T1', 'Partner terverifikasi (UF-02) membuka menu Job Opportunity.'], ['Ringkasan', 'Counter jumlah lowongan yang sedang dibuka, ditutup, dan total dilihat.'], ['Card', 'Tiap card menampilkan status dan "Tayang sampai" sesuai tenggat lamaran; setelah lewat tanggal, lowongan otomatis ditutup.'], ['Lingkup', 'GSIH hanya menayangkan lowongan; seleksi pelamar dilakukan Partner di luar platform.']],
                     render: () => `
       ${appHeader(avatar('Agung · Telko Raya'), ['Dasbor', 'Direktori startup', 'Lowongan'])}
       <div class="px-5 py-6 flex flex-col gap-4">
         <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Lowongan</h2><div class="ml-auto">${btn('+ Buat lowongan', 'jobForm')}</div></div>
-        <div class="overflow-x-auto border border-neutral-300 rounded"><table class="w-full text-sm min-w-[560px]">
-          <thead class="bg-neutral-100 text-left"><tr>${['Posisi', 'Lokasi', 'Tenggat', 'Status', 'Dilihat'].map(h => `<th class="px-3 py-2 font-medium">${h}</th>`).join('')}</tr></thead>
-          <tbody class="divide-y divide-neutral-200">${[['Data Engineer', 'Jakarta · Hybrid', '30 Okt', 'Tayang', '412'], ['Product Designer', 'Remote', '12 Nov', 'Tayang', '198'], ['Intern Cyber Security', 'Bandung', '—', 'Ditutup', '880']].map(r => `<tr>${r.map((c, i) => `<td class="px-3 py-2 ${i === 4 ? 'font-mono' : ''}">${i === 3 ? pill(c.toUpperCase(), c === 'Tayang') : c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+        <div class="grid gap-3 grid-cols-2 sm:grid-cols-3">${[['Lowongan dibuka', '3', 'sedang tayang'], ['Ditutup', '1', '30 hari terakhir'], ['Total dilihat', '1.488', 'semua lowongan']].map(([k, v, s], i) => `<div class="border ${i === 0 ? 'border-neutral-900' : 'border-neutral-300'} rounded p-3 min-w-0"><p class="text-xs text-neutral-500">${k}</p><p class="text-2xl font-semibold font-mono">${v}</p><p class="text-xs text-neutral-500">${s}</p></div>`).join('')}</div>
+        ${isMob() ? mSearchFilter(field('jbSearch', 'Cari lowongan', 'search', 'Cari posisi'), 'jobs') + mSheet('jobs', 'Filter lowongan', [['Status', [['Semua', 4, 1], ['Tayang', 3, 0], ['Ditutup', 1, 0]]], ['Tipe', [['Full-time', null, 0], ['Kontrak', null, 0], ['Magang', null, 0], ['Freelance', null, 0]]], ['Model kerja', [['On-site', null, 0], ['Hybrid', null, 0], ['Remote', null, 0]]]], 'Tampilkan 4 lowongan')
+                            : `<div class="flex flex-wrap gap-2">${['Semua (4)', 'Tayang (3)', 'Ditutup (1)'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>`}
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">${[['Data Engineer', 'Full-time · Jakarta · Hybrid', '30 Oktober 2026', true, '412'], ['Product Designer', 'Full-time · Remote', '12 November 2026', true, '198'], ['Backend Developer', 'Kontrak · Malang · On-site', '20 November 2026', true, '0'], ['Intern Cyber Security', 'Magang · Bandung', '10 Oktober 2026', false, '880']].map(([t, m, d, live, v]) => `
+          <div class="border ${live ? 'border-neutral-300' : 'border-dashed border-neutral-300'} rounded p-4 flex flex-col gap-3 min-w-0">
+            <div class="flex items-start gap-2"><div class="min-w-0"><p class="text-sm font-semibold ${live ? '' : 'text-neutral-500'}">${t}</p><p class="text-xs text-neutral-500">${m}</p></div><span class="ml-auto">${pill(live ? 'TAYANG' : 'DITUTUP', live)}</span></div>
+            <p class="text-xs border-t border-neutral-200 pt-2">${live ? 'Tayang sampai' : 'Ditutup'} <b class="font-medium">${d}</b></p>
+            <div class="flex items-center gap-3 text-xs"><span class="text-neutral-500">Dilihat <span class="font-mono text-neutral-900">${v}</span></span><span class="ml-auto flex gap-3"><span class="underline">Ubah</span><span class="underline">${live ? 'Tutup' : 'Tayangkan ulang'}</span></span></div>
+          </div>`).join('')}</div>
       </div>`
                 },
                 jobForm: {
@@ -995,7 +1108,7 @@
       ${appHeader(avatar('Sari'))}
       <div class="px-5 py-6 flex flex-col gap-5">
         <div class="flex flex-wrap items-end gap-3"><div><h2 class="text-xl font-semibold">Opportunity</h2><p class="text-sm text-neutral-600">Program, event, dan lowongan yang cocok untuk Anda.</p></div><div class="ml-auto w-full sm:w-64">${field('oSearch', 'Cari', 'search', 'Cari opportunity')}</div></div>
-        <div class="flex flex-wrap gap-2 border-b border-neutral-300 pb-3">${['Untuk Anda', 'Program', 'Event', 'Lowongan', 'Tersimpan'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
+        <div class="flex gap-2 overflow-x-auto [scrollbar-width:none] [&>*]:shrink-0 [&>*]:whitespace-nowrap sm:flex-wrap border-b border-neutral-300 pb-3">${['Untuk Anda', 'Program', 'Event', 'Lowongan', 'Tersimpan'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
         <p class="text-xs text-neutral-500">Berdasarkan minat: Data & AI, Software engineering</p>
         <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
           ${oppCard('Lowongan', 'Data Engineer · Telko Raya', 'Jakarta · Hybrid · s.d. 30 Okt', 'jobDetail')}
@@ -1240,7 +1353,7 @@
       ${rsHeader()}
       <div class="px-5 py-6 flex flex-col gap-5">
         <div class="flex flex-wrap items-end gap-3"><div><h2 class="text-xl font-semibold">Kolaborasi & knowledge sharing</h2><p class="text-sm text-neutral-600">Sesuai expertise: Machine learning, NLP, Ekonomi digital</p></div><div class="ml-auto w-full sm:w-64">${field('cSearch', 'Cari', 'search', 'Topik atau institusi')}</div></div>
-        <div class="flex flex-wrap gap-2 border-b border-neutral-300 pb-3">${['Untuk Anda', 'Kolaborasi riset', 'Kebutuhan industri', 'Knowledge sharing'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
+        <div class="flex gap-2 overflow-x-auto [scrollbar-width:none] [&>*]:shrink-0 [&>*]:whitespace-nowrap sm:flex-wrap border-b border-neutral-300 pb-3">${['Untuk Anda', 'Kolaborasi riset', 'Kebutuhan industri', 'Knowledge sharing'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
         <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
           ${collabCard('Kebutuhan industri', 'Model deteksi fraud transaksi UMKM', 'PT Telko Raya', 'Tenggat 15 Nov', 'detail')}
           ${collabCard('Kolaborasi riset', 'Dataset ujaran kebencian multibahasa', 'Dewi Lestari · ITB', '3 kolaborator', 'detail')}
@@ -1293,8 +1406,22 @@
       ${rsHeader()}
       <div class="px-5 py-6 flex flex-col gap-4">
         <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Riset saya</h2><div class="ml-auto">${btn('+ Bagikan riset', 'form')}</div></div>
-        <div class="flex flex-wrap gap-2">${['Semua', 'Pemilik', 'Collaborator'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
-        ${table(['Judul', 'Peran', 'Diskusi', 'Ditayangkan'], [['Adopsi pembayaran digital UMKM Jawa Timur', 'Pemilik', '<span class="font-mono">12</span>', '3 Sep 2026'], ['Dataset ujaran kebencian multibahasa', 'Collaborator', '<span class="font-mono">4</span>', '18 Agu 2026']])}
+        ${isMob() ? mSearchFilter(field('rsSearch', 'Cari riset', 'search', 'Cari judul riset'), 'riset') + mSheet('riset', 'Filter riset', [['Peran', [['Semua', 3, 1], ['Pemilik', 2, 0], ['Collaborator', 1, 0]]], ['Topik', [['NLP', null, 0], ['Ekonomi digital', null, 0], ['UMKM', null, 0], ['Dataset', null, 0]]]], 'Tampilkan 3 riset')
+                            : `<div class="flex flex-wrap gap-2">${['Semua (3)', 'Pemilik (2)', 'Collaborator (1)'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>`}
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">${[
+                            ['Adopsi pembayaran digital UMKM Jawa Timur', 'Pemilik', ['Ekonomi digital', 'UMKM'], 'Prosiding SNTI 2025', '12', '3 September 2026', ['Budi', 'Maya']],
+                            ['Deteksi hoaks berbahasa Indonesia dengan IndoBERT', 'Pemilik', ['NLP', 'Misinformasi'], 'Jurnal Teknologi Informasi', '0', '15 Oktober 2026', ['Budi', 'Dewi', 'Andi']],
+                            ['Dataset ujaran kebencian multibahasa', 'Collaborator', ['NLP', 'Dataset'], 'Repositori ITB', '4', '18 Agustus 2026', ['Dewi', 'Budi']]
+                        ].map(([t, r, tags, pub, c, d, ppl]) => `
+          <div class="border border-neutral-300 rounded p-4 flex flex-col gap-3 min-w-0">
+            <div class="flex items-center gap-2"><span class="font-mono text-[11px] text-neutral-500">RISET</span><span class="ml-auto">${pill(r.toUpperCase(), r === 'Pemilik')}</span></div>
+            <p class="text-sm font-semibold">${t}</p>
+            <p class="text-xs text-neutral-500">${pub} ↗</p>
+            <div class="flex flex-wrap gap-1">${tags.map(x => pill(x)).join('')}</div>
+            <div class="flex items-center gap-1">${ppl.map(() => ph('', 'w-6 h-6 rounded-full -mr-1 shrink-0')).join('')}<span class="text-xs text-neutral-500 ml-2">${ppl.length} peneliti</span></div>
+            <div class="flex items-center gap-3 text-xs border-t border-neutral-200 pt-2 mt-auto"><span class="text-neutral-500">Ditayangkan ${d}</span><span class="ml-auto">Diskusi <span class="font-mono">${c}</span></span></div>
+            <div class="flex gap-3 text-xs"><button type="button" data-go="live" class="underline">Lihat</button>${r === 'Pemilik' ? '<span class="underline">Ubah</span><span class="underline">Kelola collaborator</span>' : ''}</div>
+          </div>`).join('')}</div>
       </div>`
                 },
                 form: {
@@ -1490,7 +1617,16 @@
            UF-10 · Gabung Event
            ====================================================================== */
         const evHeader = () => appHeader(avatar('Sari · Digital Talent'));
-        const eventCard = (title, meta, tag, go) => `<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2 min-w-0">${ph('Banner event', 'aspect-video w-full rounded-sm')}<div class="flex flex-wrap gap-1">${tag.map(t => pill(t)).join('')}</div><span class="text-sm font-medium">${title}</span><span class="text-xs text-neutral-500">${meta}</span><div class="pt-1">${btn('Lihat detail', go, 'secondary', 'w-full')}</div></div>`;
+        /* Countdown H-x ke hari-H, dihitung dari tanggal di meta (mis. "24 Okt" / "1–3 Nov") terhadap hari ini */
+        const MONTHS_ID = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const countdown = (meta, year = 2026) => {
+            const m = meta.match(/(\d{1,2})(?:\s*–\s*\d{1,2})?\s(Jan|Feb|Mar|Apr|Mei|Jun|Jul|Agu|Sep|Okt|Nov|Des)/); if (!m) return '';
+            const t = new Date(year, MONTHS_ID.indexOf(m[2]), +m[1]), n = new Date(); n.setHours(0, 0, 0, 0);
+            const d = Math.round((t - n) / 86400000);
+            const label = d > 0 ? d + ' hari lagi' : d === 0 ? 'Hari ini' : 'Selesai';
+            return `<span class="absolute top-2 right-2 bg-white border border-neutral-900 rounded px-2 py-1 text-xs font-semibold shadow-sm ${d === 0 ? '!bg-neutral-900 text-white' : ''}">${label}</span>`;
+        };
+        const eventCard = (title, meta, tag, go) => `<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2 min-w-0"><div class="relative">${ph('Banner event', 'aspect-video w-full rounded-sm')}${countdown(meta)}</div><div class="flex flex-wrap gap-1">${tag.map(t => pill(t)).join('')}</div><span class="text-sm font-medium">${title}</span><span class="text-xs text-neutral-500">${meta}</span><div class="pt-1">${btn('Lihat detail', go, 'secondary', 'w-full')}</div></div>`;
         const evTitle = () => state.curated === 'yes' ? 'AI Builders Bootcamp (Curated)' : 'AI Builders Meetup';
         const UF10 = {
             type: 'Publik', name: 'Gabung Event', who: 'Peserta (Sari / Rani / Hendra) · Kurator: Hub Management (Dimas) / Core Team (Steven)',
@@ -1499,17 +1635,19 @@
             screens: {
                 list: {
                     title: 'Daftar event', url: 'gsih.id/event', steps: 'T1–T2', actor: 'Peserta',
-                    notes: [['T1–T2', 'Peserta membuka portal lalu menu Event.'], ['Label', 'Format (Online / Offline / Hybrid) dan "Curated" ditampilkan di kartu.']],
+                    notes: [['T1–T2', 'Peserta membuka portal lalu menu Event.'], ['Label', 'Format (Online / Offline / Hybrid) dan "Curated" ditampilkan di kartu.'], ['Countdown', 'Setiap card menampilkan hitung mundur ke hari-H (mis. "9 hari lagi"), dihitung otomatis dari tanggal hari ini; "Hari ini" saat hari-H.']],
                     render: () => `
       ${evHeader()}
       <div class="px-5 py-6 flex flex-col gap-5">
+        ${isMob() ? `<h2 class="text-xl font-semibold">Event</h2>${mSearchFilter(field('eSearch', 'Cari', 'search', 'Cari event'), 'events')}` : `
         <div class="flex flex-wrap items-end gap-3"><h2 class="text-xl font-semibold">Event</h2><div class="ml-auto w-full sm:w-64">${field('eSearch', 'Cari', 'search', 'Cari event')}</div></div>
-        <div class="flex flex-wrap gap-2">${['Semua', 'Online', 'Offline', 'Hybrid', 'Curated', 'Hub Malang'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
+        <div class="flex flex-wrap gap-2">${['Semua', 'Online', 'Offline', 'Hybrid', 'Curated', 'Hub Malang'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>`}
         <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
           ${eventCard('AI Builders Meetup', '24 Okt · Hub Malang', ['HYBRID'], 'detail').replace('data-go="detail"', 'data-go="detail" data-set-on-go="curated:no"')}
           ${eventCard('AI Builders Bootcamp', '1–3 Nov · Hub Malang', ['OFFLINE', 'CURATED'], 'detail').replace('data-go="detail"', 'data-go="detail" data-set-on-go="curated:yes"')}
           ${eventCard('Webinar Keamanan Siber UMKM', '29 Okt · Online', ['ONLINE'], 'detail')}
         </div>
+        ${mSheet('events', 'Filter event', [['Format', [['Online', 1, 0], ['Offline', 1, 0], ['Hybrid', 1, 0]]], ['Jenis', [['Terbuka', 2, 0], ['Curated', 1, 0]]], ['Lokasi', [['Hub Malang', 2, 0], ['Hub Bandung', 0, 0], ['Online', 1, 0]]], ['Waktu', [['Minggu ini', null, 0], ['Bulan ini', null, 0], ['Bulan depan', null, 0]]]], 'Tampilkan 3 event')}
       </div>`
                 },
                 detail: {
@@ -1604,7 +1742,8 @@
                     render: () => `
       ${appHeader(avatar('Dimas · Hub Management'), ['Dasbor', 'Event', 'Space', 'Laporan'])}
       <div class="px-5 py-6 flex flex-col gap-4">
-        <h2 class="text-xl font-semibold">${evTitle()} · peserta</h2>
+        <div><h2 class="text-xl font-semibold">${evTitle()} · peserta</h2>
+          <p class="text-sm text-neutral-600 mt-1 flex flex-wrap gap-x-4 gap-y-1"><span><span class="text-neutral-500">Tanggal</span> ${state.curated === 'yes' ? '1–3 November 2026' : 'Sabtu, 24 Oktober 2026'} · 09.00–12.00 WIB</span><span><span class="text-neutral-500">Lokasi</span> Hub Malang, Jl. Ijen No. 25${state.curated === 'yes' ? '' : ' · Hybrid (online via meeting)'}</span></p></div>
         <div class="grid gap-3 grid-cols-2 md:grid-cols-4">${[['Terdaftar', '79'], ['Yes', '52'], ['Not Sure', '11'], ['No', '6']].map(([k, v]) => `<div class="border border-neutral-300 rounded p-3"><p class="text-xs text-neutral-500">${k}</p><p class="text-2xl font-semibold font-mono">${v}</p></div>`).join('')}</div>
         ${table(['Nama', 'Role', 'Ikut', 'Konfirmasi H-1'], [['<b>Sari Wulandari</b>', 'Digital Talent', 'Offline', pill('YES', true)], ['Hendra', 'SME Owner', 'Online', pill('NOT SURE')], ['Rani Pratama', 'Startup Founder', 'Offline', pill('NO')]], 'min-w-[480px]')}
       </div>`
@@ -1625,8 +1764,33 @@
             screens: {
                 directory: {
                     title: 'Direktori startup', url: 'gsih.id/partner/startup', steps: 'T1–T2', actor: 'Funder',
-                    notes: [['T1', 'Willy membuka direktori startup.'], ['T2', 'Search / filter sesuai kriteria pendanaan: sektor, tahap, kebutuhan dana, lokasi.']],
-                    render: () => `
+                    notes: [['T1', 'Willy membuka direktori startup.'], ['T2', 'Search nama startup / founder, lalu filter sesuai kriteria pendanaan: sektor, tahap, kebutuhan dana, lokasi.'], ['Mobile', 'Panel filter disembunyikan; tombol "Filter" membuka bottom sheet berisi pilihan filter (multi-pilih), tombol Reset dan "Tampilkan x startup".']],
+                    render: () => {
+                        const mob = viewport === 'mobile';
+                        const FG = [['Sektor', ['Agritech', 'Fintech', 'Healthtech', 'Edutech']], ['Tahap', ['Ide', 'MVP', 'Early revenue', 'Growth']], ['Kebutuhan dana', ['< Rp1 M', 'Rp1–5 M', '> Rp5 M']], ['Lokasi', ['Jawa Timur', 'Jawa Barat', 'DKI Jakarta']]];
+                        const search = field('sdSearch', 'Cari startup', 'search', 'Cari nama startup / founder');
+                        const sheet = mob && state.sdSheet === 'open' ? `
+      <div class="absolute inset-0 z-10 bg-neutral-900/40 flex items-end" role="dialog" aria-label="Filter startup">
+        <div class="w-full bg-white rounded-t-xl border-t border-neutral-900 px-5 pt-2 pb-5 flex flex-col gap-4 max-h-[85%] overflow-y-auto">
+          <span class="self-center w-10 h-1 rounded-full bg-neutral-300" aria-hidden="true"></span>
+          <div class="flex items-center"><h3 class="font-semibold">Filter</h3><button type="button" data-set="sdSheet:closed" class="ml-auto text-neutral-500" aria-label="Tutup">✕</button></div>
+          ${FG.map(([g, opts], gi) => `<fieldset><legend class="text-sm font-medium mb-2">${g}</legend><div class="flex flex-wrap gap-2">${opts.map((o, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="false">${o}</button>`).join('')}</div></fieldset>`).join('')}
+          <div class="flex gap-3 border-t border-neutral-200 pt-4">${btn('Reset', null, 'secondary')}${btn('Tampilkan 24 startup', null, 'primary', 'flex-1', 'data-set="sdSheet:closed"')}</div>
+        </div>
+      </div>` : '';
+                        if (mob) return `<div class="relative min-h-[640px]">
+      ${fdHeader()}
+      <div class="px-5 py-6 flex flex-col gap-4">
+        <div><h2 class="text-xl font-semibold">Direktori startup</h2><p class="text-xs text-neutral-500">24 startup cocok dengan kriteria Anda</p></div>
+        <div class="flex items-end gap-2"><div class="flex-1 min-w-0">${search}</div>
+          <button type="button" data-set="sdSheet:open" class="shrink-0 inline-flex items-center gap-2 border border-neutral-400 rounded px-3 py-2 text-sm bg-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filter</button></div>
+        <div class="grid gap-3">
+          ${startupRow('Panen.id', 'Agritech · Malang', 'MVP', 'RP1–5 M', 'profile')}
+          ${startupRow('KasirKu', 'Fintech · Surabaya', 'EARLY REVENUE', 'RP1–5 M', 'profile')}
+          ${startupRow('SehatDesa', 'Healthtech · Jember', 'MVP', '< RP1 M', 'profile')}
+        </div>
+      </div>${sheet}</div>`;
+                        return `
       ${fdHeader()}
       <div class="px-5 py-6 grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
         <aside class="flex flex-col gap-4" aria-label="Filter">
@@ -1638,6 +1802,7 @@
         </aside>
         <div class="flex flex-col gap-4 min-w-0">
           <div class="flex flex-wrap items-end gap-3"><h2 class="text-xl font-semibold">Direktori startup</h2><span class="text-xs text-neutral-500 ml-auto">24 startup cocok dengan kriteria Anda</span></div>
+          <div class="max-w-sm">${search}</div>
           <div class="grid gap-3 sm:grid-cols-2">
             ${startupRow('Panen.id', 'Agritech · Malang', 'MVP', 'RP1–5 M', 'profile')}
             ${startupRow('KasirKu', 'Fintech · Surabaya', 'EARLY REVENUE', 'RP1–5 M', 'profile')}
@@ -1645,7 +1810,8 @@
             ${startupRow('BelajarAI', 'Edutech · Bandung', 'GROWTH', '> RP5 M', 'profile')}
           </div>
         </div>
-      </div>`
+      </div>`;
+                    }
                 },
                 profile: {
                     title: 'Profil publik & Interest', url: 'gsih.id/partner/startup/panen-id', steps: 'T3–T6', actor: 'Funder → Sistem',
@@ -1884,16 +2050,32 @@
             screens: {
                 mine: {
                     title: 'Event & program saya', url: 'gsih.id/saya/kegiatan', steps: 'T1', actor: 'Participant',
-                    notes: [['T1', 'Participant menekan "Batal hadir" (event) atau "Mundur" (program) dari daftar kegiatan.'], ['Batas', 'Tombol tersedia sampai event dimulai / program berjalan.']],
-                    render: () => `
+                    notes: [['T1', 'Participant menekan "Batal hadir" (event) atau "Mundur" (program) dari daftar kegiatan.'], ['Batas', 'Tombol tersedia sampai event dimulai / program berjalan.'], ['Daftar', 'Cari kegiatan, filter status (Terdaftar, Menunggu persetujuan, Berjalan, Selesai, Dibatalkan, Ditolak), dan tab Tabel / Card.']],
+                    render: () => {
+                        const K = [['AI Builders Meetup', 'Event', '24 Okt 2026 · Hub Malang', 'Terdaftar'], ['Sertifikasi Cloud Fundamentals', 'Program', 'Okt–Nov 2026 · Online', 'Berjalan'], ['Webinar Keamanan Siber UMKM', 'Event', '29 Okt 2026 · Online', 'Terdaftar'], ['AI Builders Bootcamp', 'Event', '1–3 Nov 2026 · Hub Malang', 'Menunggu persetujuan'], ['Career Day Digital Talent', 'Event', '2 Okt 2026 · Hub Bandung', 'Selesai'], ['Kelas UI/UX Dasar', 'Program', 'Agu–Sep 2026 · Online', 'Selesai'], ['Startup Clinic', 'Event', '28 Sep 2026 · Hub Malang', 'Dibatalkan']];
+                        const ST = ['Semua', 'Terdaftar', 'Menunggu persetujuan', 'Berjalan', 'Selesai', 'Dibatalkan', 'Ditolak'];
+                        const f = state.kgFilter, rows = K.filter(k => f === 'Semua' || k[3] === f), dark = s => s === 'Terdaftar' || s === 'Berjalan';
+                        const act = (j, s) => s === 'Terdaftar' || s === 'Menunggu persetujuan' ? btn('Batal hadir', 'reason', 'secondary', 'px-2 py-1') : s === 'Berjalan' ? btn('Mundur', 'reason', 'secondary', 'px-2 py-1') : '<span class="text-xs underline">Lihat</span>';
+                        const tabBtn = (v, t) => `<button type="button" data-set="kgView:${v}" aria-pressed="${state.kgView === v}" class="px-3 py-1.5 text-sm ${v === 'card' ? 'border-l border-neutral-400' : ''} ${state.kgView === v ? 'bg-neutral-900 text-white' : 'bg-white'}">${t}</button>`;
+                        const list = !rows.length ? `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada kegiatan dengan status "${f}".</div>`
+                            : state.kgView === 'table'
+                                ? table(['Kegiatan', 'Jenis', 'Jadwal', 'Status', ''], rows.map(([n, j, d, s]) => [`<b class="font-medium">${n}</b>`, j, d, pill(s.toUpperCase(), dark(s)), act(j, s)]), 'min-w-[640px]')
+                                : `<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">${rows.map(([n, j, d, s]) => `<div class="border ${s === 'Dibatalkan' ? 'border-dashed' : ''} border-neutral-300 rounded p-4 flex flex-col gap-3 min-w-0">${ph('Banner', 'aspect-[3/1] w-full rounded-sm')}<div class="flex flex-wrap gap-1">${pill(s.toUpperCase(), dark(s))}${pill(j.toUpperCase())}</div><p class="text-sm font-semibold">${n}</p><p class="text-xs text-neutral-500">${d}</p><div class="border-t border-neutral-200 pt-2">${act(j, s)}</div></div>`).join('')}</div>`;
+                        return `
       ${evHeader()}
       <div class="px-5 py-6 flex flex-col gap-4">
         <h2 class="text-xl font-semibold">Kegiatan saya</h2>
-        ${table(['Kegiatan', 'Jenis', 'Jadwal', 'Status', ''], [
-                        ['<b>AI Builders Meetup</b>', 'Event', '24 Okt · Hub Malang', pill('TERDAFTAR', true), btn('Batal hadir', 'reason', 'secondary', 'px-2 py-1')],
-                        ['Sertifikasi Cloud Fundamentals', 'Program', 'Okt–Nov · Online', pill('BERJALAN'), btn('Mundur', 'reason', 'ghost', 'px-2 py-1')],
-                        ['Webinar Keamanan Siber UMKM', 'Event', '29 Okt · Online', pill('TERDAFTAR', true), btn('Batal hadir', 'reason', 'ghost', 'px-2 py-1')]], 'min-w-[620px]')}
-      </div>`
+        ${isMob() ? `${mSearchFilter(field('kgSearch', 'Cari kegiatan', 'search', 'Cari event / program'), 'kg', f !== 'Semua' ? 1 : 0)}<div class="inline-flex self-start border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>` + mSheet('kg', 'Filter kegiatan', [['Status', statusChips('kgFilter', ST, x => x === 'Semua' ? K.length : K.filter(k => k[3] === x).length)]], `Tampilkan ${rows.length} kegiatan`, 'kgFilter:Semua') : ''}
+        <div class="${isMob() ? 'hidden' : 'flex'} flex-wrap items-end gap-3">
+          <div class="w-full sm:w-56">${field('kgSearch', 'Cari kegiatan', 'search', 'Cari event / program')}</div>
+          <div class="flex flex-col gap-1 min-w-0"><label for="kgStatus" class="sr-only">Filter status</label>
+            <select id="kgStatus" data-filter="kgFilter" class="border border-neutral-400 rounded px-3 py-2 text-sm bg-white">${ST.map(s => `<option value="${s}" ${s === f ? 'selected' : ''}>Status: ${s} (${s === 'Semua' ? K.length : K.filter(k => k[3] === s).length})</option>`).join('')}</select></div>
+          <div class="sm:ml-auto inline-flex border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>
+        </div>
+        ${f !== 'Semua' ? `<div class="flex items-center gap-2 text-xs"><span class="text-neutral-500">${rows.length} kegiatan</span>${pill(f.toUpperCase())}<button type="button" data-set="kgFilter:Semua" class="underline">Hapus filter</button></div>` : ''}
+        ${list}
+      </div>`;
+                    }
                 },
                 reason: {
                     title: 'Isi alasan', url: 'gsih.id/saya/kegiatan', steps: 'T2', actor: 'Participant',
@@ -2223,7 +2405,7 @@
       ${evHeader()}
       <div class="px-5 py-6 flex flex-col gap-4">
         <h2 class="text-xl font-semibold">Benefit</h2>
-        <div class="flex flex-wrap gap-2">${['Semua', 'Internal Hub', 'Partner', 'Voucher saya'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
+        <div class="flex gap-2 overflow-x-auto [scrollbar-width:none] [&>*]:shrink-0 [&>*]:whitespace-nowrap sm:flex-wrap">${['Semua', 'Internal Hub', 'Partner', 'Voucher saya'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
         <div class="grid gap-3 sm:grid-cols-2 md:grid-cols-4">${VOUCHERS.map(([t, n, o, s, days]) => `<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2 min-w-0">${ph('', 'aspect-video w-full rounded-sm')}<span class="font-mono text-[11px] text-neutral-500">${t === 'internal' ? 'INTERNAL' : 'PARTNER'}</span><span class="text-sm font-medium">${n}</span><span class="text-xs text-neutral-500">${o} · ${s}</span>${validity(days)}<div class="pt-1 mt-auto">${btn('Pilih voucher', 'voucher', 'secondary', 'w-full', `data-set-on-go="benefitType:${t}"`)}</div></div>`).join('')}</div>
       </div>`
                 },
@@ -2275,11 +2457,40 @@
             screens: {
                 users: {
                     title: 'Admin Console: pengguna', url: 'gsih.id/admin/pengguna', steps: 'T1–T2', actor: 'Core Team',
-                    notes: [['T1', 'Core Team Admin membuka manajemen pengguna di Admin Console.'], ['T2', 'Klik "Undang pengguna". Role Ecosystem hanya bisa dibuat lewat undangan.']],
-                    render: () => adminShell('Steven · Core Team', NAV_CORE, 'Pengguna', `
-      <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Pengguna ekosistem</h2><div class="ml-auto">${btn('+ Undang pengguna', 'inviteForm')}</div></div>
-      <div class="flex flex-wrap gap-2">${['Semua', 'Hub Management', 'Spoke', 'Core Team', 'Komdigi Official', 'Undangan tertunda'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
-      ${table(['Nama', 'Role', 'Cakupan', 'Status'], [['Dimas Prakoso', 'Hub Management', 'Hub Malang', pill('AKTIF', true)], ['Jessica Tan', 'Spoke', 'Spoke Batu · Inkubasi Batch 5', pill('UNDANGAN TERKIRIM')], ['Sastro Wibowo', 'Komdigi Official', 'Nasional', pill('AKTIF', true)]], 'min-w-[560px]')}`)
+                    notes: [['T1', 'Core Team Admin membuka manajemen pengguna di Admin Console.'], ['T2', 'Klik "Undang pengguna". Role Ecosystem hanya bisa dibuat lewat undangan.'], ['Mobile', 'Filter diringkas menjadi tombol "Filter" (dengan jumlah filter aktif) yang membuka bottom sheet berisi pilihan Role, Lokasi, Status beserta jumlahnya.'], ['Cari & filter', 'Cari nama / email; filter Role, Lokasi, Status bisa dikombinasikan. Setiap opsi filter menampilkan jumlahnya, dan hasil filter menampilkan "x dari y pengguna".']],
+                    render: () => {
+                        const U = [['Dimas Prakoso', 'dimas@hubmalang.id', 'Hub Management', 'Malang', 'Aktif'], ['Jessica Tan', 'jessica@spokebatu.id', 'Spoke', 'Batu', 'Undangan terkirim'], ['Sastro Wibowo', 'sastro@komdigi.go.id', 'Komdigi Official', 'Jakarta', 'Aktif'], ['Steven Halim', 'steven@gsih.id', 'Core Team', 'Jakarta', 'Aktif'], ['Nadia Putri', 'nadia@hubbandung.id', 'Hub Management', 'Bandung', 'Aktif'], ['Reza Fahmi', 'reza@spokelembang.id', 'Spoke', 'Bandung', 'Undangan kedaluwarsa'], ['Ayu Lestari', 'ayu@spokemalang.id', 'Spoke', 'Malang', 'Nonaktif'], ['Fajar Nugroho', 'fajar@hubmakassar.id', 'Hub Management', 'Makassar', 'Undangan terkirim']];
+                        const F = { usrRole: [2, ['Semua', 'Hub Management', 'Spoke', 'Core Team', 'Komdigi Official']], usrLoc: [3, ['Semua', 'Jakarta', 'Malang', 'Batu', 'Bandung', 'Makassar']], usrStatus: [4, ['Semua', 'Aktif', 'Undangan terkirim', 'Undangan kedaluwarsa', 'Nonaktif']] };
+                        const match = (u, skip) => Object.entries(F).every(([k, [i]]) => k === skip || state[k] === 'Semua' || u[i] === state[k]);
+                        const rows = U.filter(u => match(u)), active = Object.keys(F).filter(k => state[k] !== 'Semua');
+                        const sel = (k, label) => { const [i, opts] = F[k]; return `<div class="flex flex-col gap-1 min-w-0"><label for="${k}" class="sr-only">${label}</label><select id="${k}" data-filter="${k}" class="border ${state[k] !== 'Semua' ? 'border-neutral-900 border-2' : 'border-neutral-400'} rounded px-3 py-2 text-sm bg-white">${opts.map(o => `<option value="${o}" ${o === state[k] ? 'selected' : ''}>${label}: ${o === 'Semua' ? 'Semua' : o} (${U.filter(u => match(u, k) && (o === 'Semua' || u[i] === o)).length})</option>`).join('')}</select></div>`; };
+                        const dark = s => s === 'Aktif';
+                        const mob = viewport === 'mobile', LBL = { usrRole: 'Role', usrLoc: 'Lokasi', usrStatus: 'Status' };
+                        /* Mobile: search + tombol Filter; filter dibuka sebagai bottom sheet */
+                        const filterBar = mob ? `
+      <div class="flex items-end gap-2">
+        <div class="flex-1 min-w-0">${field('usrSearch', 'Cari pengguna', 'search', 'Cari nama / email')}</div>
+        <button type="button" data-set="usrSheet:open" class="shrink-0 inline-flex items-center gap-2 border ${active.length ? 'border-neutral-900 border-2' : 'border-neutral-400'} rounded px-3 py-2 text-sm bg-white"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filter${active.length ? ` <span class="bg-neutral-900 text-white text-[10px] font-mono rounded-full px-1.5">${active.length}</span>` : ''}</button>
+      </div>` : `
+      <div class="flex flex-wrap items-end gap-3">
+        <div class="w-full sm:w-56">${field('usrSearch', 'Cari pengguna', 'search', 'Cari nama / email')}</div>
+        ${sel('usrRole', 'Role')}${sel('usrLoc', 'Lokasi')}${sel('usrStatus', 'Status')}
+      </div>`;
+                        const sheet = mob && state.usrSheet === 'open' ? `
+      <div class="absolute inset-0 z-10 bg-neutral-900/40 flex items-end" role="dialog" aria-label="Filter pengguna">
+        <div class="w-full bg-white rounded-t-xl border-t border-neutral-900 px-5 pt-2 pb-5 flex flex-col gap-4 max-h-[85%] overflow-y-auto">
+          <span class="self-center w-10 h-1 rounded-full bg-neutral-300" aria-hidden="true"></span>
+          <div class="flex items-center"><h3 class="font-semibold">Filter</h3><button type="button" data-set="usrSheet:closed" class="ml-auto text-neutral-500" aria-label="Tutup">✕</button></div>
+          ${Object.entries(F).map(([k, [i, opts]]) => `<fieldset class="flex flex-col gap-2"><legend class="text-sm font-medium mb-2">${LBL[k]}</legend><div class="flex flex-wrap gap-2">${opts.map(o => `<button type="button" data-set="${k}:${o}" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${state[k] === o}">${o} <span class="font-mono text-xs opacity-70">${U.filter(u => match(u, k) && (o === 'Semua' || u[i] === o)).length}</span></button>`).join('')}</div></fieldset>`).join('')}
+          <div class="flex gap-3 border-t border-neutral-200 pt-4">${btn('Reset', null, 'secondary', '', 'data-reset="usr"')}${btn(`Tampilkan ${rows.length} pengguna`, null, 'primary', 'flex-1', 'data-set="usrSheet:closed"')}</div>
+        </div>
+      </div>` : '';
+                        return `<div class="relative min-h-[640px]">` + adminShell('Steven · Core Team', NAV_CORE, 'Pengguna', `
+      <div class="flex flex-wrap items-center gap-3"><div><h2 class="text-xl font-semibold">Pengguna ekosistem</h2><p class="text-sm text-neutral-600">Total <b class="font-mono text-neutral-900">${U.length}</b> pengguna · ${U.filter(u => u[4] === 'Aktif').length} aktif · ${U.filter(u => u[4].startsWith('Undangan')).length} undangan tertunda</p></div><div class="ml-auto">${btn('+ Undang pengguna', 'inviteForm')}</div></div>
+      ${filterBar}
+      <div class="flex flex-wrap items-center gap-2 text-xs"><span class="text-neutral-500">Menampilkan <b class="font-mono text-neutral-900">${rows.length}</b> dari ${U.length} pengguna</span>${active.map(k => pill(state[k].toUpperCase())).join('')}${active.length ? '<button type="button" data-reset="usr" class="underline">Hapus semua filter</button>' : ''}</div>
+      ${rows.length ? table(['Nama', 'Role', 'Lokasi', 'Status', ''], rows.map(([n, e, r, l, s]) => [`<b class="font-medium">${n}</b><br><span class="text-xs text-neutral-500">${e}</span>`, r, l, pill(s.toUpperCase(), dark(s)), `<span class="text-xs underline">${s.startsWith('Undangan') ? 'Kirim ulang' : 'Kelola'}</span>`]), 'min-w-[620px]') : `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada pengguna yang cocok dengan filter.</div>`}`) + sheet + `</div>`;
+                    }
                 },
                 inviteForm: {
                     title: 'Form undangan', url: 'gsih.id/admin/pengguna/undang', steps: 'T3–T6', actor: 'Core Team',
@@ -2363,10 +2574,28 @@
             screens: {
                 programs: {
                     title: 'Manajemen program', url: 'gsih.id/program/kelola', steps: 'T1', actor: 'Pengaju',
-                    notes: [['T1', 'Pengaju membuka manajemen program dan klik "Create Program".']],
-                    render: () => adminShell(proposer()[0], proposer()[1], 'Program', `
+                    notes: [['T1', 'Pengaju membuka manajemen program dan klik "Create Program".'], ['Tampilan', 'Tab Tabel / Card untuk berganti tampilan daftar.'], ['Cari & filter', 'Cari nama program; filter status: Draf, Menunggu approval, Perlu revisi, Disetujui, Berjalan, Selesai, Ditolak.']],
+                    render: () => {
+                        const P = [['Inkubasi Startup Batch 5', 'Inkubasi', 'Sep–Des 2026', 'Berjalan', '20 peserta'], ['Literasi Digital UMKM Batu', 'Literasi digital', 'Nov 2026', 'Menunggu approval', '40 UMKM'], ['Bootcamp Data Analyst', 'Pelatihan', '—', 'Draf', '30 talenta'], ['Akselerasi Agritech Jatim', 'Akselerasi', 'Jan–Mar 2027', 'Perlu revisi', '12 startup'], ['Pelatihan Pemasaran Online', 'Pelatihan', 'Des 2026', 'Disetujui', '50 UMKM'], ['Inkubasi Startup Batch 4', 'Inkubasi', 'Mar–Jun 2026', 'Selesai', '18 peserta'], ['Hackathon Smart Village', 'Kompetisi', 'Okt 2026', 'Ditolak', '100 talenta']];
+                        const ST = ['Semua', 'Draf', 'Menunggu approval', 'Perlu revisi', 'Disetujui', 'Berjalan', 'Selesai', 'Ditolak'];
+                        const f = state.progFilter, rows = P.filter(p => f === 'Semua' || p[3] === f), dark = s => s === 'Berjalan' || s === 'Disetujui';
+                        const tabBtn = (v, t) => `<button type="button" data-set="progView:${v}" aria-pressed="${state.progView === v}" class="px-3 py-1.5 text-sm ${v === 'card' ? 'border-l border-neutral-400' : ''} ${state.progView === v ? 'bg-neutral-900 text-white' : 'bg-white'}">${t}</button>`;
+                        const list = !rows.length ? `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada program dengan status "${f}".</div>`
+                            : state.progView === 'table'
+                                ? table(['Program', 'Kategori', 'Periode', 'Target', 'Status', ''], rows.map(([n, c, d, s, t]) => [`<b class="font-medium">${n}</b>`, c, d, t, pill(s.toUpperCase(), dark(s)), '<span class="text-xs underline">Lihat</span>']), 'min-w-[640px]')
+                                : `<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">${rows.map(([n, c, d, s, t]) => `<div class="border border-neutral-300 rounded p-4 flex flex-col gap-3 min-w-0">${ph('', 'aspect-[3/1] w-full rounded-sm')}${pill(s.toUpperCase(), dark(s))}<div class="min-w-0"><p class="text-sm font-semibold">${n}</p><p class="text-xs text-neutral-500">${c}</p></div><div class="flex text-xs border-t border-neutral-200 pt-2"><span class="text-neutral-500">${d}</span><span class="ml-auto">${t}</span></div><span class="text-xs underline">Lihat</span></div>`).join('')}</div>`;
+                        return adminShell(proposer()[0], proposer()[1], 'Program', `
       <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Program</h2><div class="ml-auto">${btn('+ Create Program', 'detail')}</div></div>
-      ${table(['Program', 'Periode', 'Status'], [['Inkubasi Startup Batch 5', 'Sep–Des 2026', pill('BERJALAN', true)], ['Literasi Digital UMKM Batu', 'Nov 2026', pill('MENUNGGU APPROVAL')], ['Bootcamp Data Analyst', '—', pill('DRAF')]], 'min-w-[460px]')}`)
+      ${isMob() ? `${mSearchFilter(field('pgSearch', 'Cari program', 'search', 'Cari nama program'), 'pg', f !== 'Semua' ? 1 : 0)}<div class="inline-flex self-start border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>` + mSheet('pg', 'Filter program', [['Status', statusChips('progFilter', ST, x => x === 'Semua' ? P.length : P.filter(p => p[3] === x).length)]], `Tampilkan ${rows.length} program`, 'progFilter:Semua') : ''}
+      <div class="${isMob() ? 'hidden' : 'flex'} flex-wrap items-end gap-3">
+        <div class="w-full sm:w-56">${field('pgSearch', 'Cari program', 'search', 'Cari nama program')}</div>
+        <div class="flex flex-col gap-1 min-w-0"><label for="pgStatus" class="sr-only">Filter status</label>
+          <select id="pgStatus" data-filter="progFilter" class="border border-neutral-400 rounded px-3 py-2 text-sm bg-white">${ST.map(s => `<option value="${s}" ${s === f ? 'selected' : ''}>Status: ${s}${s === 'Semua' ? ` (${P.length})` : ` (${P.filter(p => p[3] === s).length})`}</option>`).join('')}</select></div>
+        <div class="sm:ml-auto inline-flex border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>
+      </div>
+      ${f !== 'Semua' ? `<div class="flex items-center gap-2 text-xs"><span class="text-neutral-500">${rows.length} program</span>${pill(f.toUpperCase())}<button type="button" data-set="progFilter:Semua" class="underline">Hapus filter</button></div>` : ''}
+      ${list}`);
+                    }
                 },
                 detail: {
                     title: 'Detail program', url: 'gsih.id/program/baru', steps: 'T2–T3', actor: 'Pengaju',
@@ -2486,12 +2715,14 @@
             screens: {
                 hub: {
                     title: 'Hub: program overview', url: 'gsih.id/hub/program/inkubasi-batch-5', steps: 'T1–T2', actor: 'Hub Management',
-                    notes: [['T1', 'Dimas membuka program aktif & overview.'], ['T2', 'Mengelola participant, aktivitas, dan kebutuhan operasional (mis. mentor).']],
+                    notes: [['T1', 'Dimas membuka program aktif & overview.'], ['T2', 'Mengelola participant, aktivitas, dan kebutuhan operasional (mis. mentor).'], ['Daftar', 'Cari aktivitas dan filter Status / Spoke. Di mobile, tabel tampil sebagai card list dan filter di bottom sheet.']],
                     render: () => adminShell('Dimas · Hub Management', NAV_HUB, 'Program', `
       <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Inkubasi Startup Batch 5</h2>${pill('BERJALAN', true)}<span class="ml-auto text-xs text-neutral-500">Minggu 6 / 12</span></div>
-      <div class="flex flex-wrap gap-2 border-b border-neutral-300 pb-2">${['Overview', 'Participant', 'Aktivitas', 'Mentor', 'Laporan'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
+      <div class="flex gap-2 overflow-x-auto [scrollbar-width:none] [&>*]:shrink-0 [&>*]:whitespace-nowrap sm:flex-wrap border-b border-neutral-300 pb-2">${['Overview', 'Participant', 'Aktivitas', 'Mentor', 'Laporan'].map((t, i) => `<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
       ${kpi([['Participant aktif', '18 / 20'], ['Kehadiran rata-rata', '82%'], ['Aktivitas selesai', '11 / 24'], ['Kebutuhan mentor', '2 sesi']])}
-      ${table(['Aktivitas', 'Spoke', 'Tanggal', 'Status'], [['Mentoring GTM', 'Spoke Batu', '21 Okt', pill('SELESAI', true)], ['Demo day internal', 'Spoke Batu', '28 Okt', pill('TERJADWAL')], ['Kelas legal', 'Spoke Kota Malang', '30 Okt', pill('BUTUH MENTOR')]], 'min-w-[480px]')}
+      <p class="text-sm font-semibold">Aktivitas program</p>
+      ${listTools('hubAkt', field('hubAktQ', 'Cari aktivitas', 'search', 'Cari aktivitas'), [['Status', ['Semua', 'Selesai', 'Terjadwal', 'Butuh mentor']], ['Spoke', ['Semua', 'Spoke Batu', 'Spoke Kota Malang']]], 'Tampilkan 4 aktivitas', 'Filter aktivitas')}
+      ${rTable(['Aktivitas', 'Spoke', 'Tanggal', 'Status'], [['Mentoring GTM', 'Spoke Batu', '21 Okt', pill('SELESAI', true)], ['Demo day internal', 'Spoke Batu', '28 Okt', pill('TERJADWAL')], ['Kelas legal', 'Spoke Kota Malang', '30 Okt', pill('BUTUH MENTOR')], ['Workshop pitching', 'Spoke Kota Malang', '4 Nov', pill('TERJADWAL')]], 'min-w-[480px]')}
       <div>${btn('Lihat update dari Spoke →', 'spoke', 'ghost', 'px-0')}</div>`)
                 },
                 spoke: {
@@ -2499,19 +2730,23 @@
                     notes: [['T3', 'Jessica memperbarui progress aktivitas (detail form di UF-22).']],
                     render: () => adminShell('Jessica · Spoke', NAV_SPOKE, 'Aktivitas', `
       <h2 class="text-xl font-semibold">Update progress aktivitas</h2>
-      ${table(['Aktivitas', 'Progress', 'Status'], [['Mentoring GTM', '<span class="font-mono">100%</span>', pill('SELESAI', true)], ['Demo day internal', `<select aria-label="Progress" class="border border-neutral-400 rounded px-2 py-1 text-sm bg-white"><option>50%</option><option>75%</option></select>`, pill('BERJALAN')]], 'min-w-[420px]')}
+      ${listTools('spAkt', field('spAktQ', 'Cari aktivitas', 'search', 'Cari aktivitas'), [['Status', ['Semua', 'Belum mulai', 'Berjalan', 'Selesai']]], 'Tampilkan 3 aktivitas', 'Filter aktivitas')}
+      ${rTable(['Aktivitas', 'Progress', 'Status'], [['Mentoring GTM', '<span class="font-mono">100%</span>', pill('SELESAI', true)], ['Demo day internal', `<select aria-label="Progress" class="border border-neutral-400 rounded px-2 py-1 text-sm bg-white"><option>50%</option><option>75%</option></select>`, pill('BERJALAN')], ['Workshop pitching', '<span class="font-mono">0%</span>', pill('BELUM MULAI')]], 'min-w-[420px]')}
       <div class="flex flex-wrap gap-3">${btn('Simpan', null)}${flowLink('Isi activity report (UF-22)', 'UF-22', 'secondary')}</div>
       <div>${btn('Lihat dari sisi Core Team →', 'core', 'ghost', 'px-0')}</div>`)
                 },
                 core: {
                     title: 'Core Team: ecosystem dashboard', url: 'gsih.id/admin/ekosistem', steps: 'T4–T7', actor: 'Sistem → Core Team',
-                    notes: [['T4', 'Sistem mengonsolidasi data lintas Hub & Spoke dan menandai program / aktivitas berisiko.'], ['T5', 'Steven membuka ecosystem dashboard: portfolio, status & KPI.'], ['T6–T7', 'Mengidentifikasi program yang butuh penanganan lanjutan, lalu memutuskan perlu tindak lanjut atau cukup dipantau.']],
+                    notes: [['T4', 'Sistem mengonsolidasi data lintas Hub & Spoke dan menandai program / aktivitas berisiko.'], ['T5', 'Steven membuka ecosystem dashboard: portfolio, status & KPI.'], ['T6–T7', 'Mengidentifikasi program yang butuh penanganan lanjutan, lalu memutuskan perlu tindak lanjut atau cukup dipantau.'], ['Filter', 'Hub & Periode di header = filter global dashboard (KPI, grafik, daftar). Daftar program berisiko hanya punya filter tambahan Sinyal + search.']],
                     render: () => adminShell('Steven · Core Team', NAV_CORE, 'Ekosistem', `
-      <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Ecosystem dashboard</h2><span class="ml-auto">${select('cdHub', 'Hub', ['Semua Hub', 'Hub Malang', 'Hub Bandung'])}</span></div>
+      <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Ecosystem dashboard</h2><span class="ml-auto flex items-end gap-2">${isMob() ? mFilterBtn('cd') : fSelect('cdHub', 'Hub', ['Semua Hub', 'Hub Malang', 'Hub Bandung', 'Hub Makassar']) + fSelect('cdPeriod', 'Periode', ['Bulan ini', 'Kuartal ini', 'Tahun ini'])}</span></div>
+      <p class="text-xs text-neutral-500 -mt-2">Filter Hub & Periode berlaku untuk seluruh dashboard: KPI, grafik, dan daftar program berisiko.</p>
+      ${mSheet('cd', 'Filter dashboard', [['Hub', [['Semua Hub', null, 1], ['Hub Malang', null, 0], ['Hub Bandung', null, 0], ['Hub Makassar', null, 0]]], ['Periode', [['Bulan ini', null, 1], ['Kuartal ini', null, 0], ['Tahun ini', null, 0]]]], 'Terapkan')}
       ${kpi([['Program aktif', '34'], ['Participant', '1.280'], ['Kehadiran', '78%'], ['Butuh penanganan', '3', 'ditandai sistem']])}
       ${ph('Grafik KPI per Hub', 'h-40 w-full rounded')}
       <p class="text-sm font-semibold">Butuh penanganan lanjutan</p>
-      ${table(['Program', 'Hub', 'Sinyal', 'Aksi'], [['<b>Inkubasi Startup Batch 5</b>', 'Hub Malang', 'Kelas legal belum ada mentor · H-5', btn('Kirim follow-up', 'followup', 'secondary', 'px-2 py-1')], ['Literasi Digital Makassar', 'Hub Makassar', 'Kehadiran turun 40%', '—'], ['Bootcamp Cloud', 'Hub Bandung', 'Laporan terlambat', '—']], 'min-w-[620px]')}`)
+      ${listTools('cdRisk', field('cdRiskQ', 'Cari program', 'search', 'Cari program'), [['Sinyal', ['Semua', 'Kebutuhan mentor', 'Kehadiran', 'Laporan']]], 'Tampilkan 3 program', 'Filter program berisiko')}
+      ${rTable(['Program', 'Hub', 'Sinyal', 'Aksi'], [['<b>Inkubasi Startup Batch 5</b>', 'Hub Malang', 'Kelas legal belum ada mentor · H-5', btn('Kirim follow-up', 'followup', 'secondary', 'px-2 py-1')], ['Literasi Digital Makassar', 'Hub Makassar', 'Kehadiran turun 40%', '—'], ['Bootcamp Cloud', 'Hub Bandung', 'Laporan terlambat', '—']], 'min-w-[620px]')}`)
                 },
                 followup: {
                     title: 'Kirim follow-up ke Hub', url: 'gsih.id/admin/ekosistem', steps: 'T8', actor: 'Core Team',
@@ -2540,6 +2775,11 @@
         /* ======================================================================
            UF-21 · Program Reporting & Impact Tracking
            ====================================================================== */
+        /* UF-21 peserta: data contoh + filter Role / Mode / Hadir */
+        const RP_F = { rpRole: [1, ['Semua', 'Digital Talent', 'SME Owner', 'Startup Founder', 'Researcher'], 'Role'], rpMode: [2, ['Semua', 'Online', 'Offline'], 'Mode'], rpHadir: [3, ['Semua', 'Ya', 'Tidak'], 'Hadir'] };
+        const rpData = () => [['Sari Wulandari', 'Digital Talent', 'Offline', 'Ya'], ['Hendra', 'SME Owner', 'Online', 'Ya'], ['Rani Pratama', 'Startup Founder', 'Offline', 'Tidak'], ['Budi Santoso', 'Researcher', 'Online', 'Ya'], ['Maya Putri', 'Startup Founder', 'Offline', 'Ya'], ['Agus Salim', 'SME Owner', 'Offline', 'Tidak'], ['Dewi Anggraini', 'Digital Talent', 'Online', 'Ya'], ['Yoga Pratama', 'Digital Talent', 'Offline', 'Ya']];
+        const rpMatch = (r, skip) => Object.entries(RP_F).every(([k, [i]]) => k === skip || state[k] === 'Semua' || r[i] === state[k]);
+        const rpRows = () => rpData().filter(r => rpMatch(r));
         const RP_STEPS = ['Peserta', 'Detail', 'Foto & link', 'Post-assessment', 'Review'];
         const rpShell = (a, inner) => adminShell('Jessica · Spoke', NAV_SPOKE, 'Laporan', `<h2 class="text-xl font-semibold">Create Report · AI Builders Meetup</h2>${wizard(RP_STEPS, a)}${inner}`);
         const UF21 = {
@@ -2548,11 +2788,24 @@
             screens: {
                 participants: {
                     title: 'Peserta: registrasi vs hadir', url: 'gsih.id/laporan/ai-builders/baru', steps: 'T1–T2', actor: 'Penyelenggara → Sistem',
-                    notes: [['T1', 'Klik "Create Report" pada event / program yang selesai.'], ['T2', 'Sistem menampilkan participant: registrasi vs kehadiran aktual (dari check-in UF-16). Tidak perlu input manual.']],
-                    render: () => rpShell(0, `
+                    notes: [['T1', 'Klik "Create Report" pada event / program yang selesai.'], ['T2', 'Sistem menampilkan participant: registrasi vs kehadiran aktual (dari check-in UF-16). Tidak perlu input manual.'], ['Cari & filter', 'Cari nama; filter Role, Mode, Hadir (bisa dikombinasikan, tiap opsi menampilkan jumlah). Di mobile, filter ada di bottom sheet dan daftar tampil sebagai card.'], ['Unduh CSV', 'Mengunduh data sesuai hasil filter yang sedang aktif (nama file mencantumkan filter).']],
+                    render: () => {
+                        const RP = rpData(), rows = rpRows(), active = Object.keys(RP_F).filter(k => state[k] !== 'Semua');
+                        const cnt = (k, o) => RP.filter(r => rpMatch(r, k) && (o === 'Semua' || r[RP_F[k][0]] === o)).length;
+                        const sel = (k, lb) => `<div class="flex flex-col gap-1 min-w-0"><label for="${k}" class="sr-only">${lb}</label><select id="${k}" data-filter="${k}" class="border ${state[k] !== 'Semua' ? 'border-neutral-900 border-2' : 'border-neutral-400'} rounded px-3 py-2 text-sm bg-white">${RP_F[k][1].map(o => `<option value="${o}" ${o === state[k] ? 'selected' : ''}>${lb}: ${o} (${cnt(k, o)})</option>`).join('')}</select></div>`;
+                        const search = field('rpQ', 'Cari peserta', 'search', 'Cari nama peserta');
+                        return rpShell(0, `
       ${kpi([['Terdaftar', '79'], ['Hadir', '64'], ['Online', '21'], ['Offline', '43']])}
-      ${table(['Nama', 'Role', 'Mode', 'Hadir'], [['Sari Wulandari', 'Digital Talent', 'Offline', '✓'], ['Hendra', 'SME Owner', 'Online', '✓'], ['Rani Pratama', 'Startup Founder', 'Offline', '—']], 'min-w-[420px]')}
-      <div class="flex flex-wrap gap-3">${btn('Lanjut', 'detail')}${btn('Unduh CSV', null, 'secondary')}</div>`)
+      ${isMob() ? mSearchFilter(search, 'rp', active.length) + mSheet('rp', 'Filter peserta', Object.entries(RP_F).map(([k, [i, opts, lb]]) => [lb, opts.map(o => [o, cnt(k, o), state[k] === o, `${k}:${o}`])]), `Tampilkan ${rows.length} peserta`, 'rpReset:1')
+                                : `<div class="flex flex-wrap items-end gap-3"><div class="w-full sm:w-56">${search}</div>${sel('rpRole', 'Role')}${sel('rpMode', 'Mode')}${sel('rpHadir', 'Hadir')}</div>`}
+      <div class="flex flex-wrap items-center gap-2 text-xs"><span class="text-neutral-500">Menampilkan <b class="font-mono text-neutral-900">${rows.length}</b> dari ${RP.length} peserta</span>${active.map(k => pill(state[k].toUpperCase())).join('')}${active.length ? '<button type="button" data-set="rpReset:1" class="underline">Hapus semua filter</button>' : ''}</div>
+      ${rows.length ? (isMob()
+                                ? `<ul class="flex flex-col divide-y divide-neutral-200 border border-neutral-300 rounded">${rows.map(([n, r, m, h]) => `<li class="px-3 py-2.5 flex items-center gap-3 min-w-0"><div class="min-w-0 flex-1"><p class="text-sm font-medium truncate">${n}</p><div class="flex flex-wrap gap-1 mt-1">${pill(r)}${pill(m)}</div></div><span class="shrink-0 text-xs ${h === 'Ya' ? 'font-medium' : 'text-neutral-500'}">${h === 'Ya' ? '✓ Hadir' : '— Tidak hadir'}</span></li>`).join('')}</ul>`
+                                : rTable(['Nama', 'Role', 'Mode', 'Hadir'], rows.map(([n, r, m, h]) => [`<b class="font-medium">${n}</b>`, r, m, h === 'Ya' ? '✓ Hadir' : '— Tidak hadir']), 'min-w-[420px]')) : `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada peserta yang cocok dengan filter.</div>`}
+      ${isMob()
+                                ? `<div class="sticky bottom-0 z-[5] -mx-5 -mb-6 px-5 py-3 bg-white border-t border-neutral-300 shadow-[0_-4px_8px_-6px_rgba(0,0,0,.2)] flex flex-col gap-2"><div class="flex gap-2">${btn(`Unduh CSV (${rows.length})`, null, 'secondary', 'flex-1', 'data-action="rp-csv"')}${btn('Lanjut', 'detail', 'primary', 'flex-1')}</div><p id="rpCsvMsg" class="text-xs text-neutral-600" role="status" hidden></p></div>`
+                                : `<div class="flex flex-wrap gap-3">${btn('Lanjut', 'detail')}${btn(`Unduh CSV (${rows.length})`, null, 'secondary', '', 'data-action="rp-csv"')}<p id="rpCsvMsg" class="text-xs text-neutral-600 self-center" role="status" hidden></p></div>`}`);
+                    }
                 },
                 detail: {
                     title: 'Detail report', url: 'gsih.id/laporan/ai-builders/baru', steps: 'T3', actor: 'Penyelenggara',
@@ -2614,13 +2867,31 @@
             screens: {
                 program: {
                     title: 'Program yang ditangani', url: 'gsih.id/spoke/program/inkubasi-batch-5', steps: 'T1–T2', actor: 'Spoke → Sistem',
-                    notes: [['T1', 'Jessica membuka program yang ditangani.'], ['T2', 'Participant & attendance tampil otomatis dari registrasi dan check-in — tidak diinput manual.']],
-                    render: () => adminShell('Jessica · Spoke', NAV_SPOKE, 'Program', `
+                    notes: [['T1', 'Jessica membuka program yang ditangani.'], ['T2', 'Participant & attendance tampil otomatis dari registrasi dan check-in — tidak diinput manual.'], ['Cari & filter', 'Cari nama / startup; filter Sektor, Kehadiran, Status (bisa dikombinasikan, tiap opsi menampilkan jumlah). Di mobile: bottom sheet, list ringkas dengan chip, dan CTA menempel di bawah.']],
+                    render: () => {
+                        const D = [['Rani Pratama', 'Panen.id', 'Agritech', 6, 'Aktif'], ['Budi Hartono', 'KasirKu', 'Fintech', 4, 'Aktif'], ['Maya Putri', 'BelajarAI', 'Edutech', 6, 'Aktif'], ['Agus Salim', 'TaniPintar', 'Agritech', 2, 'Perlu perhatian'], ['Dewi Anggraini', 'KlinikKu', 'Healthtech', 5, 'Aktif'], ['Yoga Pratama', 'LogistiKita', 'Logistik', 3, 'Perlu perhatian'], ['Rina Wulan', 'PasarKita', 'E-commerce', 6, 'Aktif'], ['Fajar Nugroho', 'DataKu', 'Edutech', 5, 'Aktif']];
+                        const keh = n => n / 6 >= 0.8 ? '≥ 80%' : n / 6 >= 0.5 ? '50–79%' : '< 50%';
+                        const F = { spSek: [r => r[2], ['Semua', 'Agritech', 'Fintech', 'Edutech', 'Healthtech', 'Logistik', 'E-commerce'], 'Sektor'], spKeh: [r => keh(r[3]), ['Semua', '≥ 80%', '50–79%', '< 50%'], 'Kehadiran'], spSt: [r => r[4], ['Semua', 'Aktif', 'Perlu perhatian'], 'Status'] };
+                        const match = (r, skip) => Object.entries(F).every(([k, [g]]) => k === skip || state[k] === 'Semua' || g(r) === state[k]);
+                        const rows = D.filter(r => match(r)), active = Object.keys(F).filter(k => state[k] !== 'Semua');
+                        const cnt = (k, o) => D.filter(r => match(r, k) && (o === 'Semua' || F[k][0](r) === o)).length;
+                        const sel = (k) => `<div class="flex flex-col gap-1 min-w-0"><label for="${k}" class="sr-only">${F[k][2]}</label><select id="${k}" data-filter="${k}" class="border ${state[k] !== 'Semua' ? 'border-neutral-900 border-2' : 'border-neutral-400'} rounded px-3 py-2 text-sm bg-white">${F[k][1].map(o => `<option value="${o}" ${o === state[k] ? 'selected' : ''}>${F[k][2]}: ${o} (${cnt(k, o)})</option>`).join('')}</select></div>`;
+                        const bar = n => `<span class="inline-flex items-center gap-2"><span class="w-12 h-1.5 bg-neutral-200 rounded"><span class="block h-1.5 bg-neutral-900 rounded" style="width:${Math.round(n / 6 * 100)}%"></span></span><span class="font-mono text-xs">${n}/6</span></span>`;
+                        const search = field('spQ', 'Cari participant', 'search', 'Cari nama / startup');
+                        const list = !rows.length ? `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada participant yang cocok dengan filter.</div>`
+                            : isMob()
+                                ? `<ul class="flex flex-col divide-y divide-neutral-200 border border-neutral-300 rounded">${rows.map(([n, st, sek, h, s]) => `<li class="px-3 py-2.5 flex items-center gap-3 min-w-0"><div class="min-w-0 flex-1"><p class="text-sm font-medium truncate">${n}</p><div class="flex flex-wrap gap-1 mt-1">${pill(st)}${pill(sek)}${s !== 'Aktif' ? pill('PERLU PERHATIAN', true) : ''}</div></div><span class="shrink-0">${bar(h)}</span></li>`).join('')}</ul>`
+                                : table(['Participant', 'Startup', 'Sektor', 'Kehadiran', 'Status'], rows.map(([n, st, sek, h, s]) => [`<b class="font-medium">${n}</b>`, st, sek, bar(h), pill(s.toUpperCase(), s !== 'Aktif')]), 'min-w-[560px]');
+                        return adminShell('Jessica · Spoke', NAV_SPOKE, 'Program', `
       <h2 class="text-xl font-semibold">Inkubasi Startup Batch 5 · Spoke Batu</h2>
       ${notice('Data participant & attendance tercatat otomatis oleh sistem.')}
       ${kpi([['Participant', '20'], ['Hadir minggu ini', '17'], ['Rata-rata kehadiran', '82%']])}
-      ${table(['Participant', 'Startup', 'Kehadiran'], [['Rani Pratama', 'Panen.id', '<span class="font-mono">6 / 6</span>'], ['Budi Hartono', 'KasirKu', '<span class="font-mono">4 / 6</span>']], 'min-w-[420px]')}
-      <div>${btn('Isi activity report', 'questions')}</div>`)
+      ${isMob() ? mSearchFilter(search, 'sp', active.length) + mSheet('sp', 'Filter participant', Object.entries(F).map(([k, [g, opts, lb]]) => [lb, opts.map(o => [o, cnt(k, o), state[k] === o, `${k}:${o}`])]), `Tampilkan ${rows.length} participant`, 'spReset:1')
+                                : `<div class="flex flex-wrap items-end gap-3"><div class="w-full sm:w-56">${search}</div>${sel('spSek')}${sel('spKeh')}${sel('spSt')}</div>`}
+      <div class="flex flex-wrap items-center gap-2 text-xs"><span class="text-neutral-500">Menampilkan <b class="font-mono text-neutral-900">${rows.length}</b> dari ${D.length} participant</span>${active.map(k => pill(state[k].toUpperCase())).join('')}${active.length ? '<button type="button" data-set="spReset:1" class="underline">Hapus semua filter</button>' : ''}</div>
+      ${list}
+      ${isMob() ? `<div class="sticky bottom-0 z-[5] -mx-5 -mb-6 px-5 py-3 bg-white border-t border-neutral-300 shadow-[0_-4px_8px_-6px_rgba(0,0,0,.2)]">${btn('Isi activity report', 'questions', 'primary', 'w-full')}</div>` : `<div>${btn('Isi activity report', 'questions')}</div>`}`);
+                    }
                 },
                 questions: {
                     title: 'Activity report', url: 'gsih.id/spoke/program/inkubasi-batch-5/report', steps: 'T3–T4', actor: 'Spoke',
@@ -2632,10 +2903,28 @@
                 },
                 hub: {
                     title: 'Hub: terima activity report', url: 'gsih.id/hub/aktivitas', steps: 'T5', actor: 'Hub Management',
-                    notes: [['T5', 'Dimas menerima activity report dari Spoke; jawaban "Terlambat — perlu bantuan" ditandai untuk penanganan (UF-20).']],
-                    render: () => adminShell('Dimas · Hub Management', NAV_HUB, 'Laporan', `
-      <h2 class="text-xl font-semibold">Activity report dari Spoke</h2>
-      ${table(['Spoke', 'Program', 'Minggu', 'Progress', 'Diterima'], [['<b>Spoke Batu</b>', 'Inkubasi Batch 5', '6', pill('SESUAI RENCANA'), 'Baru saja'], ['Spoke Kota Malang', 'Inkubasi Batch 5', '6', pill('PERLU BANTUAN', true), 'Kemarin']], 'min-w-[560px]')}`)
+                    notes: [['T5', 'Dimas menerima activity report dari Spoke; jawaban "Terlambat — perlu bantuan" ditandai untuk penanganan (UF-20).'], ['Cari & filter', 'Cari Spoke / program; filter Spoke, Program, Progress (bisa dikombinasikan, tiap opsi menampilkan jumlah). Di mobile: bottom sheet dan list ringkas.']],
+                    render: () => {
+                        const D = [['Spoke Batu', 'Inkubasi Batch 5', 6, 'Sesuai rencana', 'Baru saja'], ['Spoke Kota Malang', 'Inkubasi Batch 5', 6, 'Perlu bantuan', 'Kemarin'], ['Spoke Batu', 'Literasi Digital UMKM', 2, 'Sesuai rencana', '2 hari lalu'], ['Spoke Lawang', 'Inkubasi Batch 5', 6, 'Sedikit terlambat', '2 hari lalu'], ['Spoke Kota Malang', 'Literasi Digital UMKM', 2, 'Sesuai rencana', '3 hari lalu'], ['Spoke Batu', 'Inkubasi Batch 5', 5, 'Sesuai rencana', 'Minggu lalu'], ['Spoke Lawang', 'Literasi Digital UMKM', 2, 'Perlu bantuan', 'Minggu lalu']];
+                        const F = { arSpoke: [0, ['Semua', 'Spoke Batu', 'Spoke Kota Malang', 'Spoke Lawang'], 'Spoke'], arProg: [1, ['Semua', 'Inkubasi Batch 5', 'Literasi Digital UMKM'], 'Program'], arProgress: [3, ['Semua', 'Sesuai rencana', 'Sedikit terlambat', 'Perlu bantuan'], 'Progress'] };
+                        const match = (r, skip) => Object.entries(F).every(([k, [i]]) => k === skip || state[k] === 'Semua' || r[i] === state[k]);
+                        const rows = D.filter(r => match(r)), active = Object.keys(F).filter(k => state[k] !== 'Semua');
+                        const cnt = (k, o) => D.filter(r => match(r, k) && (o === 'Semua' || r[F[k][0]] === o)).length;
+                        const sel = (k) => `<div class="flex flex-col gap-1 min-w-0"><label for="${k}" class="sr-only">${F[k][2]}</label><select id="${k}" data-filter="${k}" class="border ${state[k] !== 'Semua' ? 'border-neutral-900 border-2' : 'border-neutral-400'} rounded px-3 py-2 text-sm bg-white">${F[k][1].map(o => `<option value="${o}" ${o === state[k] ? 'selected' : ''}>${F[k][2]}: ${o} (${cnt(k, o)})</option>`).join('')}</select></div>`;
+                        const prog = s => pill(s.toUpperCase(), s === 'Perlu bantuan');
+                        const need = D.filter(r => r[3] === 'Perlu bantuan').length;
+                        const search = field('arQ', 'Cari report', 'search', 'Cari Spoke / program');
+                        const list = !rows.length ? `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada report yang cocok dengan filter.</div>`
+                            : isMob()
+                                ? `<ul class="flex flex-col divide-y divide-neutral-200 border border-neutral-300 rounded">${rows.map(([sp, pg, w, p, t]) => `<li class="px-3 py-2.5 flex items-start gap-3 min-w-0"><div class="min-w-0 flex-1"><p class="text-sm font-medium truncate">${sp}</p><p class="text-xs text-neutral-500 truncate">${pg} · Minggu ${w}</p><div class="mt-1">${prog(p)}</div></div><span class="shrink-0 text-xs text-neutral-500">${t}</span></li>`).join('')}</ul>`
+                                : table(['Spoke', 'Program', 'Minggu', 'Progress', 'Diterima', ''], rows.map(([sp, pg, w, p, t]) => [`<b class="font-medium">${sp}</b>`, pg, `<span class="font-mono">${w}</span>`, prog(p), t, '<span class="text-xs underline">Lihat</span>']), 'min-w-[620px]');
+                        return adminShell('Dimas · Hub Management', NAV_HUB, 'Laporan', `
+      <div><h2 class="text-xl font-semibold">Activity report dari Spoke</h2><p class="text-sm text-neutral-600">Total <b class="font-mono text-neutral-900">${D.length}</b> report · ${need} perlu bantuan</p></div>
+      ${isMob() ? mSearchFilter(search, 'ar', active.length) + mSheet('ar', 'Filter report', Object.entries(F).map(([k, [i, opts, lb]]) => [lb, opts.map(o => [o, cnt(k, o), state[k] === o, `${k}:${o}`])]), `Tampilkan ${rows.length} report`, 'arReset:1')
+                                : `<div class="flex flex-wrap items-end gap-3"><div class="w-full sm:w-56">${search}</div>${sel('arSpoke')}${sel('arProg')}${sel('arProgress')}</div>`}
+      <div class="flex flex-wrap items-center gap-2 text-xs"><span class="text-neutral-500">Menampilkan <b class="font-mono text-neutral-900">${rows.length}</b> dari ${D.length} report</span>${active.map(k => pill(state[k].toUpperCase())).join('')}${active.length ? '<button type="button" data-set="arReset:1" class="underline">Hapus semua filter</button>' : ''}</div>
+      ${list}`);
+                    }
                 }
             }
         };
@@ -2647,6 +2936,28 @@
         const hasOnline = () => state.eventFormat !== 'offline', hasOffline = () => state.eventFormat !== 'online';
         const EV_STEPS = ['Data event', 'Sesi online', 'Space', 'Anggaran & submit'];
         const evShell = (a, inner) => adminShell(evProp()[0], evProp()[1], 'Event', `<h2 class="text-xl font-semibold">Create Event</h2>${wizard(EV_STEPS, a)}${inner}`);
+        /* UF-23 daftar event: search, filter status, tab Tabel / Card */
+        const evListBlock = (p) => {
+            const rep = p === 'done' ? pill('SELESAI', true) : pill(p === 'overdue' ? 'TERLAMBAT' : 'BELUM');
+            const E = [['AI Builders Meetup', 'Hybrid', '24 Okt 2026', '64 / 79', 'Selesai', rep], ['Webinar Keamanan Siber UMKM', 'Online', '29 Okt 2026', '112 / 150', 'Terjadwal', '—'], ['Workshop Pitching Batu', 'Offline', '7 Nov 2026', '— / 60', 'Menunggu approval', '—'], ['Demo Day Inkubasi Batch 5', 'Offline', '12 Des 2026', '— / 120', 'Perlu revisi', '—'], ['Meetup Komunitas Data', 'Hybrid', '—', '—', 'Draf', '—'], ['Kelas Legal Startup', 'Offline', '30 Okt 2026', '18 / 30', 'Terjadwal', '—'], ['Festival Startup Malang', 'Offline', '20 Okt 2026', '—', 'Ditolak', '—']];
+            const ST = ['Semua', 'Draf', 'Menunggu approval', 'Perlu revisi', 'Terjadwal', 'Berlangsung', 'Selesai', 'Ditolak'];
+            const f = state.evFilter, rows = E.filter(e => f === 'Semua' || e[4] === f), dark = s => s === 'Terjadwal' || s === 'Berlangsung';
+            const tabBtn = (v, t) => `<button type="button" data-set="evView:${v}" aria-pressed="${state.evView === v}" class="px-3 py-1.5 text-sm ${v === 'card' ? 'border-l border-neutral-400' : ''} ${state.evView === v ? 'bg-neutral-900 text-white' : 'bg-white'}">${t}</button>`;
+            const list = !rows.length ? `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada event dengan status "${f}".</div>`
+                : state.evView === 'table'
+                    ? table(['Event', 'Format', 'Tanggal', 'Peserta', 'Status', 'Laporan'], rows.map(([n, fm, d, pc, s, r]) => [`<b class="font-medium">${n}</b>`, fm, d, `<span class="font-mono">${pc}</span>`, pill(s.toUpperCase(), dark(s)), r]), 'min-w-[680px]')
+                    : `<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">${rows.map(([n, fm, d, pc, s, r]) => `<div class="border border-neutral-300 rounded p-4 flex flex-col gap-3 min-w-0">${ph('Banner event', 'aspect-[3/1] w-full rounded-sm')}<div class="flex flex-wrap gap-1">${pill(s.toUpperCase(), dark(s))}${pill(fm.toUpperCase())}</div><p class="text-sm font-semibold">${n}</p><div class="flex text-xs border-t border-neutral-200 pt-2"><span class="text-neutral-500">${d}</span><span class="ml-auto">Peserta <span class="font-mono">${pc}</span></span></div>${r !== '—' ? `<div class="flex items-center gap-2 text-xs"><span class="text-neutral-500">Laporan</span>${r}</div>` : ''}<span class="text-xs underline">Lihat</span></div>`).join('')}</div>`;
+            return `
+      ${isMob() ? `${mSearchFilter(field('evSearch', 'Cari event', 'search', 'Cari nama event'), 'ev', f !== 'Semua' ? 1 : 0)}<div class="inline-flex self-start border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>` + mSheet('ev', 'Filter event', [['Status', statusChips('evFilter', ST, x => x === 'Semua' ? E.length : E.filter(e => e[4] === x).length)], ['Format', [['Online', null, 0], ['Offline', null, 0], ['Hybrid', null, 0]]]], `Tampilkan ${rows.length} event`, 'evFilter:Semua') : ''}
+      <div class="${isMob() ? 'hidden' : 'flex'} flex-wrap items-end gap-3">
+        <div class="w-full sm:w-56">${field('evSearch', 'Cari event', 'search', 'Cari nama event')}</div>
+        <div class="flex flex-col gap-1 min-w-0"><label for="evStatus" class="sr-only">Filter status</label>
+          <select id="evStatus" data-filter="evFilter" class="border border-neutral-400 rounded px-3 py-2 text-sm bg-white">${ST.map(s => `<option value="${s}" ${s === f ? 'selected' : ''}>Status: ${s} (${s === 'Semua' ? E.length : E.filter(e => e[4] === s).length})</option>`).join('')}</select></div>
+        <div class="sm:ml-auto inline-flex border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>
+      </div>
+      ${f !== 'Semua' ? `<div class="flex items-center gap-2 text-xs"><span class="text-neutral-500">${rows.length} event</span>${pill(f.toUpperCase())}<button type="button" data-set="evFilter:Semua" class="underline">Hapus filter</button></div>` : ''}
+      ${list}`;
+        };
         const UF23 = {
             type: 'Internal', name: 'Buat Event', who: 'Pengaju: Spoke (Jessica) / Hub Management (Dimas) · Core Team (Steven) · Komdigi Official (Sastro)',
             sim: { label: 'Laporan event sebelumnya', key: 'prevReport', options: [['done', 'Semua selesai'], ['pending', 'Belum disubmit'], ['overdue', 'Lewat batas waktu']] },
@@ -2654,14 +2965,14 @@
             screens: {
                 events: {
                     title: 'Menu Event', url: 'gsih.id/event/kelola', steps: 'T1–T4', actor: 'Pengaju → Sistem',
-                    notes: [['T1', 'Klik "Create Event".'], ['T2', 'Sistem cek event berjalan / laporan belum disubmit.'], ['T3–T4 · Belum lewat batas', 'Peringatan + daftar event terkait; tetap bisa lanjut.'], ['T4 · Lewat batas', 'Diblokir dan diarahkan menyelesaikan laporan (UF-21).']],
+                    notes: [['T1', 'Klik "Create Event".'], ['T2', 'Sistem cek event berjalan / laporan belum disubmit.'], ['T3–T4 · Belum lewat batas', 'Peringatan + daftar event terkait; tetap bisa lanjut.'], ['T4 · Lewat batas', 'Diblokir dan diarahkan menyelesaikan laporan (UF-21).'], ['Daftar event', 'Cari nama event, filter status (Draf, Menunggu approval, Perlu revisi, Terjadwal, Berlangsung, Selesai, Ditolak), dan tab Tabel / Card.']],
                     render: () => {
                         const p = state.prevReport;
                         return adminShell(evProp()[0], evProp()[1], 'Event', `
         <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Event</h2><div class="ml-auto">${p === 'overdue' ? disabledBtn('+ Create Event') : btn('+ Create Event', 'form')}</div></div>
         ${p === 'pending' ? notice('⚠ Laporan <b>AI Builders Meetup</b> belum disubmit (batas 31 Okt). Anda tetap bisa membuat event baru.', true) : ''}
         ${p === 'overdue' ? `<div class="border-2 border-neutral-900 rounded p-4 flex flex-col gap-2"><p class="text-sm font-semibold">Create Event diblokir</p><p class="text-sm">Laporan <b>AI Builders Meetup</b> sudah melewati batas waktu (31 Okt). Selesaikan laporan terlebih dahulu.</p>${flowLink('Selesaikan laporan (UF-21)', 'UF-21', 'primary')}</div>` : ''}
-        ${table(['Event', 'Tanggal', 'Status', 'Laporan'], [['AI Builders Meetup', '24 Okt', pill('SELESAI'), p === 'done' ? pill('SELESAI', true) : pill(p === 'overdue' ? 'TERLAMBAT' : 'BELUM')], ['Webinar Keamanan Siber', '29 Okt', pill('TERJADWAL', true), '—']], 'min-w-[480px]')}`);
+        ${evListBlock(p)}`);
                     }
                 },
                 form: {
@@ -2730,10 +3041,30 @@
             screens: {
                 queue: {
                     title: 'Antrean verifikasi', url: 'gsih.id/admin/verifikasi/startup', steps: 'T1–T2', actor: 'Sistem → Admin',
-                    notes: [['T1', 'Startup mendaftarkan akun & profil.'], ['T2', 'Sistem memberi notifikasi pendaftaran baru ke admin.']],
-                    render: () => adminShell('Steven · Core Team', NAV_CORE, 'Verifikasi', `
-      <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Verifikasi startup</h2><span class="ml-auto">${pill('4 MENUNGGU')}</span></div>
-      ${table(['Startup', 'Founder', 'Sektor', 'Masuk', 'Status', ''], [['<b>DataKu</b>', 'Sari Wulandari', 'Edutech', 'Hari ini', pill('BARU'), btn('Periksa', 'review', 'secondary', 'px-2 py-1')], ['TaniPintar', 'Agus', 'Agritech', 'Kemarin', pill('REVISI DIKIRIM ULANG'), '—'], ['KlinikKu', 'Dewi', 'Healthtech', '2 hari', pill('BARU'), '—']], 'min-w-[640px]')}`)
+                    notes: [['T1', 'Startup mendaftarkan akun & profil.'], ['T2', 'Sistem memberi notifikasi pendaftaran baru ke admin.'], ['Daftar', 'Cari nama startup / founder, filter status (Baru, Revisi dikirim ulang, Perlu revisi, Verified), dan tab Tabel / Card. Default urutan: yang paling lama menunggu di atas.']],
+                    render: () => {
+                        const S = [['DataKu', 'Sari Wulandari', 'Edutech', 'Hari ini', 'Baru'], ['TaniPintar', 'Agus Salim', 'Agritech', 'Kemarin', 'Revisi dikirim ulang'], ['KlinikKu', 'Dewi Anggraini', 'Healthtech', '2 hari lalu', 'Baru'], ['LogistiKita', 'Bayu', 'Logistik', '3 hari lalu', 'Baru'], ['PasarKita', 'Rina', 'E-commerce', '5 hari lalu', 'Perlu revisi'], ['Panen.id', 'Rani Pratama', 'Agritech', '12 Sep 2026', 'Verified'], ['KasirKu', 'Budi Hartono', 'Fintech', '2 Sep 2026', 'Verified']];
+                        const ST = ['Semua', 'Baru', 'Revisi dikirim ulang', 'Perlu revisi', 'Verified'];
+                        const f = state.vfFilter, rows = S.filter(s => f === 'Semua' || s[4] === f), dark = s => s === 'Verified';
+                        const waiting = S.filter(s => s[4] === 'Baru' || s[4] === 'Revisi dikirim ulang').length;
+                        const act = (s) => s === 'Baru' || s === 'Revisi dikirim ulang' ? btn('Periksa', 'review', 'secondary', 'px-2 py-1') : '<span class="text-xs underline">Lihat</span>';
+                        const tabBtn = (v, t) => `<button type="button" data-set="vfView:${v}" aria-pressed="${state.vfView === v}" class="px-3 py-1.5 text-sm ${v === 'card' ? 'border-l border-neutral-400' : ''} ${state.vfView === v ? 'bg-neutral-900 text-white' : 'bg-white'}">${t}</button>`;
+                        const list = !rows.length ? `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada startup dengan status "${f}".</div>`
+                            : state.vfView === 'table'
+                                ? table(['Startup', 'Founder', 'Sektor', 'Masuk', 'Status', ''], rows.map(([n, fo, sec, m, s]) => [`<span class="flex items-center gap-2">${ph('', 'w-7 h-7 rounded shrink-0')}<b class="font-medium">${n}</b></span>`, fo, sec, m, pill(s.toUpperCase(), dark(s)), act(s)]), 'min-w-[660px]')
+                                : `<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">${rows.map(([n, fo, sec, m, s]) => `<div class="border border-neutral-300 rounded p-4 flex flex-col gap-3 min-w-0"><div class="flex items-center gap-3">${ph('', 'w-10 h-10 rounded shrink-0')}<div class="min-w-0"><p class="text-sm font-semibold">${n}</p><p class="text-xs text-neutral-500">${sec} · ${fo}</p></div></div>${pill(s.toUpperCase(), dark(s))}<div class="flex items-center text-xs border-t border-neutral-200 pt-2"><span class="text-neutral-500">Masuk ${m}</span><span class="ml-auto">${act(s)}</span></div></div>`).join('')}</div>`;
+                        return adminShell('Steven · Core Team', NAV_CORE, 'Verifikasi', `
+      <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Verifikasi startup</h2><span class="ml-auto">${pill(waiting + ' MENUNGGU')}</span></div>
+      ${isMob() ? `${mSearchFilter(field('vfSearch', 'Cari startup', 'search', 'Cari startup / founder'), 'vf', f !== 'Semua' ? 1 : 0)}<div class="inline-flex self-start border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>` + mSheet('vf', 'Filter verifikasi', [['Status', statusChips('vfFilter', ST, x => x === 'Semua' ? S.length : S.filter(y => y[4] === x).length)], ['Sektor', [['Agritech', null, 0], ['Fintech', null, 0], ['Healthtech', null, 0], ['Edutech', null, 0]]]], `Tampilkan ${rows.length} startup`, 'vfFilter:Semua') : ''}
+      <div class="${isMob() ? 'hidden' : 'flex'} flex-wrap items-end gap-3">
+        <div class="w-full sm:w-56">${field('vfSearch', 'Cari startup', 'search', 'Cari startup / founder')}</div>
+        <div class="flex flex-col gap-1 min-w-0"><label for="vfStatus" class="sr-only">Filter status</label>
+          <select id="vfStatus" data-filter="vfFilter" class="border border-neutral-400 rounded px-3 py-2 text-sm bg-white">${ST.map(s => `<option value="${s}" ${s === f ? 'selected' : ''}>Status: ${s} (${s === 'Semua' ? S.length : S.filter(x => x[4] === s).length})</option>`).join('')}</select></div>
+        <div class="sm:ml-auto inline-flex border border-neutral-400 rounded overflow-hidden" role="group" aria-label="Tampilan">${tabBtn('table', '☰ Tabel')}${tabBtn('card', '▦ Card')}</div>
+      </div>
+      ${f !== 'Semua' ? `<div class="flex items-center gap-2 text-xs"><span class="text-neutral-500">${rows.length} startup</span>${pill(f.toUpperCase())}<button type="button" data-set="vfFilter:Semua" class="underline">Hapus filter</button></div>` : ''}
+      ${list}`);
+                    }
                 },
                 review: {
                     title: 'Periksa profil & dokumen', url: 'gsih.id/admin/verifikasi/startup/dataku', steps: 'T3–T5', actor: 'Admin',
@@ -2768,17 +3099,37 @@
         /* ======================================================================
            UF-25 · Kelola Badge
            ====================================================================== */
-        const BADGES = [['Community Builder', 'Hadir di 3 event komunitas', '150', 'Aktif'], ['Pitch Ready', 'Menyelesaikan workshop pitching', '100', 'Aktif'], ['Mentor Star', 'Mengisi 5 sesi mentoring', '250', 'Nonaktif']];
+        const BADGES = [['Community Builder', 'Hadir di 3 event komunitas', '150', 'Aktif'], ['Pitch Ready', 'Menyelesaikan workshop pitching', '100', 'Aktif'], ['Mentor Star', 'Mengisi 5 sesi mentoring', '250', 'Nonaktif'], ['First Step', 'Check-in event pertama', '50', 'Aktif'], ['Researcher Voice', 'Membagikan 3 riset', '300', 'Aktif'], ['Networker', 'Hadir di 5 event networking', '200', 'Aktif'], ['Early Bird', 'Daftar event H-14 sebanyak 3 kali', '80', 'Nonaktif'], ['Ecosystem Hero', 'Menyelesaikan 2 program', '500', 'Aktif']];
+        const bgPoinCat = p => +p < 100 ? '< 100' : +p <= 250 ? '100–250' : '> 250';
         const UF25 = {
             type: 'Internal', name: 'Kelola Badge', who: 'Core Team (Steven)',
             order: ['list', 'form', 'saved', 'delete'],
             screens: {
                 list: {
                     title: 'Badge settings', url: 'gsih.id/admin/badge', steps: 'T1–T2', actor: 'Core Team',
-                    notes: [['T1', 'Steven membuka menu Badge Settings.'], ['T2', 'Tambah badge baru atau kelola badge: ubah, nonaktifkan, hapus.']],
-                    render: () => adminShell('Steven · Core Team', NAV_CORE, 'Badge', `
-      <div class="flex flex-wrap items-center gap-3"><h2 class="text-xl font-semibold">Badge</h2><div class="ml-auto">${btn('+ Tambah badge', 'form')}</div></div>
-      ${table(['Badge', 'Syarat', 'Poin', 'Status', 'Aksi'], BADGES.map(([n, d, p, s]) => [`<span class="flex items-center gap-2">${ph('', 'w-8 h-8 rounded-full shrink-0')}<b class="font-medium">${n}</b></span>`, d, `<span class="font-mono">${p}</span>`, pill(s.toUpperCase(), s === 'Aktif'), `<span class="flex gap-3 text-xs"><button type="button" data-go="form" class="underline">Ubah</button><span class="underline">${s === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan'}</span><button type="button" data-go="delete" class="underline">Hapus</button></span>`]), 'min-w-[640px]')}`)
+                    notes: [['T1', 'Steven membuka menu Badge Settings.'], ['T2', 'Tambah badge baru atau kelola badge: ubah, nonaktifkan, hapus.'], ['Card', 'Badge tampil sebagai card; aksi Ubah / Nonaktifkan / Hapus disembunyikan di menu titik tiga (⋮).'], ['Cari & filter', 'Cari nama badge; filter Status (Aktif / Nonaktif) dan Poin (< 100, 100–250, > 250), tiap opsi menampilkan jumlah. Di mobile: bottom sheet.']],
+                    render: (saved) => {
+                        const B = saved ? [saved, ...BADGES] : BADGES;
+                        const F = { bgStatus: [b => b[3], ['Semua', 'Aktif', 'Nonaktif'], 'Status'], bgPoin: [b => bgPoinCat(b[2]), ['Semua', '< 100', '100–250', '> 250'], 'Poin'] };
+                        const match = (b, skip) => Object.entries(F).every(([k, [g]]) => k === skip || state[k] === 'Semua' || g(b) === state[k]);
+                        const rows = B.map((b, i) => [...b, i]).filter(b => match(b)), active = Object.keys(F).filter(k => state[k] !== 'Semua');
+                        const cnt = (k, o) => B.filter(b => match(b, k) && (o === 'Semua' || F[k][0](b) === o)).length;
+                        const sel = (k) => `<div class="flex flex-col gap-1 min-w-0"><label for="${k}" class="sr-only">${F[k][2]}</label><select id="${k}" data-filter="${k}" class="border ${state[k] !== 'Semua' ? 'border-neutral-900 border-2' : 'border-neutral-400'} rounded px-3 py-2 text-sm bg-white">${F[k][1].map(o => `<option value="${o}" ${o === state[k] ? 'selected' : ''}>${F[k][2]}: ${o} (${cnt(k, o)})</option>`).join('')}</select></div>`;
+                        const search = field('bgQ', 'Cari badge', 'search', 'Cari nama badge');
+                        const menu = (i, s) => `<div class="relative" data-menu>
+          <button type="button" data-set="bgMenu:${state.bgMenu === String(i) ? 'none' : i}" class="w-8 h-8 inline-flex items-center justify-center rounded border ${state.bgMenu === String(i) ? 'border-neutral-900' : 'border-transparent'} hover:border-neutral-400" aria-label="Aksi badge" aria-haspopup="menu" aria-expanded="${state.bgMenu === String(i)}"><span class="text-lg leading-none">⋮</span></button>
+          ${state.bgMenu === String(i) ? `<div role="menu" class="absolute right-0 top-9 z-10 w-40 bg-white border border-neutral-900 rounded shadow-[3px_3px_0_0_#171717] py-1 text-sm"><button type="button" role="menuitem" data-go="form" class="block w-full text-left px-3 py-2 hover:bg-neutral-100">Ubah</button><button type="button" role="menuitem" data-set="bgMenu:none" class="block w-full text-left px-3 py-2 hover:bg-neutral-100">${s === 'Aktif' ? 'Nonaktifkan' : 'Aktifkan'}</button><button type="button" role="menuitem" data-go="delete" class="block w-full text-left px-3 py-2 hover:bg-neutral-100 border-t border-neutral-200">Hapus</button></div>` : ''}
+        </div>`;
+                        const cards = !rows.length ? `<div class="border border-dashed border-neutral-400 rounded p-6 text-sm text-neutral-500 text-center">Tidak ada badge yang cocok dengan filter.</div>`
+                            : `<div class="grid gap-3 sm:grid-cols-2">${rows.map(([n, d, p, s, i]) => `<div class="border ${saved && i === 0 ? 'border-neutral-900 border-2' : s === 'Aktif' ? 'border-neutral-300' : 'border-dashed border-neutral-300'} rounded p-4 flex gap-3 items-start min-w-0">${saved && i === 0 ? '' : ''}${ph('', 'w-12 h-12 rounded-full shrink-0')}<div class="min-w-0 flex-1 flex flex-col gap-1"><p class="text-sm font-semibold ${s === 'Aktif' ? '' : 'text-neutral-500'}">${n}${saved && i === 0 ? ' <span class="font-mono text-[10px] border border-neutral-900 rounded px-1 ml-1 align-middle">BARU</span>' : ''}</p><p class="text-xs text-neutral-500">${d}</p><div class="flex flex-wrap items-center gap-1 mt-1">${pill(p + ' POIN')}${pill(s.toUpperCase(), s === 'Aktif')}</div></div>${menu(i, s)}</div>`).join('')}</div>`;
+                        return adminShell('Steven · Core Team', NAV_CORE, 'Badge', `
+      ${saved ? notice(`✓ Badge "${saved[0]}" berhasil disimpan dan aktif.`, true) : ''}
+      <div class="flex flex-wrap items-center gap-3"><div><h2 class="text-xl font-semibold">Badge</h2><p class="text-sm text-neutral-600">Total <b class="font-mono text-neutral-900">${B.length}</b> badge · ${B.filter(b => b[3] === 'Aktif').length} aktif</p></div><div class="ml-auto">${btn('+ Tambah badge', 'form')}</div></div>
+      ${isMob() ? mSearchFilter(search, 'bg', active.length) + mSheet('bg', 'Filter badge', Object.entries(F).map(([k, [g, opts, lb]]) => [lb, opts.map(o => [o, cnt(k, o), state[k] === o, `${k}:${o}`])]), `Tampilkan ${rows.length} badge`, 'bgReset:1')
+                                : `<div class="flex flex-wrap items-end gap-3"><div class="w-full sm:w-56">${search}</div>${sel('bgStatus')}${sel('bgPoin')}</div>`}
+      <div class="flex flex-wrap items-center gap-2 text-xs"><span class="text-neutral-500">Menampilkan <b class="font-mono text-neutral-900">${rows.length}</b> dari ${B.length} badge</span>${active.map(k => pill(state[k].toUpperCase())).join('')}${active.length ? '<button type="button" data-set="bgReset:1" class="underline">Hapus semua filter</button>' : ''}</div>
+      ${cards}`);
+                    }
                 },
                 form: {
                     title: 'Tambah / ubah badge', url: 'gsih.id/admin/badge/baru', steps: 'T3', actor: 'Core Team',
@@ -2794,10 +3145,8 @@
                 },
                 saved: {
                     title: 'Badge aktif', url: 'gsih.id/admin/badge', steps: 'T4–T5', actor: 'Sistem → Core Team',
-                    notes: [['T4', 'Badge aktif dan langsung bisa diberikan sistem saat peserta mencapai poin (UF-16).'], ['T5', 'Selesai.']],
-                    render: () => adminShell('Steven · Core Team', NAV_CORE, 'Badge', `
-      ${notice('✓ Badge "Data Champion" disimpan dan aktif.', true)}
-      ${table(['Badge', 'Poin', 'Status'], [['<b>Data Champion</b>', '<span class="font-mono">200</span>', pill('AKTIF', true)], ...BADGES.map(([n, d, p, s]) => [n, `<span class="font-mono">${p}</span>`, pill(s.toUpperCase(), s === 'Aktif')])], 'min-w-[420px]')}`)
+                    notes: [['T4', 'Badge aktif dan langsung bisa diberikan sistem saat peserta mencapai poin (UF-16).'], ['T5', 'Kembali ke daftar badge (sama dengan layar 01) dengan pesan sukses; badge baru tampil paling atas dengan penanda BARU.']],
+                    render: () => UF25.screens.list.render(['Data Champion', 'Ikut 4 event Data & AI', '200', 'Aktif'])
                 },
                 delete: {
                     title: 'Hapus badge', url: 'gsih.id/admin/badge', steps: 'T2', actor: 'Core Team',
@@ -2864,14 +3213,20 @@
         function render() {
             const s = F().screens[curKey()];
             $('urlBar').textContent = 'https://' + s.url;
-            $('screen').innerHTML = s.render();
-            if (viewport === 'mobile') document.querySelectorAll('#screen [data-desktop-only]').forEach(el => el.classList.add('!hidden'));
+            $('screen').innerHTML = withFooter(s.render());
+            if (viewport === 'mobile') {
+                document.querySelectorAll('#screen [data-desktop-only]').forEach(el => el.classList.add('!hidden'));
+                /* Mobile frame is narrower than the real viewport, so drop sm:/md:/lg:/xl: classes to show the true mobile layout (e.g. hero text on top, image below). */
+                document.querySelectorAll('#screen [class*=":"]').forEach(el => { [...el.classList].filter(c => /^(sm|md|lg|xl|2xl):/.test(c)).forEach(c => el.classList.remove(c)); });
+            }
             renderNav(); renderHeader(); renderTabs(); renderNotes();
+            /* bring an open filter bottom sheet into view on long screens */
+            const sh = document.querySelector('#screen [role=dialog][aria-label^="Filter"] > div'); if (sh) sh.scrollIntoView({ block: 'nearest' });
         }
-        function go(k) { state.screen[state.flow] = k; render(); $('frame').scrollIntoView({ block: 'nearest' }); }
+        function go(k) { state.sheet = 'none'; state.bgMenu = 'none'; state.screen[state.flow] = k; render(); $('frame').scrollIntoView({ block: 'nearest' }); }
         function openFlow(id) {
             if (!FLOW_DEFS[id]) return;
-            state.flow = id; render(); window.scrollTo({ top: 0 });
+            state.sheet = 'none'; state.flow = id; render(); window.scrollTo({ top: 0 });
             try { history.replaceState(null, '', '#' + id); } catch (e) { }
         }
 
@@ -2887,6 +3242,29 @@
         }
         $('vpDesktop').onclick = () => setViewport('desktop');
         $('vpMobile').onclick = () => setViewport('mobile');
+
+        /* ===== Unduh layar sebagai PNG — hanya tampil di Claude (butuh capability downloads) ===== */
+        let DL = null;
+        (async () => {
+            try { DL = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { DL = null; }
+            if (DL) $('pngBtn').hidden = false;
+        })();
+        const slug = t => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const pngMsg = (t) => { const el = $('pngMsg'); el.textContent = t; el.hidden = !t; if (t) setTimeout(() => { if (el.textContent === t) el.hidden = true; }, 4000); };
+        $('pngBtn').onclick = async () => {
+            if (!DL || !window.htmlToImage) { pngMsg('Unduhan PNG belum siap.'); return; }
+            const btn = $('pngBtn'); btn.disabled = true; pngMsg('Menyiapkan PNG…');
+            try {
+                const key = curKey(), idx = String(visibleOrder().indexOf(key) + 1).padStart(2, '0');
+                const name = `${state.flow}_${idx}-${slug(F().screens[key].title)}_${viewport}.png`;
+                const blob = await window.htmlToImage.toBlob($('frame'), { pixelRatio: 2, backgroundColor: '#ffffff', skipFonts: true, cacheBust: true });
+                if (!blob) throw { code: 'render' };
+                await DL.save({ filename: name, data: blob });
+                pngMsg('PNG tersimpan: ' + name);
+            } catch (e) {
+                pngMsg(e && e.code === 'declined' ? '' : e && e.code === 'rate_limited' ? 'Tunggu sebentar, lalu coba lagi.' : 'PNG tidak dapat dibuat di tampilan ini.');
+            } finally { btn.disabled = false; }
+        };
         $('notesToggle').addEventListener('change', e => {
             $('notes').hidden = !e.target.checked;
             $('stage').classList.toggle('xl:grid-cols-[minmax(0,1fr)_300px]', e.target.checked);
@@ -2894,14 +3272,34 @@
 
         /* ===== Prototype interactions ===== */
         const ACTIONS = {
+            'rp-csv': () => {
+                const rows = rpRows(), esc = v => `"${String(v).replace(/"/g, '""')}"`;
+                const csv = [['Nama', 'Role', 'Mode', 'Hadir'], ...rows].map(r => r.map(esc).join(',')).join('\n');
+                const tag = Object.keys(RP_F).filter(k => state[k] !== 'Semua').map(k => state[k].toLowerCase().replace(/\s+/g, '-')).join('_');
+                const filename = `peserta-ai-builders-meetup${tag ? '_' + tag : ''}.csv`;
+                const msg = (t) => { const el = $('rpCsvMsg'); if (el) { el.textContent = t; el.hidden = false; } };
+                (async () => {
+                    const dl = window.claude && window.claude.use ? await window.claude.use('downloads') : null;
+                    if (!dl) { msg('Unduhan tidak tersedia di tampilan ini.'); return; }
+                    try { await dl.save({ filename, data: '﻿' + csv }); msg(`${rows.length} baris diunduh sebagai ${filename}`); }
+                    catch (e) { if (e && e.code === 'declined') return; msg(e && e.code === 'rate_limited' ? 'Tunggu sebentar, lalu coba lagi.' : 'Unduhan tidak dapat dilakukan di tampilan ini.'); }
+                })();
+            },
             'uf01-register': () => { if (!$('fConsent').checked) { $('regErr').hidden = false; $('fConsent').focus(); return; } go('checkEmail'); },
             'uf01-profiling': () => { if (picks.interests.size === 0) { $('profErr').hidden = false; return; } state.mentorStatus = 'pending'; go(isMentor() ? 'mentorPending' : 'dashboard'); },
             'uf02-account': () => { if (!$('pcConsent').checked) { $('pcErr').hidden = false; $('pcConsent').focus(); return; } go('email'); }
         };
         document.addEventListener('click', e => {
+            /* close an open ⋮ menu when clicking outside it */
+            if (state.bgMenu !== 'none' && !e.target.closest('[data-menu]')) { state.bgMenu = 'none'; if (!e.target.closest('[data-go],[data-set],[data-flow],[data-action]')) { render(); return; } }
             const fl = e.target.closest('[data-flow]'); if (fl) { openFlow(fl.dataset.flow); return; }
             const a = e.target.closest('[data-action]'); if (a) { ACTIONS[a.dataset.action](); return; }
             const g = e.target.closest('[data-go]'); if (g) { const so = g.dataset.setOnGo; if (so) { const [k, v] = so.split(':'); state[k] = v; } go(g.dataset.go); return; }
+            const rs = e.target.closest('[data-reset="usr"]'); if (rs) { state.usrRole = state.usrLoc = state.usrStatus = 'Semua'; render(); return; }
+            const bgr = e.target.closest('[data-set="bgReset:1"]'); if (bgr) { state.bgStatus = state.bgPoin = 'Semua'; render(); return; }
+            const arr = e.target.closest('[data-set="arReset:1"]'); if (arr) { state.arSpoke = state.arProg = state.arProgress = 'Semua'; render(); return; }
+            const spr = e.target.closest('[data-set="spReset:1"]'); if (spr) { state.spSek = state.spKeh = state.spSt = 'Semua'; render(); return; }
+            const rr = e.target.closest('[data-set="rpReset:1"]'); if (rr) { state.rpRole = state.rpMode = state.rpHadir = 'Semua'; render(); return; }
             const st = e.target.closest('[data-set]'); if (st) { const [k, v] = st.dataset.set.split(':'); state[k] = v; if (k === 'role') picks = { interests: new Set(), needs: new Set() }; render(); return; }
             const c = e.target.closest('[data-chip]'); if (c) { const set = picks[c.dataset.chip]; set.has(c.dataset.val) ? set.delete(c.dataset.val) : set.add(c.dataset.val); c.setAttribute('aria-pressed', set.has(c.dataset.val)); $('profErr') && ($('profErr').hidden = true); return; }
             const ch = e.target.closest('.chip:not([data-chip])'); if (ch) { ch.setAttribute('aria-pressed', ch.getAttribute('aria-pressed') !== 'true'); return; }
@@ -2909,6 +3307,7 @@
         document.addEventListener('change', e => {
             if (e.target.id === 'fConsent' && e.target.checked && $('regErr')) $('regErr').hidden = true;
             if (e.target.id === 'pcConsent' && e.target.checked && $('pcErr')) $('pcErr').hidden = true;
+            if (e.target.dataset && e.target.dataset.filter) { state[e.target.dataset.filter] = e.target.value; render(); }
         });
 
         const startHash = (location.hash || '').slice(1); if (FLOW_DEFS[startHash]) state.flow = startHash;
