@@ -29,6 +29,7 @@ body { font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Robot
 .ph > span { position:absolute; left:8px; top:6px; font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; color:#525252; background:#e5e5e5; padding:0 4px; }
 #screen { position:relative; }
 [hidden] { display:none !important; }
+summary::-webkit-details-marker { display:none; }
 .line { height:8px; border-radius:2px; background:#d4d4d4; }
 .chip[aria-pressed="true"] { background:#171717; color:#fff; border-color:#171717; }
 .role[aria-pressed="true"] { border-color:#171717; box-shadow: inset 0 0 0 1px #171717; background:#fafafa; }
@@ -174,6 +175,7 @@ const state = {
   spSek:'Semua', spKeh:'Semua', spSt:'Semua',      // UF-22 participant program
   arSpoke:'Semua', arProg:'Semua', arProgress:'Semua', // UF-22 activity report (Hub)
   bgStatus:'Semua', bgPoin:'Semua', bgMenu:'none',  // UF-25 badge list
+  dashRole:'', fStartup:'panen',                    // UF-14 role aktif · UF-01-3 startup aktif
   sdSheet:'closed', sheet:'none',  // sheet = bottom sheet filter yang terbuka (mobile)                                // UF-11 filter direktori (mobile)
   photosOk:'yes', prevReport:'done', eventFormat:'hybrid', verifyDec:'approve' // UF-21, UF-23, UF-24
 };
@@ -844,16 +846,16 @@ const UF04 = {
     notes:[['T1','Founder membuka status aplikasi.'],['T2','Melihat progres seleksi per tahap.'],['T3','Core Team mereviu & menetapkan hasil (sisi admin).']],
     render: () => `
       ${appHeader(avatar('Rani'))}
-      <div class="flex min-h-[560px]">${sideNav(['Dasbor','Aplikasi saya','Program saya','Profil'],'Aplikasi saya')}
-        <div class="flex-1 min-w-0 px-5 py-6 flex flex-col gap-4">
-          <h2 class="text-xl font-semibold">Aplikasi saya</h2>
+      ${page(`<div class="flex flex-col gap-4">
+          <div><h2 class="text-xl font-semibold">Aplikasi saya</h2><p class="text-sm text-neutral-600">Pantau status pendaftaran program Anda.</p></div>
+          <div class="flex gap-2 overflow-x-auto [scrollbar-width:none] [&>*]:shrink-0 [&>*]:whitespace-nowrap sm:flex-wrap border-b border-neutral-300 pb-3">${['Semua (2)','Dalam seleksi (1)','Draf (1)','Selesai (0)'].map((t,i)=>`<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i===0}">${t}</button>`).join('')}</div>
           <div class="border border-neutral-400 rounded p-4 flex flex-col gap-4">
             <div class="flex flex-wrap items-center gap-2"><p class="font-semibold">Inkubasi Startup Batch 5</p>${pill('DALAM SELEKSI')}<span class="text-xs font-mono text-neutral-500 ml-auto">INK5-0142</span></div>
             ${timelineList([['Aplikasi dikirim','15 Okt',true],['Seleksi administrasi','Lolos · 3 Nov',true],['Penilaian & wawancara','Sedang berjalan','now'],['Pengumuman hasil','14 Nov',false]])}
             <div>${btn('Lihat hasil (simulasi pengumuman)','result','secondary')}</div>
           </div>
-          <div class="border border-neutral-300 rounded p-4 flex flex-wrap items-center gap-2 text-sm text-neutral-600"><p class="font-semibold text-neutral-900">Akselerasi Fintech 2026</p>${pill('DRAF')}</div>
-        </div></div>`
+          <div class="border border-neutral-300 rounded p-4 flex flex-wrap items-center gap-2 text-sm text-neutral-600"><p class="font-semibold text-neutral-900">Akselerasi Fintech 2026</p>${pill('DRAF')}<span class="ml-auto">${btn('Lanjutkan',null,'secondary','px-2 py-1')}</span></div>
+        </div>`,'max-w-3xl')}`
   },
   result: {
     title:'Hasil seleksi', url:'gsih.id/program/aplikasi-saya/INK5-0142', steps:'T4–T7', actor:'Founder',
@@ -2079,19 +2081,24 @@ const UF14 = {
         <h2 class="text-xl font-semibold mt-6 mb-1">Minat sebagai ${newRoleName()}</h2>
         <p class="text-sm text-neutral-600 mb-4">Dipakai untuk rekomendasi di dashboard.</p>
         <div class="flex flex-wrap gap-2">${INTERESTS[r].map((t,i)=>`<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i<2}">${t}</button>`).join('')}</div>
-        <div class="flex flex-wrap gap-3 mt-8">${btn('Simpan & ke dashboard','dashboard')}${btn('Lewati',null,'ghost')}</div>`,'max-w-2xl')}`;
+        <div class="flex flex-wrap gap-3 mt-8">${btn('Simpan & ke dashboard','dashboard','primary','',`data-set-on-go="dashRole:${state.newRole}"`)}${btn('Lewati','dashboard','ghost','',`data-set-on-go="dashRole:${state.newRole}"`)}</div>`,'max-w-2xl')}`;
     }
   },
   dashboard: {
     title:'Dashboard multi-role', url:'gsih.id/dasbor', steps:'T15', actor:'Pengguna',
-    notes:[['T15','Masuk dashboard dengan rekomendasi sesuai interest.'],['Role switcher','Pengguna berpindah konteks role dari menu di header.']],
-    render: () => `
-      ${appHeader(`<label class="sr-only" for="roleSw">Role</label><select id="roleSw" class="border border-neutral-400 rounded px-2 py-1 text-sm bg-white"><option>${newRoleName()}</option><option>Digital Talent</option></select>${avatar('Sari')}`)}
-      <div class="px-5 py-6 flex flex-col gap-4">
-        <h2 class="text-xl font-semibold">Halo, Sari</h2>
-        <p class="text-sm text-neutral-600">Rekomendasi untuk role ${newRoleName()}</p>
-        <div class="grid gap-3 sm:grid-cols-3">${[1,2,3].map(()=>`<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2">${ph('','aspect-video w-full rounded-sm')}${lines(2,['w-3/4','w-1/2'])}</div>`).join('')}</div>
-      </div>`
+    notes:[['T15','Setelah role baru aktif (atau saat ganti role), pengguna langsung masuk ke dashboard role tersebut — tampilannya sama dengan dashboard di turunan UF-01 (UF-01-1 s.d. UF-01-5).'],['Ganti role','Pemilih role di header berisi semua role yang dimiliki akun; memilih role lain membuka dashboard role itu.'],['Startup Founder','Data startup dari form tambah role (mis. DataKu) langsung menjadi startup pertama dengan status menunggu verifikasi — dashboard sama dengan UF-01-3 layar 04 (1+ startup).'],['Peta dashboard','Digital Talent → UF-01-1 · SME Owner → UF-01-2 · Startup Founder → UF-01-3 · Researcher → UF-01-4 · Mentor → UF-01-5.']],
+    render: () => {
+      const owned = [state.newRole, 'talent'];
+      const active = owned.includes(state.dashRole) ? state.dashRole : state.newRole;
+      const banner = active===state.newRole ? `✓ Role <b>${ROLE_DASH[active].name}</b> aktif. Anda sekarang di dashboard ${ROLE_DASH[active].name}.` : `Anda beralih ke role <b>${ROLE_DASH[active].name}</b>.`;
+      if (active === 'founder') {
+        const roleSwitch = `<label class="sr-only" for="rsw">Role aktif</label><select id="rsw" data-role-switch class="border border-neutral-900 rounded px-2 py-1 text-sm bg-white">${owned.map(x=>`<option value="${x}" ${x===active?'selected':''}>${ROLE_DASH[x].name}</option>`).join('')}</select>`;
+        return founderDashboard({ person:'Sari Wulandari', roleSwitch, banner: banner + ' Startup <b>DataKu</b> sudah dibuat dan menunggu verifikasi.',
+          startups:[{id:'dataku', name:'DataKu', sector:'Edutech', stage:'Ide', city:'Malang', status:'Menunggu verifikasi', kpi:[['Aplikasi program','0'],['Interest Funder','0'],['Pilot berjalan','0'],['Kelengkapan profil','60%']]}],
+          addAttr:'data-flow="UF-01-3" data-flow-screen="create"' });
+      }
+      return roleDashboard(ROLE_DASH[active], active, { person:'Sari Wulandari', roles: owned, banner });
+    }
   }
 }};
 
@@ -3010,10 +3017,469 @@ const UF25 = {
   }
 }};
 
+/* ======================================================================
+   UF-01 children · Login > Dashboard per role
+   Shared skeleton (sapaan, kelengkapan profil, agenda, rekomendasi, poin & badge)
+   + section khusus per role.
+   ====================================================================== */
+const roleCard = (k, t, meta, cta) => `<div class="w-[72%] shrink-0 snap-start sm:w-auto border border-neutral-300 rounded p-3 flex flex-col gap-2 min-w-0">${ph(k,'aspect-video w-full rounded-sm')}<span class="font-mono text-[11px] text-neutral-500 uppercase">${k}</span><span class="text-sm font-medium">${t}</span><span class="text-xs text-neutral-500">${meta}</span><div class="pt-1 mt-auto">${btn(cta||'Lihat detail',null,'secondary','w-full')}</div></div>`;
+const recoRow = (title, basis, cards) => `
+  <section class="flex flex-col gap-3 min-w-0">
+    <div class="flex flex-wrap items-baseline justify-between gap-2"><h3 class="text-sm font-semibold">${title}</h3><span class="text-xs text-neutral-500">${basis}</span></div>
+    <div class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-px-5 -mx-5 px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:px-0 sm:pb-0 sm:grid sm:grid-cols-3 sm:overflow-visible" role="region" aria-label="${title}, geser untuk melihat lainnya">${cards.map(c=>roleCard(...c)).join('')}</div>
+    <div class="flex justify-center gap-1.5 sm:hidden" aria-hidden="true">${cards.map((_,i)=>`<span class="h-1.5 rounded-full ${i===0?'w-4 bg-neutral-900':'w-1.5 bg-neutral-300'}"></span>`).join('')}</div>
+  </section>`;
+const panel = (title, inner, link) => `<section class="border border-neutral-300 rounded p-4 flex flex-col gap-3 min-w-0"><div class="flex items-center gap-2"><h3 class="text-sm font-semibold">${title}</h3>${link?`<span class="ml-auto text-xs underline">${link}</span>`:''}</div>${inner}</section>`;
+const agendaList = (items) => `<ul class="flex flex-col divide-y divide-neutral-200">${items.map(([d,t,tag])=>`<li class="py-2 flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-x-4"><span class="font-mono text-xs text-neutral-500 sm:w-32 sm:shrink-0">${d}</span><span class="text-sm flex-1">${t}</span>${tag?`<span class="sm:ml-auto">${pill(tag)}</span>`:''}</li>`).join('')}</ul>`;
+const meter = (label, pct, note) => `<div><div class="flex justify-between text-xs mb-1"><span class="text-neutral-600">${label}</span><span class="font-mono">${pct}%</span></div><div class="h-2 bg-neutral-200 rounded"><div class="h-2 bg-neutral-900 rounded" style="width:${pct}%"></div></div>${note?`<p class="text-xs text-neutral-500 mt-1">${note}</p>`:''}</div>`;
+const simpleList = (items) => `<ul class="flex flex-col gap-2">${items.map(([t,sub,right])=>`<li class="flex items-start gap-3 min-w-0">${ph('','w-8 h-8 rounded shrink-0')}<div class="min-w-0 flex-1"><p class="text-sm font-medium">${t}</p>${sub?`<p class="text-xs text-neutral-500">${sub}</p>`:''}</div>${right?`<span class="shrink-0 text-xs">${right}</span>`:''}</li>`).join('')}</ul>`;
+
+/* Role config: who, email, nav, KPI, recos, role-specific panels, notes */
+const ROLE_DASH = {
+  talent: {
+    code:'UF-01-1', name:'Digital Talent', person:'Sari Wulandari', email:'sari@email.com',
+    interests:'Data & AI, Cloud',
+    kpi:[['Event diikuti','4'],['Lowongan tersimpan','6'],['Sertifikasi','2'],['Poin','320']],
+    recos:[['Lowongan untuk Anda','Skill: Python, SQL, Cloud',[['Lowongan','Data Engineer · Telko Raya','Jakarta · Hybrid · s.d. 30 Okt','Lihat lowongan'],['Lowongan','Cloud Support Intern · Nusantara Ventures','Remote · s.d. 12 Nov','Lihat lowongan'],['Lowongan','Junior Data Analyst · KasirKu','Surabaya · s.d. 20 Nov','Lihat lowongan']]],
+           ['Pelatihan & event','Minat: Data & AI, Cloud',[['Program','Sertifikasi Cloud Fundamentals','Online · 4 minggu','Daftar'],['Event','AI Builders Meetup','24 Okt · Hub Malang','Gabung'],['Event','Career Day Digital Talent','2 Nov · Hub Bandung','Gabung']]]],
+    panels: () => [
+      panel('Perjalanan skill', `${meter('Data & AI',70,'2 dari 3 modul inti selesai')}${meter('Cloud',40,'Lanjutkan Sertifikasi Cloud Fundamentals')}`,'Kelola skill'),
+      panel('Lowongan tersimpan', simpleList([['Data Engineer','Telko Raya · tenggat 30 Okt',pill('5 HARI LAGI')],['UI/UX Intern','BelajarAI · tenggat 8 Nov',''],['Product Analyst','Panen.id · tenggat 15 Nov','']]),'Lihat semua'),
+    ],
+    agenda:[['Kam, 24 Okt · 09.00','AI Builders Meetup · Hub Malang','TERDAFTAR'],['Sel, 29 Okt · 19.00','Webinar Keamanan Siber UMKM','ONLINE']],
+    notes:[['Fokus','Karier & skill: lowongan sesuai skill, pelatihan/sertifikasi, event networking.'],['Section khusus','Perjalanan skill (progress per bidang minat) dan lowongan tersimpan dengan tenggat terdekat.'],['Sumber rekomendasi','Interest saat profiling (UF-01) + skill di profil.']]
+  },
+  sme: {
+    code:'UF-01-2', name:'SME Owner', person:'Hendra Wijaya', email:'hendra@kopisari.id',
+    interests:'Pemasaran online, Pembukuan digital',
+    kpi:[['Skor digitalisasi','58/100'],['Program diikuti','1'],['Event diikuti','2'],['Poin','180']],
+    recos:[['Program pendampingan UMKM','Kebutuhan: Pendampingan, Akses pasar',[['Program','Go Digital UMKM','Dibuka s.d. 5 Nov · Hub Malang','Daftar'],['Program','Literasi Digital UMKM Batu','Nov 2026 · Offline','Daftar'],['Program','Kelas Ekspor Online','Online · 3 minggu','Daftar']]],
+           ['Pelatihan & event','Minat: Pemasaran online, Pembukuan digital',[['Event','Workshop Foto Produk dengan HP','30 Okt · Hub Malang','Gabung'],['Event','Webinar Pembukuan Digital','4 Nov · Online','Gabung'],['Benefit','Meeting room 2 jam','Voucher · Hub Malang','Ambil voucher']]]],
+    panels: () => [
+      panel('Tingkat digitalisasi usaha', `${meter('Skor saat ini',58,'Naik 12 poin sejak ikut Go Digital UMKM')}<ul class="flex flex-col gap-2">${checkRow('Toko online di marketplace',true)}${checkRow('Pembayaran QRIS',true)}${checkRow('Pembukuan digital',false,'Rekomendasi: Webinar Pembukuan Digital')}${checkRow('Iklan media sosial',false)}</ul>`,'Ulangi self-assessment'),
+      panel('Program berjalan', `<div class="flex items-center gap-3">${ph('','w-10 h-10 rounded shrink-0')}<div class="min-w-0 flex-1"><p class="text-sm font-medium">Go Digital UMKM · Batch 3</p><p class="text-xs text-neutral-500">Pendamping: Ferdi Kurniawan · Minggu 3 / 6</p></div></div>${meter('Progress',50)}`,'Buka program'),
+    ],
+    agenda:[['Rab, 30 Okt · 10.00','Workshop Foto Produk dengan HP · Hub Malang','TERDAFTAR'],['Jum, 1 Nov · 14.00','Pendampingan 1:1 dengan Ferdi','PROGRAM']],
+    notes:[['Fokus','Digitalisasi usaha: program pendampingan, pelatihan praktis, akses pasar.'],['Section khusus','Tingkat digitalisasi (self-assessment + checklist) dan progress program yang sedang diikuti.'],['Benefit','Voucher ruang Hub muncul di rekomendasi karena SME sering butuh tempat meeting/foto produk.']]
+  },
+  founder: {
+    code:'UF-01-3', name:'Startup Founder', person:'Rani Pratama', email:'rani@panen.id',
+    interests:'Pendanaan, Go-to-market',
+    kpi:[['Aplikasi program','2'],['Interest Funder','3'],['Pilot berjalan','1'],['Poin','410']],
+    recos:[['Program untuk startup Anda','Tahap: MVP · Sektor: Agritech',[['Program','Inkubasi Startup Batch 5','Dibuka s.d. 30 Okt · Cocok untuk Anda','Daftar'],['Program','Akselerasi Agritech Jatim','Jan–Mar 2027','Daftar'],['Program','Akselerasi Fintech 2026','Dibuka s.d. 15 Nov','Lihat detail']]],
+           ['Event networking & mentor','Kebutuhan: Investor, Mentoring',[['Event','Demo Day Inkubasi Batch 5','12 Des · Hub Malang','Gabung'],['Mentor','Lina Hartono · Fundraising','Surabaya · 12 sesi','Ajukan sesi'],['Event','Pitching Clinic','7 Nov · Hub Malang','Gabung']]]],
+    panels: () => [
+      panel('Pendanaan & kemitraan', simpleList([['Nusantara Ventures','Funder · minta akses data confidential',btn('Tinjau',null,'primary','px-2 py-1')],['Agung · Telko Raya','Pilot "Prediksi panen" · M2 berjalan',pill('PILOT')],['Willy · Nusantara Ventures','Pertemuan 29 Okt · 10.00',pill('JADWAL')]]),'UF-11 · UF-06'),
+      panel('Status aplikasi & profil', `<ul class="flex flex-col gap-2">${checkRow('Inkubasi Startup Batch 5 — seleksi tahap 2',false,'Pengumuman 5 Nov')}${checkRow('Akselerasi Fintech 2026 — tidak lolos',true,'Lihat masukan reviewer')}</ul>${meter('Kelengkapan profil startup',85,'Lengkapi cap table agar profil bisa diverifikasi (UF-24)')}`,'Lihat aplikasi'),
+    ],
+    agenda:[['Sel, 29 Okt · 10.00','Pertemuan dengan Nusantara Ventures · online','PENDANAAN'],['Kam, 7 Nov · 13.00','Pitching Clinic · Hub Malang','TERDAFTAR']],
+    notes:[['Fokus','Pertumbuhan startup: program inkubasi/akselerasi, investor, pilot korporasi, mentor.'],['Section khusus','Pendanaan & kemitraan (permintaan akses Funder UF-11, pilot UF-06, jadwal pertemuan) dan status aplikasi + kelengkapan profil startup.'],['Prioritas','Item yang butuh aksi founder (mis. permintaan akses data) diberi tombol langsung.']]
+  },
+  researcher: {
+    code:'UF-01-4', name:'Researcher', person:'Budi Santoso', email:'budi@ub.ac.id',
+    interests:'AI & data, Ekonomi digital',
+    kpi:[['Riset dibagikan','3'],['Diskusi baru','5'],['Kolaborasi','2'],['Poin','260']],
+    recos:[['Kolaborasi & kebutuhan industri','Expertise: Machine learning, NLP',[['Kebutuhan industri','Model deteksi fraud transaksi UMKM','PT Telko Raya · tenggat 15 Nov','Ajukan interest'],['Kolaborasi riset','Dataset ujaran kebencian multibahasa','Dewi Lestari · ITB','Lihat detail'],['Knowledge sharing','Pembicara: AI untuk UMKM','Hub Malang · 2 Nov','Ajukan diri']]],
+           ['Riset & event relevan','Minat: AI & data, Ekonomi digital',[['Riset','Adopsi QRIS di pasar tradisional','Maya Putri · 2026','Baca'],['Event','AI Builders Meetup','24 Okt · Hub Malang','Gabung'],['Riset','Model bahasa untuk layanan publik','Andi Wijaya · BRIN','Baca']]]],
+    panels: () => [
+      panel('Riset saya', `<ul class="flex flex-col divide-y divide-neutral-200">${[['Deteksi hoaks berbahasa Indonesia','412 dilihat · 3 diskusi baru'],['Adopsi pembayaran digital UMKM','230 dilihat · 2 diskusi baru']].map(([t,m])=>`<li class="py-2"><p class="text-sm font-medium">${t}</p><p class="text-xs text-neutral-500">${m}</p></li>`).join('')}</ul>${btn('+ Bagikan riset (UF-08)',null,'secondary','self-start')}`,'Lihat semua'),
+      panel('Butuh respon', simpleList([['Undangan collaborator','dari Dewi Lestari · Dataset ujaran kebencian',btn('Terima',null,'primary','px-2 py-1')],['Agung bertanya di diskusi','"Siapa PIC yang bisa dihubungi?"',btn('Balas',null,'secondary','px-2 py-1')]]),'UF-08 · UF-09'),
+    ],
+    agenda:[['Kam, 24 Okt · 09.00','AI Builders Meetup · Hub Malang','TERDAFTAR'],['Sab, 2 Nov · 13.00','Knowledge sharing: AI untuk UMKM','PEMBICARA']],
+    notes:[['Fokus','Riset & kolaborasi: kebutuhan industri, ajakan kolaborasi, knowledge sharing.'],['Section khusus','Statistik riset yang dibagikan dan daftar "butuh respon" (undangan collaborator, pertanyaan di diskusi).'],['Sumber rekomendasi','Expertise di profil researcher (UF-07).']]
+  },
+  mentor: {
+    code:'UF-01-5', name:'Mentor', person:'Ferdi Kurniawan', email:'ferdi@mentor.id',
+    interests:'Product, Fundraising',
+    kpi:[['Sesi bulan ini','6'],['Mentee aktif','4'],['Jam mentoring','18'],['Rating','4,8']],
+    recos:[['Undangan & peluang mentoring','Keahlian: Product, Fundraising',[['Undangan','Mentoring 1:1 · AI Builders Meetup','24 Okt · Hub Malang','Tinjau undangan'],['Permintaan sesi','Panen.id ingin sesi Fundraising','Tahap MVP · Agritech','Terima / tolak'],['Program','Mentor Inkubasi Batch 6','Pendaftaran mentor dibuka','Ajukan diri']]],
+           ['Event untuk mentor','Lokasi: Malang',[['Event','Mentor Gathering Jatim','9 Nov · Hub Malang','Gabung'],['Event','Startup Clinic','2 Nov · Hub Malang','Lihat'],['Event','Demo Day Batch 5 (juri)','12 Des · Hub Malang','Lihat']]]],
+    panels: () => [
+      panel('Jadwal sesi minggu ini', agendaList([['Sen · 13.00','Panen.id — review pitch deck','1:1'],['Rab · 10.00','Kelas Product Discovery · Batch 5','KELAS'],['Kam · 15.00','KasirKu — strategi pricing','1:1']]),'Atur ketersediaan'),
+      panel('Mentee & feedback', `${simpleList([['Panen.id','Rani Pratama · 3 sesi','★ 5,0'],['KasirKu','Budi Hartono · 2 sesi','★ 4,5'],['Kopi Sari','Hendra · UMKM · 1 sesi','★ 4,8']])}`,'Lihat semua'),
+    ],
+    agenda:[['Kam, 24 Okt · 13.00','Mentoring 1:1 · AI Builders Meetup','UNDANGAN'],['Sab, 9 Nov · 10.00','Mentor Gathering Jatim','TERDAFTAR']],
+    notes:[['Fokus','Kontribusi sebagai mentor: undangan event (UF-15), permintaan sesi, jadwal, mentee.'],['Section khusus','Jadwal sesi minggu ini dan daftar mentee + rating feedback.'],['Status','Dashboard ini tampil setelah Mentor diverifikasi Core Team (UF-01 langkah verifikasi); badge "Terverifikasi" di header.']]
+  }
+};
+
+const roleLogin = (r) => `
+  ${appHeader(`<span class="text-sm text-neutral-600 hidden sm:inline">Belum punya akun?</span>${flowLink('Daftar','UF-01')}`)}
+  ${page(`
+    <div class="border border-neutral-300 rounded p-6 flex flex-col gap-4">
+      <div><h2 class="text-xl font-semibold">Masuk ke GSIH</h2><p class="text-sm text-neutral-600">Gunakan akun yang Anda daftarkan.</p></div>
+      ${field('lgEmail','Email','email','','',r.email)}
+      ${field('lgPass','Kata sandi','password','','','••••••••')}
+      <div class="flex items-center justify-between text-sm"><label class="flex items-center gap-2"><input type="checkbox" class="accent-neutral-900" checked> Ingat saya</label><span class="underline">Lupa kata sandi?</span></div>
+      ${btn('Masuk','dashboard','primary','w-full')}
+      <div class="flex items-center gap-3 text-xs text-neutral-500"><span class="h-px flex-1 bg-neutral-300"></span>atau<span class="h-px flex-1 bg-neutral-300"></span></div>
+      ${btn('Masuk dengan Google',null,'secondary','w-full')}
+    </div>`,'max-w-md')}`;
+
+/* opts: person (override nama), roles (role yang dimiliki akun → isi pemilih role), banner (pesan di atas) */
+const roleDashboard = (r, id, opts={}) => {
+  const person = opts.person || r.person, roles = opts.roles || [id];
+  const sw = `<label class="sr-only" for="rsw">Role aktif</label><select id="rsw" data-role-switch class="${roles.length>1?'':'hidden sm:block'} border ${roles.length>1?'border-neutral-900':'border-neutral-400'} rounded px-2 py-1 text-sm bg-white">${roles.map(x=>`<option value="${x}" ${x===id?'selected':''}>${ROLE_DASH[x].name}</option>`).join('')}</select>`;
+  return `
+  ${appHeader(`${bell(2)}${sw}${avatar(person.split(' ')[0])}`)}
+  <div class="px-5 py-6 flex flex-col gap-6">
+    ${opts.banner ? notice(opts.banner, true) : ''}
+    <div class="flex flex-wrap items-center gap-3">
+      <div><h2 class="text-xl font-semibold">Halo, ${person.split(' ')[0]}</h2><p class="text-sm text-neutral-600">${r.name}${id==='mentor'?' · <b>✓ Terverifikasi</b>':''}</p></div>
+      <div class="sm:ml-auto">${btn('Lengkapi profil (80%)',null,'secondary')}</div>
+    </div>
+    ${kpi(r.kpi)}
+    ${recoRow(...r.recos[0])}
+    <div class="grid gap-4 md:grid-cols-2">${r.panels().join('')}</div>
+    ${recoRow(...r.recos[1])}
+    <div class="grid gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      ${panel('Agenda saya', agendaList(r.agenda), 'Lihat kalender')}
+      ${panel('Poin & badge', `<div class="flex items-center gap-3">${[1,2,3].map(()=>ph('','w-10 h-10 rounded-full shrink-0')).join('')}<span class="text-xs text-neutral-500">+2 badge lagi</span></div>${meter('Menuju badge berikutnya',64,'90 poin lagi')}`, 'Tukar benefit')}
+    </div>
+  </div>`;
+};
+
+const makeRoleFlow = (id) => {
+  const r = ROLE_DASH[id];
+  return {
+    type:'Publik', parent:'UF-01', name:`${r.name}: Login > Dashboard`, who:`${r.name} (${r.person})`,
+    noteRef:`Turunan dari UF-01 (Participant Registration): pengguna ${r.name} yang sudah terdaftar login lalu melihat dashboard sesuai role.`,
+    order:['login','dashboard'],
+    screens:{
+      login:{ title:'Login', url:'gsih.id/masuk', steps:'Login', actor:r.name,
+        notes:[['Login','Email & kata sandi, atau Masuk dengan Google. "Ingat saya" aktif secara default.'],['Multi-role','Bila akun punya lebih dari satu role, dashboard dibuka pada role terakhir yang dipakai; ganti lewat pemilih role di header.']],
+        render: () => roleLogin(r) },
+      dashboard:{ title:`Dashboard ${r.name}`, url:'gsih.id/dasbor', steps:'Dashboard', actor:r.name,
+        notes:[['Kerangka sama','Sapaan & role, ringkasan angka, rekomendasi (carousel di mobile), agenda saya, poin & badge.'],...r.notes,['Rekomendasi','Berdasarkan interest: '+r.interests+'.']],
+        render: () => roleDashboard(r, id) }
+    }
+  };
+};
+const UF01_CHILDREN = Object.fromEntries(Object.keys(ROLE_DASH).map(id=>[ROLE_DASH[id].code, makeRoleFlow(id)]));
+
+/* ======================================================================
+   UF-01-3 · Startup Founder: multi-startup (kosong → buat → 1+ startup)
+   ====================================================================== */
+const FOUNDER_STARTUPS = [
+  {id:'panen', name:'Panen.id', sector:'Agritech', stage:'MVP', city:'Malang', status:'Verified',
+   kpi:[['Aplikasi program','2'],['Interest Funder','3'],['Pilot berjalan','1'],['Kelengkapan profil','85%']]},
+  {id:'dataku', name:'DataKu', sector:'Edutech', stage:'Ide', city:'Malang', status:'Menunggu verifikasi',
+   kpi:[['Aplikasi program','0'],['Interest Funder','0'],['Pilot berjalan','0'],['Kelengkapan profil','60%']]}
+];
+const fsCur = () => FOUNDER_STARTUPS.find(x=>x.id===state.fStartup) || FOUNDER_STARTUPS[0];
+const startupCard = (st, on) => `
+  <div class="border ${on?'border-neutral-900 border-2':'border-neutral-300'} rounded p-4 flex flex-col gap-3 min-w-0">
+    <div class="flex items-start gap-3">${ph('','w-11 h-11 rounded shrink-0')}<div class="min-w-0 flex-1 flex flex-col gap-1"><p class="text-sm font-semibold">${st.name}</p><p class="text-xs text-neutral-500">${st.sector} · ${st.stage} · ${st.city}</p>${pill(st.status==='Verified'?'✓ VERIFIED':'MENUNGGU VERIFIKASI', st.status==='Verified')}</div></div>
+    <div class="flex flex-wrap gap-2 text-xs border-t border-neutral-200 pt-2">
+      ${on?'<span class="font-medium">● Sedang ditampilkan</span>':`<button type="button" data-set="fStartup:${st.id}" class="underline">Tampilkan di dashboard</button>`}
+      <span class="ml-auto underline">Kelola profil</span>
+    </div>
+  </div>`;
+
+/* Dashboard founder tanpa startup (dipakai juga di UF-01 layar dashboard untuk role Founder) */
+const founderEmptyDashboard = (person='Rani Pratama', banner='') => {
+  const r = ROLE_DASH.founder;
+  return `
+  ${appHeader(`${bell(1)}${avatar(person.split(' ')[0])}`)}
+  <div class="px-5 py-6 flex flex-col gap-6">
+    ${banner ? notice(banner, true) : ''}
+    <div><h2 class="text-xl font-semibold">Halo, ${person.split(' ')[0]}</h2><p class="text-sm text-neutral-600">Startup Founder</p></div>
+    <section class="border-2 border-dashed border-neutral-400 rounded p-6 flex flex-col sm:flex-row gap-5 items-start sm:items-center bg-neutral-50">
+      ${ph('Ilustrasi','w-28 h-28 rounded shrink-0')}
+      <div class="flex flex-col gap-2 min-w-0 flex-1">
+        <h3 class="text-lg font-semibold">Anda belum punya startup</h3>
+        <p class="text-sm text-neutral-600">Buat profil startup untuk mendaftar program inkubasi/akselerasi, tampil di direktori Funder setelah diverifikasi, dan menerima ajakan pilot dari korporasi.</p>
+        <ul class="text-xs text-neutral-600 flex flex-col gap-1"><li>• Satu akun bisa mengelola lebih dari satu startup.</li><li>• Profil startup diverifikasi Core Team sebelum tampil publik (UF-24).</li></ul>
+        <div class="flex flex-wrap gap-3 pt-1">${btn('+ Buat startup',null,'primary','','data-flow="UF-01-3" data-flow-screen="create"')}${btn('Pelajari dulu',null,'ghost')}</div>
+      </div>
+    </section>
+    ${kpi([['Startup','0'],['Aplikasi program','0'],['Event diikuti','0'],['Poin','50']])}
+    ${recoRow('Mulai dari sini','Minat: '+r.interests,[['Event','Pitching Clinic','7 Nov · Hub Malang','Gabung'],['Mentor','Lina Hartono · Fundraising','Surabaya · 12 sesi','Lihat profil'],['Event','Startup 101: Validasi Ide','Online · 2 Nov','Gabung']])}
+    <section class="border border-neutral-300 rounded p-4 flex flex-col gap-2 opacity-70">
+      <div class="flex items-center gap-2"><h3 class="text-sm font-semibold">Program untuk startup Anda</h3><span class="ml-auto">${pill('PERLU STARTUP')}</span></div>
+      <p class="text-sm text-neutral-600">Rekomendasi program inkubasi & akselerasi muncul setelah Anda membuat profil startup (sesuai sektor & tahap).</p>
+    </section>
+    <div class="grid gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      ${panel('Agenda saya', `<p class="text-sm text-neutral-500">Belum ada agenda. Gabung event untuk mengisinya.</p>`, 'Lihat event')}
+      ${panel('Poin & badge', `<div class="flex items-center gap-3">${ph('','w-10 h-10 rounded-full shrink-0')}<span class="text-xs text-neutral-500">Badge "First Step" setelah check-in event pertama</span></div>${meter('Menuju badge berikutnya',10,'50 / 50 poin pendaftaran')}`, '')}
+    </div>
+  </div>`;
+};
+
+const founderCreate = () => `
+  ${appHeader(avatar('Rani'))}
+  ${page(`
+    ${btn('← Dashboard','empty','ghost','px-0 mb-2')}
+    <h2 class="text-xl font-semibold mb-1">Buat startup</h2>
+    <p class="text-sm text-neutral-600 mb-6">Anda bisa menambahkan startup lain kapan saja dari dashboard.</p>
+    <div class="flex items-center gap-4 mb-6">${ph('Logo','w-20 h-20 rounded')}${btn('Unggah logo',null,'secondary')}</div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      ${field('stName','Nama startup','text','Panen.id')}
+      ${select('stSector','Sektor',['Agritech','Fintech','Healthtech','Edutech','Logistik','E-commerce'])}
+      ${select('stStage','Tahap',['Ide','MVP','Early revenue','Growth'])}
+      ${field('stCity','Kota','text','Malang')}
+      ${field('stWeb','Website (opsional)','url','https://')}
+      ${field('stTeam','Jumlah tim','number','4')}
+    </div>
+    <div class="mt-4">${area('stDesc','Deskripsi singkat','Masalah yang diselesaikan dan solusinya',3)}</div>
+    <div class="mt-4">${upload('Pitch deck (opsional)','PDF, maks. 10 MB · bisa dilengkapi nanti')}</div>
+    ${notice('Setelah dibuat, profil startup masuk antrean verifikasi Core Team (UF-24). Sambil menunggu, Anda tetap bisa melengkapi profil.')}
+    <div class="flex flex-wrap gap-3 mt-6">${btn('Simpan startup','dashboard','primary','','data-set-on-go="fStartup:panen"')}${btn('Batal','empty','ghost')}</div>`)}`;
+
+/* opts: person, startups (daftar startup akun), roleSwitch (HTML pemilih role), banner, addAttr (atribut tombol tambah startup) */
+const founderDashboard = (opts={}) => {
+  const list = opts.startups || FOUNDER_STARTUPS, person = opts.person || 'Rani Pratama';
+  const addAttr = opts.addAttr || 'data-go="create"';
+  const r = ROLE_DASH.founder, st = list.find(x=>x.id===state.fStartup) || list[0], verified = st.status==='Verified';
+  const sw = list.length>1 ? `<label class="sr-only" for="fsSel">Startup aktif</label><select id="fsSel" data-startup-switch class="border border-neutral-900 rounded px-2 py-1 text-sm bg-white">${list.map(x=>`<option value="${x.id}" ${x.id===st.id?'selected':''}>${x.name}</option>`).join('')}</select>` : '';
+  return `
+  ${appHeader(`${bell(2)}${opts.roleSwitch||''}${sw}${avatar(person.split(' ')[0])}`)}
+  <div class="px-5 py-6 flex flex-col gap-6">
+    ${opts.banner ? notice(opts.banner, true) : ''}
+    <div class="flex flex-wrap items-center gap-3">
+      <div><h2 class="text-xl font-semibold">Halo, ${person.split(' ')[0]}</h2><p class="text-sm text-neutral-600">Startup Founder · menampilkan data <b>${st.name}</b></p></div>
+      <div class="sm:ml-auto">${btn('+ Tambah startup',null,'secondary','',addAttr)}</div>
+    </div>
+    <section class="flex flex-col gap-3">
+      <div class="flex items-baseline gap-2"><h3 class="text-sm font-semibold">Startup saya</h3><span class="text-xs text-neutral-500">${list.length} startup</span></div>
+      <div class="flex gap-3 overflow-x-auto snap-x snap-mandatory scroll-px-5 -mx-5 px-5 pb-2 [scrollbar-width:none] sm:mx-0 sm:px-0 sm:pb-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-visible" role="region" aria-label="Startup saya, geser untuk melihat lainnya">${list.map(x=>`<div class="${list.length>1?'w-[80%]':'w-full'} shrink-0 snap-start sm:w-auto">${startupCard(x, x.id===st.id)}</div>`).join('')}
+        ${isMob() ? '' : `<button type="button" ${addAttr} class="border-2 border-dashed border-neutral-400 rounded p-4 flex flex-col items-center justify-center gap-1 text-sm text-neutral-600 min-h-[7rem] hover:border-neutral-900"><span class="text-2xl leading-none">+</span>Tambah startup</button>`}</div>
+      <div class="${list.length>1?'flex':'hidden'} justify-center gap-1.5 sm:hidden" aria-hidden="true">${list.map((x)=>`<span class="h-1.5 rounded-full ${x.id===st.id?'w-4 bg-neutral-900':'w-1.5 bg-neutral-300'}"></span>`).join('')}</div>
+    </section>
+    ${kpi(st.kpi)}
+    ${verified ? `
+      ${recoRow(...r.recos[0])}
+      <div class="grid gap-4 md:grid-cols-2">${r.panels().join('')}</div>` : `
+      <section class="border border-neutral-900 rounded p-4 flex flex-col gap-2">
+        <div class="flex items-center gap-2"><h3 class="text-sm font-semibold">${st.name} menunggu verifikasi</h3><span class="ml-auto">${pill('UF-24')}</span></div>
+        <p class="text-sm text-neutral-600">Program, direktori Funder, dan ajakan pilot terbuka setelah profil diverifikasi Core Team. Lengkapi profil agar proses lebih cepat.</p>
+        ${meter('Kelengkapan profil',60,'Kurang: pitch deck, foto tim')}
+        <div>${btn('Lengkapi profil',null,'primary')}</div>
+      </section>`}
+    ${recoRow(...r.recos[1])}
+    <div class="grid gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+      ${panel('Agenda saya', agendaList(verified ? r.agenda : r.agenda.filter(a=>a[2]!=='PENDANAAN')), 'Lihat kalender')}
+      ${panel('Poin & badge', `<div class="flex items-center gap-3">${[1,2,3].map(()=>ph('','w-10 h-10 rounded-full shrink-0')).join('')}<span class="text-xs text-neutral-500">+2 badge lagi</span></div>${meter('Menuju badge berikutnya',64,'90 poin lagi')}`, 'Tukar benefit')}
+    </div>
+  </div>`;
+};
+
+(() => {
+  const f = UF01_CHILDREN['UF-01-3'];
+  f.order = ['login','empty','create','dashboard'];
+  f.screens.empty = { title:'Dashboard — belum ada startup', url:'gsih.id/dasbor', steps:'Dashboard (kosong)', actor:'Startup Founder',
+    notes:[['Empty state','Founder baru belum punya startup: kartu ajakan "+ Buat startup" ditempatkan paling atas.'],['Tetap berguna','Rekomendasi yang tidak butuh startup (event, mentor) tetap tampil; rekomendasi program dikunci dengan label "Perlu startup".'],['Multi-startup','Dijelaskan sejak awal bahwa satu akun bisa mengelola lebih dari satu startup.']],
+    render: () => founderEmptyDashboard() };
+  f.screens.create = { title:'Buat startup', url:'gsih.id/startup/baru', steps:'Buat startup', actor:'Startup Founder',
+    notes:[['Form','Data minimum: nama, sektor, tahap, kota; logo, website, pitch deck bisa menyusul.'],['Verifikasi','Setelah disimpan, startup masuk antrean verifikasi Core Team (UF-24).'],['Tambah lagi','Form yang sama dipakai untuk startup kedua, ketiga, dst.']],
+    render: founderCreate };
+  f.screens.dashboard = Object.assign({}, f.screens.dashboard, {
+    title:'Dashboard — 1+ startup', steps:'Dashboard',
+    notes:[['Startup saya','Semua startup milik founder tampil sebagai card dengan status verifikasi; card "+ Tambah startup" selalu ada.'],['Startup aktif','Pemilih startup di header (dan tombol "Tampilkan di dashboard") menentukan data yang tampil: angka ringkasan, rekomendasi program, pendanaan & pilot.'],['Belum Verified','Untuk startup yang menunggu verifikasi, section pendanaan & program diganti ajakan melengkapi profil.'],['Fokus','Pertumbuhan startup: program, investor, pilot korporasi, mentor.']],
+    render: founderDashboard });
+})();
+
+/* UF-01 layar dashboard: untuk role Startup Founder pakai empty state founder yang sama dengan UF-01-3 */
+(() => { const d = UF01.screens.dashboard, old = d.render;
+  d.render = () => state.role==='founder' ? founderEmptyDashboard('Rani Pratama', '✓ Akun aktif. Langkah berikutnya: buat profil startup Anda.') : old();
+  d.notes = [...d.notes, ['Startup Founder','Founder yang baru mendaftar belum punya startup, jadi dashboard tampil sebagai empty state yang sama dengan UF-01-3 (layar 02). Tombol "+ Buat startup" membuka form di UF-01-3.']];
+})();
+
+
+/* ======================================================================
+   UF-02 children · Partner Login > Dashboard (Funder, Korporasi & BUMN)
+   ====================================================================== */
+const PARTNER_DASH = {
+  funder: {
+    code:'UF-02-1', name:'Funder', person:'Willy', org:'Nusantara Ventures', email:'willy@nusantara.vc',
+    nav:['Dasbor','Direktori startup','Pendanaan','Lowongan'],
+    basis:'Tesis: Agritech, Fintech · Seed–Series A · Rp1–5 M',
+    kpi:[['Startup cocok','24'],['Interest aktif','5'],['Akses data disetujui','3'],['Pertemuan bulan ini','2']],
+    recos:[['Startup cocok dengan tesis Anda','Tesis: Agritech, Fintech · Seed–Series A',[['Startup','Panen.id · Agritech','MVP · butuh Rp2–3 M · Verified','Lihat profil'],['Startup','KasirKu · Fintech','Early revenue · Rp1–5 M','Lihat profil'],['Startup','TaniPintar · Agritech','MVP · Rp1 M','Lihat profil']]],
+           ['Event & demo day','Lokasi: Jawa Timur, online',[['Event','Demo Day Inkubasi Batch 5','12 Des · Hub Malang','Gabung'],['Event','Investor Roundtable Agritech','20 Nov · Online','Gabung'],['Program','Akselerasi Agritech Jatim','Cari mitra pendana','Lihat detail']]]],
+    panels: () => [
+      panel('Pipeline pendanaan', `<div class="grid grid-cols-3 gap-2 text-center">${[['Interest','5'],['Pertemuan','2'],['Deal','1']].map(([k,v])=>`<div class="border border-neutral-300 rounded p-2"><p class="text-xs text-neutral-500">${k}</p><p class="font-mono font-semibold">${v}</p></div>`).join('')}</div>${simpleList([['Panen.id','Pertemuan 29 Okt · 10.00',pill('IN PROGRESS')],['KasirKu','Deal Rp1,5 M',pill('DEAL',true)]])}`,'UF-11'),
+      panel('Butuh tindakan', simpleList([['TaniPintar menyetujui akses data','Data confidential sudah terbuka',btn('Tinjau data',null,'primary','px-2 py-1')],['SehatDesa menolak akses','Profil publik tetap bisa dilihat',''],['Atur pertemuan dengan Panen.id','Usulkan 2–3 opsi jadwal',btn('Atur',null,'secondary','px-2 py-1')]]),'Lihat semua'),
+    ],
+    agenda:[['Sel, 29 Okt · 10.00','Pertemuan dengan Panen.id · online','PENDANAAN'],['Rab, 20 Nov · 15.00','Investor Roundtable Agritech','TERDAFTAR']],
+    notes:[['Fokus','Deal flow: startup terverifikasi yang cocok dengan tesis investasi (preferensi saat registrasi UF-02).'],['Section khusus','Pipeline pendanaan (Interest → Pertemuan → Deal, UF-11) dan daftar "butuh tindakan" (akses data disetujui, jadwal pertemuan).'],['Akses','Hanya tampil penuh bila organisasi sudah Verified oleh Core Team.']]
+  },
+  corp: {
+    code:'UF-02-2', name:'Korporasi & BUMN', person:'Agung', org:'PT Telko Raya', email:'agung@telkoraya.co.id',
+    nav:['Dasbor','Direktori startup','Pilot','Lowongan'],
+    basis:'Kebutuhan: deteksi fraud, IoT jaringan · Area: Pilot, Rekrutmen',
+    kpi:[['Pilot berjalan','2'],['Milestone perlu review','1'],['Lowongan tayang','3'],['Pelamar diarahkan','128']],
+    recos:[['Startup untuk kebutuhan bisnis Anda','Kebutuhan: deteksi fraud, IoT jaringan',[['Startup','KasirKu · Fintech','Fraud scoring untuk UMKM · Verified','Lihat profil'],['Startup','Panen.id · Agritech','Prediksi panen · pilot aktif','Lihat profil'],['Startup','SensorNet · IoT','Monitoring tower · MVP','Lihat profil']]],
+           ['Talenta & riset relevan','Untuk rekrutmen dan kolaborasi riset',[['Riset','Deteksi hoaks dengan IndoBERT','Budi Santoso · UB','Ajak kolaborasi'],['Event','Career Day Digital Talent','2 Nov · Hub Bandung','Jadi partner'],['Talenta','Digital Talent: Data & AI','64 talenta cocok','Lihat']]]],
+    panels: () => [
+      panel('Pilot & milestone', `${simpleList([['Prediksi panen × Panen.id','M2 berjalan · 1 milestone menunggu review',btn('Review',null,'primary','px-2 py-1')],['Fraud scoring × KasirKu','M1 selesai · M2 tenggat 12 Nov',pill('BERJALAN')]])}${meter('Rata-rata progress pilot',55)}`,'UF-06'),
+      panel('Lowongan', `<ul class="flex flex-col divide-y divide-neutral-200">${[['Data Engineer','Tayang sampai 30 Okt','412 dilihat'],['Product Designer','Tayang sampai 12 Nov','198 dilihat'],['Backend Developer','Tayang sampai 20 Nov','0 dilihat']].map(([t,d,v])=>`<li class="py-2 flex items-start gap-3"><div class="min-w-0 flex-1"><p class="text-sm font-medium">${t}</p><p class="text-xs text-neutral-500">${d}</p></div><span class="text-xs font-mono">${v}</span></li>`).join('')}</ul>${btn('+ Buat lowongan (UF-05)',null,'secondary','self-start')}`,'Kelola'),
+    ],
+    agenda:[['Jum, 25 Okt · 14.00','Review milestone M2 · Panen.id','PILOT'],['Sab, 2 Nov · 09.00','Career Day Digital Talent · booth Telko Raya','PARTNER']],
+    notes:[['Fokus','Open innovation: startup untuk pilot, talenta untuk rekrutmen, riset untuk kolaborasi.'],['Section khusus','Pilot & milestone yang butuh review (UF-06) dan ringkasan lowongan tayang (UF-05).'],['Sumber rekomendasi','Kebutuhan bisnis & area kolaborasi yang diisi saat registrasi Partner (UF-02).']]
+  }
+};
+const partnerDashboard = (r, id) => `
+  ${appHeader(`${bell(3)}${avatar(r.person+' · '+r.org)}`, r.nav)}
+  <div class="px-5 py-6 flex flex-col gap-6">
+    <div class="flex flex-wrap items-center gap-3">
+      <div><div class="flex flex-wrap items-center gap-2"><h2 class="text-xl font-semibold">${r.org}</h2>${pill('✓ VERIFIED')}</div><p class="text-sm text-neutral-600">${r.name} · PIC: ${r.person}</p></div>
+      <div class="sm:ml-auto">${btn(id==='funder'?'Cari startup':'+ Mulai pilot',null,'primary')}</div>
+    </div>
+    ${kpi(r.kpi)}
+    ${recoRow(...r.recos[0])}
+    <div class="grid gap-4 md:grid-cols-2">${r.panels().join('')}</div>
+    ${recoRow(...r.recos[1])}
+    ${panel('Agenda', agendaList(r.agenda), 'Lihat kalender')}
+  </div>`;
+const makePartnerFlow = (id) => {
+  const r = PARTNER_DASH[id];
+  return {
+    type:'Publik', parent:'UF-02', name:`${r.name}: Login > Dashboard`, who:`${r.name} (${r.person} · ${r.org})`,
+    noteRef:`Turunan dari UF-02 (Partner Registration): PIC ${r.name} yang organisasinya sudah Verified login lalu melihat dashboard Partner.`,
+    order:['login','dashboard'],
+    screens:{
+      login:{ title:'Login', url:'gsih.id/masuk', steps:'Login', actor:'Partner',
+        notes:[['Login','Sama dengan login participant; akun PIC partner diarahkan ke dashboard Partner.'],['Belum Verified','Bila organisasi belum diverifikasi, PIC masuk ke halaman status verifikasi (UF-02 layar 07).']],
+        render: () => roleLogin(r) },
+      dashboard:{ title:`Dashboard ${r.name}`, url:'gsih.id/partner/dasbor', steps:'Dashboard', actor:r.name,
+        notes:[['Kerangka sama','Identitas organisasi + Verified, ringkasan angka, 2 baris rekomendasi (carousel di mobile), 2 section khusus, agenda.'],...r.notes,['Rekomendasi','Berdasarkan '+r.basis+'.']],
+        render: () => partnerDashboard(r, id) }
+    }
+  };
+};
+const UF02_CHILDREN = Object.fromEntries(Object.keys(PARTNER_DASH).map(id=>[PARTNER_DASH[id].code, makePartnerFlow(id)]));
+
+/* ======================================================================
+   UF-18 children · Internal Login > Dashboard per role
+   Kerangka sama: menu samping sesuai role, ringkasan angka, "Butuh tindakan",
+   2 section khusus, agenda. Mobile: menu jadi baris tab yang bisa digeser.
+   ====================================================================== */
+const go2 = (label, uf, kind='secondary') => btn(label, null, kind, 'px-2 py-1 text-xs', `data-flow="${uf}"`);
+const actionList = (items) => `<ul class="flex flex-col divide-y divide-neutral-200">${items.map(([t,sub,uf,cta])=>`<li class="py-2.5 flex items-center gap-3 min-w-0"><div class="min-w-0 flex-1"><p class="text-sm font-medium">${t}</p><p class="text-xs text-neutral-500">${sub}</p></div>${uf?`<span class="shrink-0">${go2(cta||'Buka', uf, 'primary')}</span>`:''}</li>`).join('')}</ul>`;
+const barRows = (rows, max) => `<ul class="flex flex-col gap-2">${rows.map(([k,v,note])=>`<li class="text-sm"><div class="flex justify-between text-xs mb-1"><span>${k}</span><span class="font-mono">${note||v}</span></div><div class="h-2 bg-neutral-200 rounded"><div class="h-2 bg-neutral-900 rounded" style="width:${Math.round(v/max*100)}%"></div></div></li>`).join('')}</ul>`;
+
+const INTERNAL_DASH = {
+  spoke: {
+    code:'UF-18-1', name:'Spoke', person:'Jessica Tan', email:'jessica@spokebatu.id', nav:NAV_SPOKE,
+    scope:'Spoke Batu · Hub Malang',
+    kpi:[['Program ditangani','2'],['Participant aktif','60'],['Kehadiran minggu ini','85%'],['Laporan tertunda','1']],
+    actions:[['Laporan AI Builders Meetup belum disubmit','Tenggat 31 Okt · 3 hari lagi','UF-21','Buat laporan'],['Activity report minggu 6','Inkubasi Batch 5 · belum diisi','UF-22','Isi report'],['Literasi Digital UMKM Batu','Pengajuan program menunggu approval Hub','UF-19','Lihat status']],
+    panels: () => [
+      panel('Program yang ditangani', `${barRows([['Inkubasi Startup Batch 5',82,'82% hadir'],['Literasi Digital UMKM Batu',0,'mulai 7 Nov']],100)}`,'UF-22'),
+      panel('Event saya', simpleList([['Workshop Pitching Batu','7 Nov · menunggu approval',pill('APPROVAL')],['AI Builders Meetup','24 Okt · selesai',pill('LAPORAN BELUM')]]),'UF-23'),
+    ],
+    agenda:[['Kam, 24 Okt · 09.00','Mentoring GTM · Inkubasi Batch 5','AKTIVITAS'],['Kam, 31 Okt','Tenggat laporan AI Builders Meetup','TENGGAT']],
+    cta:['+ Create Event','UF-23'],
+    notes:[['Fokus','Pelaksana lapangan: aktivitas program, kehadiran participant, laporan.'],['Butuh tindakan','Laporan yang mendekati tenggat (UF-21) diletakkan paling atas karena laporan terlambat memblokir Create Event (UF-23).'],['Cakupan','Hanya program & event milik Spoke Batu sesuai cakupan undangan (UF-18).']]
+  },
+  hub: {
+    code:'UF-18-2', name:'Hub Management', person:'Dimas Prakoso', email:'dimas@hubmalang.id', nav:NAV_HUB,
+    scope:'Hub Malang · 3 Spoke',
+    kpi:[['Approval menunggu','3'],['Booking space menunggu','3'],['Event bulan ini','6'],['Follow-up Core Team','1']],
+    actions:[['Pengajuan program dari Spoke Batu','Literasi Digital UMKM Batu · Rp19 jt','UF-19','Review'],['Booking Meeting Room A','Rani Pratama · 24 Okt 14.00','UF-12','Review'],['Follow-up: cari mentor pengganti','Kelas legal 30 Okt · tenggat 25 Okt','UF-20','Tindak lanjut'],['Curated event: 8 pendaftar baru','AI Builders Bootcamp','UF-10','Kurasi']],
+    panels: () => [
+      panel('Pemakaian space minggu ini', `${barRows([['Event Hall',3,'3 / 5 hari'],['Meeting Room A',4,'4 / 5 hari'],['Co-working Desk',5,'penuh 2 hari']],5)}`,'UF-12'),
+      panel('Activity report Spoke', simpleList([['Spoke Batu','Minggu 6 · sesuai rencana',pill('OK')],['Spoke Kota Malang','Minggu 6 · perlu bantuan',pill('PERLU BANTUAN',true)],['Spoke Lawang','Minggu 6 · belum masuk',pill('BELUM')]]),'UF-22'),
+    ],
+    agenda:[['Kam, 24 Okt · 09.00','AI Builders Meetup · Hub Malang','EVENT'],['Jum, 25 Okt','Tenggat follow-up Core Team','TENGGAT']],
+    cta:['+ Create Program','UF-19'],
+    notes:[['Fokus','Pengelola Hub site: approval pengajuan Spoke, space, event, dan tindak lanjut dari Core Team.'],['Butuh tindakan','Semua antrean yang menunggu keputusan Hub (UF-19, UF-12, UF-20, UF-10) dikumpulkan di satu daftar.'],['Cakupan','Hub Malang beserta Spoke di bawahnya.']]
+  },
+  core: {
+    code:'UF-18-3', name:'Core Team', person:'Steven Halim', email:'steven@gsih.id', nav:NAV_CORE,
+    scope:'Nasional · semua Hub',
+    kpi:[['Program aktif','34'],['Butuh penanganan','3'],['Verifikasi menunggu','6'],['Laporan moderasi','3']],
+    actions:[['Verifikasi startup: 4 menunggu','DataKu, KlinikKu, LogistiKita, TaniPintar','UF-24','Periksa'],['Verifikasi Mentor: 2 menunggu','Sari Wulandari, Yoga Pratama','UF-14','Periksa'],['Review program dari Hub Malang','Literasi Digital UMKM Batu','UF-19','Review'],['Laporan moderasi diskusi','3 komentar dilaporkan','UF-09','Moderasi']],
+    panels: () => [
+      panel('Program berisiko', simpleList([['Inkubasi Startup Batch 5','Hub Malang · belum ada mentor · H-5',go2('Follow-up','UF-20')],['Literasi Digital Makassar','Hub Makassar · kehadiran turun 40%',''],['Bootcamp Cloud','Hub Bandung · laporan terlambat','']]),'UF-20'),
+      panel('Kinerja per Hub', `${barRows([['Hub Malang',82,'82% kehadiran'],['Hub Bandung',76,'76%'],['Hub Makassar',58,'58%']],100)}${ph('Grafik tren KPI','h-24 w-full rounded')}`,'Ecosystem dashboard'),
+    ],
+    agenda:[['Sen, 28 Okt · 10.00','Rapat bulanan dengan Komdigi','RAPAT'],['Jum, 1 Nov','Tutup periode verifikasi batch Nov','TENGGAT']],
+    cta:['+ Undang pengguna','UF-18'],
+    notes:[['Fokus','Operasional & monitoring ekosistem: verifikasi, review, moderasi, program berisiko.'],['Butuh tindakan','Antrean lintas UF (UF-24, UF-14, UF-19, UF-09) dalam satu daftar, terurut dari yang paling lama menunggu.'],['Monitoring','Program berisiko dan kinerja per Hub diringkas dari ecosystem dashboard (UF-20).']]
+  },
+  komdigi: {
+    code:'UF-18-4', name:'Komdigi Official', person:'Sastro Wibowo', email:'sastro@komdigi.go.id', nav:NAV_KOMDIGI,
+    scope:'Nasional · pengawasan anggaran',
+    kpi:[['Persetujuan menunggu','2'],['Anggaran disetujui','Rp1,2 M'],['Serapan','64%'],['Penerima manfaat','1.280']],
+    actions:[['Anggaran program: Literasi Digital UMKM Batu','Rp19 jt · disetujui Hub & Core Team','UF-19','Putuskan'],['Anggaran event: Workshop Pitching Batu','Rp6,5 jt · disetujui Core Team','UF-23','Putuskan']],
+    panels: () => [
+      panel('Serapan anggaran per Hub', `${barRows([['Hub Malang',72,'Rp173 jt / Rp240 jt'],['Hub Bandung',61,'Rp146 jt / Rp240 jt'],['Hub Makassar',40,'Rp96 jt / Rp240 jt']],100)}`,'Anggaran'),
+      panel('Dampak program', `${kpi([['Program selesai','12'],['Laporan masuk','11 / 12']])}${btn('Unduh ringkasan dampak (PDF)',null,'secondary','self-start')}`,'UF-21'),
+    ],
+    agenda:[['Sen, 28 Okt · 10.00','Rapat bulanan dengan Core Team','RAPAT'],['Kam, 31 Okt','Batas persetujuan anggaran Q4','TENGGAT']],
+    cta:null,
+    notes:[['Fokus','Pengawasan & keputusan anggaran: persetujuan, serapan, dampak program.'],['Butuh tindakan','Hanya pengajuan yang sudah lolos Hub & Core Team dan memiliki anggaran (UF-19, UF-23).'],['Laporan','Ringkasan dampak dapat diunduh untuk pelaporan internal kementerian.']]
+  }
+};
+
+const internalLogin = (r) => `
+  ${appHeader('')}
+  ${page(`
+    <div class="border border-neutral-300 rounded p-6 flex flex-col gap-4">
+      <div><p class="font-mono text-xs text-neutral-500">KONSOL EKOSISTEM</p><h2 class="text-xl font-semibold">Masuk</h2><p class="text-sm text-neutral-600">Khusus Spoke, Hub Management, Core Team, dan Komdigi Official.</p></div>
+      ${field('ilEmail','Email resmi','email','','',r.email)}
+      ${field('ilPass','Kata sandi','password','','','••••••••')}
+      <div class="flex items-center justify-between text-sm"><label class="flex items-center gap-2"><input type="checkbox" class="accent-neutral-900" checked> Ingat saya</label><span class="underline">Lupa kata sandi?</span></div>
+      ${btn('Masuk','dashboard','primary','w-full')}
+      <p class="text-xs text-neutral-500">Belum punya akun? Akun internal dibuat lewat undangan Core Team (UF-18).</p>
+    </div>`,'max-w-md')}`;
+
+const internalDashboard = (r) => `
+  ${adminShell(`${r.person.split(' ')[0]} · ${r.name}`, r.nav, 'Dasbor', `
+    ${isMob() ? `<nav class="flex gap-2 overflow-x-auto [scrollbar-width:none] -mx-5 px-5 pb-1" aria-label="Menu ${r.name}">${r.nav.map(n=>`<span class="shrink-0 whitespace-nowrap border ${n==='Dasbor'?'bg-neutral-900 text-white border-neutral-900':'border-neutral-400'} rounded-full px-3 py-1 text-sm">${n}</span>`).join('')}</nav>` : ''}
+    <div class="flex flex-wrap items-center gap-3">
+      <div><h2 class="text-xl font-semibold">Halo, ${r.person.split(' ')[0]}</h2><p class="text-sm text-neutral-600">${r.name} · ${r.scope}</p></div>
+      ${r.cta ? `<div class="sm:ml-auto">${btn(r.cta[0],null,'primary','',`data-flow="${r.cta[1]}"`)}</div>` : ''}
+    </div>
+    ${kpi(r.kpi)}
+    ${panel(`Butuh tindakan <span class="font-mono text-xs bg-neutral-900 text-white rounded-full px-1.5 ml-1">${r.actions.length}</span>`, actionList(r.actions), 'Lihat semua')}
+    <div class="grid gap-4 md:grid-cols-2">${r.panels().join('')}</div>
+    ${panel('Agenda & tenggat', agendaList(r.agenda), 'Lihat kalender')}
+  `)}`;
+
+const makeInternalFlow = (id) => {
+  const r = INTERNAL_DASH[id];
+  return {
+    type:'Internal', parent:'UF-18', name:`${r.name}: Login > Dashboard`, who:`${r.name} (${r.person})`,
+    noteRef:`Turunan dari UF-18 (Ecosystem Registration by Invitation): ${r.name} yang akunnya sudah aktif login lalu melihat dashboard sesuai role.`,
+    order:['login','dashboard'],
+    screens:{
+      login:{ title:'Login konsol', url:'gsih.id/konsol/masuk', steps:'Login', actor:r.name,
+        notes:[['Login internal','Halaman masuk terpisah dari portal publik dengan email resmi & kata sandi. (2FA belum diterapkan untuk saat ini.)'],['Tanpa daftar','Tidak ada tombol daftar: akun internal hanya dibuat lewat undangan Core Team (UF-18).']],
+        render: () => internalLogin(r) },
+      dashboard:{ title:`Dashboard ${r.name}`, url:'gsih.id/konsol/dasbor', steps:'Dashboard', actor:r.name,
+        notes:[['Kerangka sama','Menu samping sesuai role, ringkasan angka, "Butuh tindakan" (tiap item membuka UF terkait), 2 section khusus, agenda & tenggat.'],...r.notes,['Mobile','Menu samping berubah jadi baris tab yang bisa digeser di atas konten.']],
+        render: () => internalDashboard(r) }
+    }
+  };
+};
+const UF18_CHILDREN = Object.fromEntries(Object.keys(INTERNAL_DASH).map(id=>[INTERNAL_DASH[id].code, makeInternalFlow(id)]));
+
 const FLOW_DEFS = { 'UF-01':UF01, 'UF-02':UF02, 'UF-03':UF03, 'UF-04':UF04, 'UF-05':UF05, 'UF-06':UF06,
   'UF-07':UF07, 'UF-08':UF08, 'UF-09':UF09, 'UF-10':UF10, 'UF-11':UF11, 'UF-12':UF12,
   'UF-13':UF13, 'UF-14':UF14, 'UF-15':UF15, 'UF-16':UF16, 'UF-17':UF17, 'UF-18':UF18,
-  'UF-19':UF19, 'UF-20':UF20, 'UF-21':UF21, 'UF-22':UF22, 'UF-23':UF23, 'UF-24':UF24, 'UF-25':UF25 };
+  'UF-19':UF19, 'UF-20':UF20, 'UF-21':UF21, 'UF-22':UF22, 'UF-23':UF23, 'UF-24':UF24, 'UF-25':UF25,
+  ...UF01_CHILDREN, ...UF02_CHILDREN, ...UF18_CHILDREN };
+
+/* ===== Pengelompokan sidebar: 2 grup besar → sub-grup per tujuan pengguna → UF → turunan (children) ===== */
+const NAV_GROUPS = [
+  {name:'Publik (External)', subs:[
+    ['Akun & Onboarding',['UF-01','UF-02','UF-14']],
+    ['Program',['UF-03','UF-04']],
+    ['Event & Kegiatan',['UF-10','UF-13','UF-15','UF-16']],
+    ['Opportunity & Kemitraan',['UF-05','UF-06','UF-11']],
+    ['Riset & Kolaborasi',['UF-07','UF-08','UF-09']],
+    ['Fasilitas & Benefit',['UF-12','UF-17']] ]},
+  {name:'Internal', subs:[
+    ['Akses Ekosistem',['UF-18']],
+    ['Program & Event',['UF-19','UF-20','UF-21','UF-22','UF-23']],
+    ['Kurasi & Pengaturan',['UF-24','UF-25']] ]}
+];
+const CHILDREN = { 'UF-01': Object.keys(UF01_CHILDREN), 'UF-02': Object.keys(UF02_CHILDREN), 'UF-18': Object.keys(UF18_CHILDREN) };
+const flowName = id => FLOW_DEFS[id] && FLOW_DEFS[id].parent ? FLOW_DEFS[id].name : (FLOWS.find(f=>f[0]===id)||[,id])[1];
+
 
 /* ===== Rendering ===== */
 const $ = id => document.getElementById(id);
@@ -3023,16 +3489,28 @@ const visibleOrder = () => F().order.filter(k=>!F().screens[k].when || F().scree
 const curKey = () => { const v=visibleOrder(); let k=state.screen[state.flow]; if(!k || !v.includes(k)) k=state.screen[state.flow]=v[0]; return k; };
 
 function renderNav(){
-  $('flowNav').innerHTML = FLOWS.map(([id,name])=>{
-    const ready = !!FLOW_DEFS[id], on = id===state.flow;
-    return `<button type="button" ${ready?`data-flow="${id}"`:'disabled title="Belum dibuat"'} class="text-left rounded px-2 py-1.5 shrink-0 lg:shrink ${on?'bg-neutral-900 text-white':ready?'text-neutral-900 hover:bg-neutral-100':'text-neutral-400 cursor-not-allowed'}" ${on?'aria-current="true"':''}>
-      <span class="font-mono text-[11px] ${on?'text-neutral-300':'text-neutral-500'}">${id}${ready?'':' · belum'}</span>
-      <span class="block text-sm leading-snug whitespace-nowrap lg:whitespace-normal">${name}</span></button>`;
-  }).join('');
+  const item = (id, child) => {
+    const on = id===state.flow, ready = !!FLOW_DEFS[id];
+    return `<button type="button" ${ready?`data-flow="${id}"`:'disabled'} class="w-full text-left rounded px-2 py-1.5 ${child?'pl-3 border-l border-neutral-300 rounded-l-none':''} ${on?'bg-neutral-900 text-white':ready?'text-neutral-900 hover:bg-neutral-100':'text-neutral-400 cursor-not-allowed'}" ${on?'aria-current="true"':''}>
+      <span class="font-mono text-[11px] ${on?'text-neutral-300':'text-neutral-500'}">${id}</span>
+      <span class="block ${child?'text-[13px]':'text-sm'} leading-snug">${flowName(id)}</span></button>`;
+  };
+  const list = NAV_GROUPS.map(g=>`
+    <details class="group mb-3" open>
+      <summary class="cursor-pointer list-none flex items-center gap-2 font-semibold text-sm py-1"><span class="font-mono text-xs transition-transform group-open:rotate-90" aria-hidden="true">▸</span>${g.name}<span class="ml-auto font-mono text-[11px] text-neutral-500">${g.subs.reduce((n,x)=>n+x[1].length,0)} UF</span></summary>
+      ${g.subs.map(([sn,ids])=>`<div class="mt-2"><p class="font-mono text-[10px] uppercase tracking-wider text-neutral-500 px-2 mb-1">${sn}</p>
+        <div class="flex flex-col gap-0.5">${ids.map(id=>item(id)+(CHILDREN[id]?`<div class="ml-3 mt-0.5 mb-1 flex flex-col gap-0.5">${CHILDREN[id].map(c=>item(c,true)).join('')}</div>`:'')).join('')}</div></div>`).join('')}
+    </details>`).join('');
+  const opts = NAV_GROUPS.map(g=>g.subs.map(([sn,ids])=>`<optgroup label="${g.name.split(' ')[0]} · ${sn}">${ids.map(id=>`<option value="${id}" ${id===state.flow?'selected':''}>${id} ${flowName(id)}</option>`+(CHILDREN[id]||[]).map(c=>`<option value="${c}" ${c===state.flow?'selected':''}>  └ ${c} ${flowName(c)}</option>`).join('')).join('')}</optgroup>`).join('')).join('');
+  $('flowNav').className = 'block';
+  $('flowNav').innerHTML = `
+    <label for="flowSelect" class="sr-only">Pilih user flow</label>
+    <select id="flowSelect" class="lg:hidden w-full border border-neutral-400 rounded px-3 py-2 text-sm bg-white">${opts}</select>
+    <div class="hidden lg:block">${list}</div>`;
 }
 function renderHeader(){
   const f=F();
-  $('flowCode').textContent=`${state.flow} · ${f.type}`;
+  $('flowCode').textContent=`${state.flow} · ${f.type}${f.parent?` · turunan ${f.parent}`:''}`;
   $('flowName').textContent=f.name;
   $('flowWho').textContent=f.who;
   if(f.sim){
@@ -3055,7 +3533,7 @@ function renderNotes(){
     <p class="font-semibold">${s.title}</p>
     ${s.actor?`<p class="text-xs text-neutral-500 mb-3">Dilihat oleh: ${s.actor}</p>`:'<div class="mb-3"></div>'}
     <dl class="flex flex-col gap-3">${s.notes.map(([k,v])=>`<div><dt class="font-mono text-xs text-neutral-500">${k}</dt><dd class="text-sm">${v}</dd></div>`).join('')}</dl>
-    <p class="text-xs text-neutral-500 border-t border-neutral-200 mt-4 pt-3">Langkah (T1, T2, …) mengacu ke diagram ${state.flow} di artefak GSIH User Flow.</p>`;
+    <p class="text-xs text-neutral-500 border-t border-neutral-200 mt-4 pt-3">${F().noteRef || `Langkah (T1, T2, …) mengacu ke diagram ${state.flow} di artefak GSIH User Flow.`}</p>`;
 }
 function render(){
   const s=F().screens[curKey()];
@@ -3089,6 +3567,7 @@ function setViewport(v){
 }
 $('vpDesktop').onclick=()=>setViewport('desktop');
 $('vpMobile').onclick=()=>setViewport('mobile');
+document.addEventListener('change',e=>{ if(e.target.id==='flowSelect') openFlow(e.target.value); });
 
 /* ===== Unduh layar sebagai PNG — hanya tampil di Claude (butuh capability downloads) ===== */
 let DL = null;
@@ -3139,7 +3618,7 @@ const ACTIONS = {
 document.addEventListener('click',e=>{
   /* close an open ⋮ menu when clicking outside it */
   if(state.bgMenu!=='none' && !e.target.closest('[data-menu]')){ state.bgMenu='none'; if(!e.target.closest('[data-go],[data-set],[data-flow],[data-action]')){ render(); return; } }
-  const fl=e.target.closest('[data-flow]'); if(fl){ openFlow(fl.dataset.flow); return; }
+  const fl=e.target.closest('[data-flow]'); if(fl){ if(fl.dataset.flowScreen) state.screen[fl.dataset.flow]=fl.dataset.flowScreen; openFlow(fl.dataset.flow); return; }
   const a=e.target.closest('[data-action]'); if(a){ ACTIONS[a.dataset.action](); return; }
   const g=e.target.closest('[data-go]'); if(g){ const so=g.dataset.setOnGo; if(so){ const [k,v]=so.split(':'); state[k]=v; } go(g.dataset.go); return; }
   const rs=e.target.closest('[data-reset="usr"]'); if(rs){ state.usrRole=state.usrLoc=state.usrStatus='Semua'; render(); return; }
@@ -3154,6 +3633,8 @@ document.addEventListener('click',e=>{
 document.addEventListener('change',e=>{
   if(e.target.id==='fConsent' && e.target.checked && $('regErr')) $('regErr').hidden=true;
   if(e.target.id==='pcConsent' && e.target.checked && $('pcErr')) $('pcErr').hidden=true;
+  if(e.target.dataset && e.target.dataset.startupSwitch!==undefined){ state.fStartup=e.target.value; render(); }
+  if(e.target.dataset && e.target.dataset.roleSwitch!==undefined){ state.dashRole=e.target.value; render(); }
   if(e.target.dataset && e.target.dataset.filter){ state[e.target.dataset.filter]=e.target.value; render(); }
 });
 
