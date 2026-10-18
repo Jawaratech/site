@@ -175,6 +175,8 @@ const state = {
   spSek:'Semua', spKeh:'Semua', spSt:'Semua',      // UF-22 participant program
   arSpoke:'Semua', arProg:'Semua', arProgress:'Semua', // UF-22 activity report (Hub)
   bgStatus:'Semua', bgPoin:'Semua', bgMenu:'none',  // UF-25 badge list
+  invSearch:'found',                               // UF-01-3 undang anggota tim
+  liMode:'pdf', liApplied:'no',                    // UF-01 isi profil dari LinkedIn
   dashRole:'', fStartup:'panen',                    // UF-14 role aktif · UF-01-3 startup aktif
   sdSheet:'closed', sheet:'none',  // sheet = bottom sheet filter yang terbuka (mobile)                                // UF-11 filter direktori (mobile)
   photosOk:'yes', prevReport:'done', eventFormat:'hybrid', verifyDec:'approve' // UF-21, UF-23, UF-24
@@ -3172,7 +3174,7 @@ const startupCard = (st, on) => `
     <div class="flex items-start gap-3">${ph('','w-11 h-11 rounded shrink-0')}<div class="min-w-0 flex-1 flex flex-col gap-1"><p class="text-sm font-semibold">${st.name}</p><p class="text-xs text-neutral-500">${st.sector} · ${st.stage} · ${st.city}</p>${pill(st.status==='Verified'?'✓ VERIFIED':'MENUNGGU VERIFIKASI', st.status==='Verified')}</div></div>
     <div class="flex flex-wrap gap-2 text-xs border-t border-neutral-200 pt-2">
       ${on?'<span class="font-medium">● Sedang ditampilkan</span>':`<button type="button" data-set="fStartup:${st.id}" class="underline">Tampilkan di dashboard</button>`}
-      <span class="ml-auto underline">Kelola profil</span>
+      <button type="button" data-flow="UF-01-3" data-flow-screen="profile" data-set-on-go="fStartup:${st.id}" class="ml-auto underline">Kelola profil & tim</button>
     </div>
   </div>`;
 
@@ -3279,12 +3281,365 @@ const founderDashboard = (opts={}) => {
     render: founderDashboard });
 })();
 
+/* ======================================================================
+   UF-01-3 · Profil startup & tim (undang co-founder / anggota tim terdaftar GSIH)
+   ====================================================================== */
+const TM_RANI = {n:'Rani Pratama', g:'Startup Founder', r:'Founder', j:'CEO', a:'Pemilik', you:true};
+const TM_SARI = {n:'Sari Wulandari', g:'Digital Talent', r:'Anggota tim', j:'Head of Operations', a:'Admin'};
+const TM_BUDI = {n:'Budi Santoso', g:'Digital Talent', r:'Co-founder', j:'CTO', a:'Admin'};
+const teamOf = (st, joined) => st.id==='panen' ? (joined ? [TM_RANI, TM_BUDI, TM_SARI] : [TM_RANI, TM_SARI]) : [TM_RANI];
+const ACCESS = [['Pemilik','Semua akses, termasuk hapus startup & alihkan kepemilikan. Hanya 1 orang.'],['Admin','Ubah profil, kelola tim, daftar program & balas Funder.'],['Anggota','Lihat profil & ikut kegiatan startup; tidak bisa mengubah data.']];
+
+const spHeader = (st, tab) => `
+  ${btn('← Dashboard','dashboard','ghost','px-0 mb-2')}
+  <section class="border border-neutral-300 rounded overflow-hidden mb-4">
+    ${ph('Cover','h-24 sm:h-32 w-full')}
+    <div class="p-4 flex flex-col sm:flex-row gap-4 sm:items-end -mt-10 sm:-mt-12">
+      ${ph('Logo','w-20 h-20 rounded border-4 border-white shrink-0')}
+      <div class="min-w-0 flex-1 flex flex-col gap-1">
+        <div class="flex flex-wrap items-center gap-2"><h2 class="text-xl font-semibold">${st.name}</h2>${pill(st.status==='Verified'?'✓ VERIFIED':'MENUNGGU VERIFIKASI', st.status==='Verified')}</div>
+        <p class="text-sm text-neutral-600">${st.sector} · ${st.stage} · ${st.city} · <u>${st.id}.id</u></p>
+      </div>
+      <div class="flex flex-wrap gap-2">${btn('Lihat sebagai publik',null,'secondary')}${btn('Edit profil',null,'primary')}</div>
+    </div>
+  </section>
+  <div class="flex border-b border-neutral-300 mb-6 text-sm overflow-x-auto [scrollbar-width:none]" role="tablist">${[['profile','Ringkasan'],['team','Tim'],[null,'Dokumen'],[null,'Program & pendanaan']].map(([k,t])=>`<button type="button" role="tab" ${k?`data-go="${k}"`:''} aria-selected="${tab===k}" class="px-4 py-2 -mb-px border-b-2 whitespace-nowrap ${tab===k?'border-neutral-900 font-semibold':'border-transparent text-neutral-500'}">${t}</button>`).join('')}</div>`;
+
+const spWrap = (inner) => `${appHeader(`${bell(2)}${avatar('Rani')}`)}<div class="px-5 py-6 max-w-5xl mx-auto">${inner}</div>`;
+const initials = n => n.split(' ').map(x=>x[0]).join('').slice(0,2);
+const mAvatar = (n, cls='w-10 h-10') => `<span class="${cls} shrink-0 rounded-full border border-neutral-400 bg-neutral-100 flex items-center justify-center font-mono text-xs" aria-hidden="true">${initials(n)}</span>`;
+
+const spProfile = () => {
+  const st = fsCur(), team = teamOf(st, false);
+  return spWrap(`${spHeader(st,'profile')}
+    <div class="grid gap-4 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+      <div class="flex flex-col gap-4 min-w-0">
+        ${panel('Tentang', `${lines(3)}<div class="grid grid-cols-2 gap-3 text-sm"><div><p class="text-xs text-neutral-500">Masalah</p>${lines(2,['w-full','w-3/4'])}</div><div><p class="text-xs text-neutral-500">Solusi</p>${lines(2,['w-full','w-2/3'])}</div></div>`)}
+        ${panel('Traction', kpi([['Pengguna aktif','1.240'],['Mitra petani','86'],['MRR','Rp 18 jt']]))}
+        ${panel('Produk', `<div class="grid grid-cols-3 gap-2">${[1,2,3].map(()=>ph('','aspect-video rounded-sm')).join('')}</div>`)}
+      </div>
+      <div class="flex flex-col gap-4 min-w-0">
+        <section class="border border-neutral-900 rounded p-4 flex flex-col gap-3">
+          <div class="flex items-center gap-2"><h3 class="text-sm font-semibold">Tim</h3><span class="font-mono text-xs text-neutral-500">${team.length} orang</span>${btn('Kelola tim','team','ghost','ml-auto !p-0 text-xs')}</div>
+          <ul class="flex flex-col gap-3">${team.map(m=>`<li class="flex items-center gap-3">${mAvatar(m.n)}<span class="min-w-0"><span class="block text-sm font-medium">${m.n}</span><span class="block text-xs text-neutral-500">${m.r} · ${m.j}</span></span></li>`).join('')}</ul>
+          ${btn('+ Undang co-founder / tim','invite','secondary','w-full')}
+        </section>
+        ${panel('Kelengkapan profil', meter('Profil startup', st.id==='panen'?85:60, 'Kurang: foto tim'+(st.id==='panen'?'':' , pitch deck')))}
+        ${panel('Dokumen', `<ul class="text-sm flex flex-col gap-2">${[['Pitch deck','PDF · Publik'],['Akta pendirian','PDF · Hanya tim & Core Team']].map(([t,s])=>`<li class="flex items-center gap-2">${ph('','w-6 h-8')}<span class="min-w-0"><span class="block">${t}</span><span class="block text-xs text-neutral-500">${s}</span></span></li>`).join('')}</ul>`)}
+      </div>
+    </div>`);
+};
+
+const memberRow = (m, pending) => `
+  <li class="border border-neutral-300 rounded p-3 flex flex-wrap items-center gap-3 min-w-0 ${pending?'border-dashed bg-neutral-50':''}">
+    ${mAvatar(m.n)}
+    <div class="min-w-0 flex-1">
+      <p class="text-sm font-medium">${m.n}${m.you?' <span class="text-xs text-neutral-500 font-normal">(Anda)</span>':''}</p>
+      <p class="text-xs text-neutral-500">${m.r} · ${m.j}</p>
+      <div class="flex flex-wrap gap-1.5 mt-1">${pill(m.g.toUpperCase())}${pill(m.a.toUpperCase(), m.a==='Pemilik')}${pending?pill('MENUNGGU JAWABAN'):''}</div>
+    </div>
+    <div class="flex gap-2 text-xs w-full sm:w-auto ${isMob()?'border-t border-neutral-200 pt-2':''}">${pending
+      ? `${btn('Kirim ulang',null,'ghost','!p-0 text-xs')}<span class="text-neutral-300">·</span>${btn('Batalkan','team','ghost','!p-0 text-xs')}`
+      : m.a==='Pemilik' ? '<span class="text-neutral-500">Tidak bisa dikeluarkan</span>'
+      : `${btn('Ubah peran & akses',null,'ghost','!p-0 text-xs')}<span class="text-neutral-300">·</span>${btn('Keluarkan',null,'ghost','!p-0 text-xs')}`}</div>
+  </li>`;
+
+const spTeam = (stage) => {
+  const st = fsCur(), team = teamOf(st, stage==='joined');
+  return spWrap(`${spHeader(st,'team')}
+    ${stage==='pending'?notice('✓ Undangan terkirim ke <b>Budi Santoso</b>. Ia mendapat notifikasi & email; undangan berlaku 7 hari.', true):''}
+    ${stage==='joined'?notice('✓ <b>Budi Santoso</b> menerima undangan dan kini tampil sebagai Co-founder · CTO di profil Panen.id.', true):''}
+    <div class="grid gap-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] ${stage?'mt-4':''}">
+      <div class="flex flex-col gap-4 min-w-0">
+        <div class="flex flex-wrap items-center gap-2"><h3 class="text-sm font-semibold">Anggota tim</h3><span class="font-mono text-xs text-neutral-500">${team.length}</span><span class="ml-auto">${btn('+ Undang anggota','invite','primary')}</span></div>
+        <ul class="flex flex-col gap-2">${team.map(m=>memberRow(m,false)).join('')}</ul>
+        ${stage==='pending'?`<h3 class="text-sm font-semibold mt-2">Undangan tertunda <span class="font-mono text-xs text-neutral-500 font-normal">1</span></h3><ul class="flex flex-col gap-2">${memberRow(TM_BUDI,true)}</ul>`:''}
+      </div>
+      <aside class="flex flex-col gap-4 min-w-0">
+        ${panel('Hak akses', `<dl class="flex flex-col gap-2 text-sm">${ACCESS.map(([k,v])=>`<div><dt class="font-medium">${k}</dt><dd class="text-xs text-neutral-600">${v}</dd></div>`).join('')}</dl>`)}
+        ${panel('Aturan', `<ul class="text-xs text-neutral-600 flex flex-col gap-1.5"><li>• Anggota tim harus punya akun GSIH (role apa pun).</li><li>• Bergabung hanya setelah yang diundang menerima.</li><li>• Co-founder & anggota dengan "Tampil di profil publik" terlihat di direktori Funder.</li><li>• Satu orang bisa menjadi anggota di beberapa startup.</li></ul>`)}
+      </aside>
+    </div>`);
+};
+
+const spInvite = () => {
+  const st = fsCur(), found = state.invSearch==='found';
+  const users = [['Budi Santoso','Digital Talent','Malang','budi.s@gmail.com',true,''],['Budi Hartanto','SME Owner','Batu','budi.h@kopibatu.id',false,''],['Sari Wulandari','Digital Talent','Malang','sari@panen.id',false,'Sudah anggota']];
+  return spWrap(`
+    ${btn('← Tim '+st.name,'team','ghost','px-0 mb-2')}
+    <h2 class="text-xl font-semibold mb-1">Undang anggota tim</h2>
+    <p class="text-sm text-neutral-600 mb-4">Hanya pengguna yang sudah terdaftar di GSIH yang bisa ditambahkan ke tim ${st.name}.</p>
+    <div class="mb-4">${simBar('Simulasi pencarian','invSearch',[['found','Pengguna ditemukan'],['notfound','Belum terdaftar']])}</div>
+    <div class="grid gap-6 md:grid-cols-2">
+      <section class="flex flex-col gap-3 min-w-0">
+        <p class="text-sm font-semibold">1. Cari pengguna GSIH</p>
+        ${field('invQ','Cari nama atau email pengguna GSIH','search','Nama atau email','',found?'budi':'andi@gmail.com')}
+        ${found ? `
+        <ul class="flex flex-col gap-2" aria-label="Hasil pencarian">${users.map(([n,g,c,e,sel,dis])=>`
+          <li><button type="button" ${dis?'disabled':''} class="w-full text-left border ${sel?'border-neutral-900 border-2':'border-neutral-300'} rounded p-3 flex items-center gap-3 ${dis?'opacity-50 cursor-not-allowed':''}">
+            ${mAvatar(n)}<span class="min-w-0 flex-1"><span class="block text-sm font-medium">${n}</span><span class="block text-xs text-neutral-500 truncate">${g} · ${c} · ${e.replace(/^(.).*(@.*)$/,'$1•••$2')}</span></span>
+            <span class="text-xs shrink-0">${dis?dis:sel?'✓ Dipilih':'Pilih'}</span></button></li>`).join('')}</ul>
+        <p class="text-xs text-neutral-500">Email disamarkan untuk privasi. Cari dengan email lengkap untuk hasil yang tepat.</p>` : `
+        <div class="border-2 border-dashed border-neutral-400 rounded p-4 flex flex-col gap-2 bg-neutral-50">
+          <p class="text-sm font-semibold">andi@gmail.com belum terdaftar di GSIH</p>
+          <p class="text-xs text-neutral-600">Anggota tim wajib punya akun GSIH. Kirim ajakan daftar; undangan ke ${st.name} otomatis muncul setelah Andi mendaftar & memverifikasi email (UF-01), lalu ia tinggal menerima.</p>
+          <div>${btn('Kirim ajakan daftar',null,'secondary')}</div>
+        </div>`}
+      </section>
+      <section class="flex flex-col gap-4 min-w-0 ${found?'':'opacity-50'}" ${found?'':'aria-disabled="true"'}>
+        <p class="text-sm font-semibold">2. Atur peran & akses${found?' untuk Budi Santoso':''}</p>
+        <fieldset><legend class="text-sm font-medium mb-2">Peran di startup</legend>
+          <div class="grid grid-cols-2 gap-2">${[['Co-founder',true,'Pendiri bersama'],['Anggota tim',false,'Karyawan / kontributor']].map(([t,on,s])=>`<label class="border ${on?'border-neutral-900':'border-neutral-300'} rounded p-3 flex gap-2 items-start text-sm"><input type="radio" name="invRole" ${on?'checked':''} class="mt-1 accent-neutral-900"><span><span class="block font-medium">${t}</span><span class="block text-xs text-neutral-500">${s}</span></span></label>`).join('')}</div></fieldset>
+        ${field('invTitle','Jabatan','text','','', found?'CTO':'')}
+        ${select('invAccess','Hak akses',['Admin: ubah profil, kelola tim, daftar program','Anggota: lihat saja'])}
+        <label class="flex items-start gap-2 text-sm"><input type="checkbox" checked class="mt-1 accent-neutral-900"><span>Tampilkan di profil publik startup<span class="block text-xs text-neutral-500">Nama, foto & jabatan terlihat oleh publik dan Funder.</span></span></label>
+        ${area('invMsg','Pesan (opsional)','Halo Budi, yuk resmi gabung di Panen.id sebagai CTO.',2)}
+        <div class="flex flex-wrap gap-3 ${isMob()?'sticky bottom-0 bg-white border-t border-neutral-300 -mx-5 px-5 py-3':''}">${btn('Kirim undangan',found?'inviteSent':null,'primary',isMob()?'flex-1':'',found?'':'disabled')}${btn('Batal','team','ghost')}</div>
+      </section>
+    </div>`);
+};
+
+const spAccept = () => `
+  ${appHeader(`${bell(1)}${avatar('Budi')}`)}
+  <div class="px-5 py-8 max-w-xl mx-auto flex flex-col gap-5">
+    <p class="font-mono text-xs text-neutral-500">Notifikasi · 19 Okt 2026</p>
+    <section class="border border-neutral-900 rounded p-5 flex flex-col gap-4">
+      <div class="flex items-start gap-3">${ph('Logo','w-14 h-14 rounded shrink-0')}<div class="min-w-0"><p class="text-sm text-neutral-600"><b class="text-neutral-900">Rani Pratama</b> mengundang Anda bergabung ke</p><h2 class="text-xl font-semibold">Panen.id</h2><p class="text-xs text-neutral-500">Agritech · MVP · Malang · ${pill('✓ VERIFIED',true)}</p></div></div>
+      <dl class="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 text-sm border-t border-neutral-200 pt-3">
+        <dt class="text-neutral-500">Peran</dt><dd>Co-founder · CTO</dd>
+        <dt class="text-neutral-500">Hak akses</dt><dd>Admin: ubah profil, kelola tim, daftar program</dd>
+        <dt class="text-neutral-500">Profil publik</dt><dd>Nama, foto & jabatan Anda tampil di halaman Panen.id</dd>
+      </dl>
+      <blockquote class="border-l-2 border-neutral-400 pl-3 text-sm text-neutral-600">"Halo Budi, yuk resmi gabung di Panen.id sebagai CTO."</blockquote>
+      <p class="text-xs text-neutral-500">Setelah diterima, Panen.id muncul di "Startup saya" pada dashboard Anda. Role Anda di GSIH (Digital Talent) tidak berubah. Anda bisa keluar dari tim kapan saja.</p>
+      <div class="flex flex-wrap gap-3">${btn('Terima undangan','joined','primary',isMob()?'flex-1':'')}${btn('Tolak',null,'secondary',isMob()?'flex-1':'')}</div>
+    </section>
+    <p class="text-xs text-neutral-500 text-center">Undangan berlaku hingga 26 Okt 2026</p>
+  </div>`;
+
+(() => {
+  const f = UF01_CHILDREN['UF-01-3'];
+  f.order = ['login','empty','create','dashboard','profile','team','invite','inviteSent','accept','joined'];
+  const S = (title,url,steps,actor,notes,render) => ({title,url,steps,actor,notes,render});
+  f.screens.profile = S('Profil startup', 'gsih.id/startup/panen-id', 'Profil', 'Startup Founder', [
+    ['Akses','Dari dashboard: "Kelola profil" pada card startup. Menampilkan startup yang dipilih.'],
+    ['Isi','Ringkasan (tentang, traction, produk), tim, dokumen, serta program & pendanaan dalam tab.'],
+    ['Tim','Card Tim menampilkan co-founder & anggota, dengan tombol "+ Undang co-founder / tim".'],
+    ['Publik','"Lihat sebagai publik" menampilkan versi yang dilihat pengunjung & Funder (UF-11).']], spProfile);
+  f.screens.team = S('Tab Tim', 'gsih.id/startup/panen-id/tim', 'Kelola tim', 'Startup Founder (Pemilik/Admin)', [
+    ['Daftar anggota','Setiap anggota: role GSIH, peran di startup (Founder / Co-founder / Anggota tim), jabatan, dan hak akses.'],
+    ['Hak akses','Pemilik (1 orang), Admin, Anggota. Pemilik tidak bisa dikeluarkan; kepemilikan bisa dialihkan.'],
+    ['Siapa yang bisa mengundang','Pemilik & Admin.']], () => spTeam(''));
+  f.screens.invite = S('Undang anggota', 'gsih.id/startup/panen-id/tim/undang', 'Undang', 'Startup Founder', [
+    ['Wajib terdaftar','Pencarian hanya menampilkan pengguna GSIH (semua role). Email disamarkan; anggota yang sudah ada ditandai.'],
+    ['Belum terdaftar','Bisa mengirim ajakan daftar. Undangan tim otomatis aktif setelah orang tersebut mendaftar (UF-01) dan baru bergabung setelah ia menerima.'],
+    ['Peran & akses','Co-founder / Anggota tim, jabatan, hak akses, dan opsi tampil di profil publik.'],
+    ['Simulasi','Pakai tombol simulasi untuk melihat kondisi "Belum terdaftar".']], spInvite);
+  f.screens.inviteSent = S('Undangan terkirim', 'gsih.id/startup/panen-id/tim', 'Undangan tertunda', 'Sistem → Founder', [
+    ['Status','Undangan tampil di "Undangan tertunda" sampai diterima, ditolak, atau kedaluwarsa (7 hari).'],
+    ['Aksi','Kirim ulang atau batalkan undangan.'],
+    ['Notifikasi','Yang diundang menerima notifikasi in-app & email.']], () => spTeam('pending'));
+  f.screens.accept = S('Diundang: terima undangan', 'gsih.id/undangan/tim/7kq2…', 'Terima undangan', 'Anggota yang diundang (Budi · Digital Talent)', [
+    ['Konteks','Menampilkan siapa yang mengundang, startup, peran, hak akses, dan data yang akan tampil publik.'],
+    ['Role tetap','Bergabung ke tim tidak mengubah role GSIH orang tersebut (mis. tetap Digital Talent).'],
+    ['Setelah menerima','Startup muncul di "Startup saya" pada dashboard anggota; ia bisa keluar dari tim kapan saja.'],
+    ['Tolak','Founder mendapat notifikasi; undangan hilang dari daftar tertunda.']], spAccept);
+  f.screens.joined = S('Tim diperbarui', 'gsih.id/startup/panen-id/tim', 'Anggota bergabung', 'Sistem → Founder', [
+    ['Hasil','Budi tampil sebagai Co-founder · CTO di tab Tim dan di profil publik Panen.id.'],
+    ['Notifikasi','Founder & Admin lain mendapat notifikasi anggota baru.']], () => spTeam('joined'));
+})();
+
 /* UF-01 layar dashboard: untuk role Startup Founder pakai empty state founder yang sama dengan UF-01-3 */
 (() => { const d = UF01.screens.dashboard, old = d.render;
   d.render = () => state.role==='founder' ? founderEmptyDashboard('Rani Pratama', '✓ Akun aktif. Langkah berikutnya: buat profil startup Anda.') : old();
   d.notes = [...d.notes, ['Startup Founder','Founder yang baru mendaftar belum punya startup, jadi dashboard tampil sebagai empty state yang sama dengan UF-01-3 (layar 02). Tombol "+ Buat startup" membuka form di UF-01-3.']];
 })();
 
+
+/* ======================================================================
+   UF-01 · Isi profil dari LinkedIn (opsional, di langkah Profiling)
+   Bukan login dengan LinkedIn: hanya impor data profil untuk mempercepat pengisian.
+   ====================================================================== */
+const LI_DATA = {
+  founder: { person:'Rani Pratama', headline:'Co-founder & CEO di Panen.id', city:['Malang','Malang'],
+    exp:[['Co-founder & CEO','Panen.id','2023–sekarang'],['Product Manager','Tani Digital','2020–2023']],
+    edu:[['S1 Agribisnis','Universitas Brawijaya','2016–2020']],
+    skills:['Product management','Go-to-market','Fundraising','Agritech'], interests:['Product development','Go-to-market','Pendanaan'],
+    extra:['Draf startup','"Panen.id" terdeteksi sebagai perusahaan Anda saat ini. Simpan sebagai draf startup (nama & sektor terisi; tetap diverifikasi Core Team).'] },
+  talent: { person:'Rani Pratama', headline:'Data Analyst di PT Logistik Nusantara', city:['Malang','Surabaya'],
+    exp:[['Data Analyst','PT Logistik Nusantara','2022–sekarang'],['Intern Business Intelligence','Bank Daerah','2021']],
+    edu:[['S1 Informatika','Institut Teknologi Sepuluh Nopember','2017–2021']],
+    skills:['SQL','Python','Tableau','Machine learning'], interests:['Data & AI','Software engineering'],
+    extra:['Sertifikasi','Google Data Analytics (2023) → ditambahkan ke bagian Sertifikasi profil.'] },
+  sme: { person:'Rani Pratama', headline:'Pemilik Kopi Rani', city:['Malang','Malang'],
+    exp:[['Pemilik','Kopi Rani','2019–sekarang']],
+    edu:[['D3 Manajemen Pemasaran','Politeknik Negeri Malang','2014–2017']],
+    skills:['Branding','Media sosial'], interests:['Branding','Pemasaran online'],
+    extra:['Data usaha','Nama usaha "Kopi Rani" → diisi ke field Jenis/Nama usaha. Skala & omzet tetap diisi manual.'] },
+  researcher: { person:'Rani Pratama', headline:'Dosen & Peneliti, Universitas Brawijaya', city:['Malang','Malang'],
+    exp:[['Dosen & Peneliti','Universitas Brawijaya','2018–sekarang'],['Research Assistant','BRIN','2015–2018']],
+    edu:[['S3 Ilmu Komputer','Universitas Indonesia','2014–2018'],['S2 Ilmu Komputer','Universitas Gadjah Mada','2012–2014']],
+    skills:['Machine learning','Kebijakan publik','Analisis data'], interests:['AI & data','Kebijakan publik'],
+    extra:['Afiliasi','"Universitas Brawijaya" → diisi sebagai institusi/afiliasi pada profil Researcher (UF-07).'] },
+  mentor: { person:'Ferdi Wijaya', headline:'VP Product di Fintech Nusantara', city:['Surabaya','Surabaya'],
+    exp:[['VP Product','Fintech Nusantara','2021–sekarang'],['Senior Product Manager','E-commerce Kita','2017–2021']],
+    edu:[['S1 Teknik Industri','Institut Teknologi Bandung','2009–2013']],
+    skills:['Product','Fundraising','Team leadership'], interests:['Product','Fundraising'],
+    extra:['Lama pengalaman','8 tahun (dihitung dari riwayat kerja) → field "Pengalaman (tahun)". URL LinkedIn → field "LinkedIn / portofolio".'] }
+};
+const liD = () => LI_DATA[state.role];
+const liOn = () => state.liApplied==='yes';
+const liChip = (t='dari LinkedIn') => `<span class="font-mono text-[10px] border border-neutral-900 rounded px-1 py-px ml-1 whitespace-nowrap">${t}</span>`;
+const liLogo = (cls='w-8 h-8') => `<span class="${cls} shrink-0 rounded bg-neutral-900 text-white font-bold text-sm flex items-center justify-center" aria-hidden="true">in</span>`;
+
+/* Card di atas form Profiling */
+const liCard = () => liOn() ? `
+  <section class="border border-neutral-900 rounded p-4 mb-6 flex flex-col gap-2">
+    <div class="flex items-start gap-3">${liLogo()}
+      <div class="min-w-0 flex-1"><p class="text-sm font-semibold">✓ Profil diisi dari LinkedIn</p>
+      <p class="text-xs text-neutral-600">${state.liMode==='pdf'?'Sumber: PDF profil LinkedIn':'Sumber: akun LinkedIn terhubung'} · ${liD().exp.length} pengalaman, ${liD().edu.length} pendidikan, ${liD().skills.length} skill · field bertanda ${liChip()} bisa diubah</p></div></div>
+    <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs pl-11">${btn('Tinjau data impor','liReview','ghost','!p-0 text-xs')}${btn('Batalkan impor',null,'ghost','!p-0 text-xs','data-set="liApplied:no"')}</div>
+  </section>` : `
+  <section class="border-2 border-dashed border-neutral-400 rounded p-4 mb-6 flex flex-col sm:flex-row gap-4 sm:items-center bg-neutral-50">
+    <div class="flex items-start gap-3 min-w-0 flex-1">${liLogo('w-10 h-10')}
+      <div class="min-w-0"><p class="text-sm font-semibold">Isi lebih cepat dari LinkedIn</p>
+      <p class="text-xs text-neutral-600">Ambil pengalaman, pendidikan & skill dari profil LinkedIn Anda, tinjau dulu, baru simpan. Hemat ±5 menit.</p></div></div>
+    <div class="grid grid-cols-2 sm:flex gap-2 shrink-0">${btn('Hubungkan LinkedIn','liConnect','primary','','data-set-on-go="liMode:connect"')}${btn('Unggah PDF LinkedIn','liConnect','secondary','','data-set-on-go="liMode:pdf"')}</div>
+  </section>`;
+
+const liTabs = () => `<div class="flex border-b border-neutral-300 mb-6 text-sm" role="tablist">${[['connect','Hubungkan akun'],['pdf','Unggah PDF profil']].map(([v,t])=>`<button type="button" role="tab" aria-selected="${state.liMode===v}" data-set="liMode:${v}" class="px-4 py-2 -mb-px border-b-2 ${state.liMode===v?'border-neutral-900 font-semibold':'border-transparent text-neutral-500'}">${t}</button>`).join('')}</div>`;
+
+const liConnect = () => {
+  const d = liD();
+  return `
+  ${appHeader(avatar(d.person))}
+  ${page(`
+    ${btn('← Kembali ke profiling','profiling','ghost','px-0 mb-2')}
+    <h2 class="text-xl font-semibold mb-1">Isi profil dari LinkedIn</h2>
+    <p class="text-sm text-neutral-600 mb-6">Pilih cara mengambil data. Tidak ada yang tersimpan sebelum Anda meninjau dan menyetujuinya.</p>
+    ${liTabs()}
+    ${state.liMode==='pdf' ? `
+      <ol class="grid gap-3 sm:grid-cols-3 mb-6">${[['Buka profil LinkedIn Anda','linkedin.com/in/…'],['Klik "Lainnya" (More)','di bawah foto profil'],['Pilih "Simpan ke PDF"','file PDF terunduh otomatis']].map(([t,s],i)=>`<li class="border border-neutral-300 rounded p-3 flex gap-3"><span class="w-6 h-6 rounded-full border border-neutral-900 flex items-center justify-center font-mono text-xs shrink-0">${i+1}</span><span class="min-w-0"><span class="block text-sm font-medium">${t}</span><span class="block text-xs text-neutral-500">${s}</span></span></li>`).join('')}</ol>
+      <div class="border-2 border-dashed border-neutral-500 rounded p-6 flex flex-col items-center text-center gap-2">
+        ${ph('','w-10 h-12')}
+        <p class="text-sm font-medium">Tarik file ke sini atau ${btn('pilih file',null,'ghost','!p-0')}</p>
+        <p class="text-xs text-neutral-500">Profile.pdf dari LinkedIn, atau CV Anda (PDF, maks. 5 MB)</p>
+      </div>
+      <div class="border border-neutral-300 rounded p-3 mt-3 flex items-center gap-3 text-sm">${ph('','w-6 h-8')}<span class="min-w-0 flex-1"><span class="block font-medium">Profile.pdf</span><span class="block text-xs text-neutral-500">212 KB · membaca pengalaman, pendidikan, skill…</span></span><span class="font-mono text-xs">78%</span></div>
+      ${notice('File hanya dipakai untuk membaca data profil dan dihapus setelah impor selesai.')}
+      <div class="flex flex-wrap gap-3 mt-6">${btn('Lanjut tinjau data','liReview')}${btn('Batal','profiling','ghost')}</div>
+    ` : `
+      <div class="border border-neutral-400 rounded max-w-md mx-auto overflow-hidden">
+        <div class="flex items-center gap-2 px-4 py-2 border-b border-neutral-300 bg-neutral-50">${liLogo('w-6 h-6')}<span class="text-xs font-mono text-neutral-500">linkedin.com/oauth (jendela LinkedIn)</span></div>
+        <div class="p-5 flex flex-col gap-4">
+          <div class="flex items-center gap-3">${ph('','w-10 h-10 rounded-full')}<div><p class="text-sm font-medium">${d.person}</p><p class="text-xs text-neutral-500">${d.headline}</p></div></div>
+          <p class="text-sm"><b>GSIH</b> ingin mengakses:</p>
+          <ul class="flex flex-col gap-2">${['Nama & foto profil','Headline','Alamat email (untuk mencocokkan akun)'].map(t=>checkRow(t,true)).join('')}</ul>
+          <div class="flex gap-2">${btn('Izinkan','liReview','primary','flex-1')}${btn('Batal','profiling','secondary','flex-1')}</div>
+        </div>
+      </div>
+      <div class="border-l-2 border-neutral-900 pl-3 mt-6 text-sm max-w-md mx-auto">
+        <p class="font-medium">Perlu pengalaman, pendidikan & skill juga?</p>
+        <p class="text-neutral-600">Koneksi akun hanya membagikan data dasar. ${btn('Unggah PDF profil LinkedIn',null,'ghost','!p-0','data-set="liMode:pdf"')} untuk mengisi semuanya sekaligus.</p>
+      </div>
+    `}`)}`;
+};
+
+const liRow = (label, val, on=true, sub='') => `
+  <label class="flex items-start gap-3 py-2 border-t border-neutral-200 first:border-t-0">
+    <input type="checkbox" ${on?'checked':''} class="mt-1 accent-neutral-900 shrink-0">
+    <span class="min-w-0 flex-1"><span class="block text-xs text-neutral-500">${label}</span><span class="block text-sm">${val}</span>${sub?`<span class="block text-xs text-neutral-500">${sub}</span>`:''}</span>
+  </label>`;
+const liGroup = (title, inner, count) => `
+  <section class="border border-neutral-300 rounded p-4 min-w-0">
+    <div class="flex items-center gap-2 mb-1"><h3 class="text-sm font-semibold">${title}</h3>${count!=null?`<span class="font-mono text-xs text-neutral-500">${count}</span>`:''}<span class="ml-auto">${liChip()}</span></div>
+    ${inner}
+  </section>`;
+
+const liReview = () => {
+  const d = liD(), pdf = state.liMode==='pdf', conflict = d.city[0]!==d.city[1];
+  return `
+  ${appHeader(avatar(d.person))}
+  ${page(`
+    ${btn('← Ganti sumber','liConnect','ghost','px-0 mb-2')}
+    <div class="flex flex-wrap items-start gap-3 mb-6">
+      <div class="min-w-0 flex-1"><h2 class="text-xl font-semibold mb-1">Tinjau data dari LinkedIn</h2>
+      <p class="text-sm text-neutral-600">Hapus centang pada data yang tidak ingin dipakai. Semua tetap bisa diubah setelah diterapkan.</p></div>
+      ${pill(pdf?'SUMBER: PDF PROFIL':'SUMBER: AKUN LINKEDIN')}
+    </div>
+    <div class="flex flex-col gap-4">
+      ${liGroup('Data dasar', `
+        <div class="flex items-center gap-3 py-2"><input type="checkbox" checked class="accent-neutral-900">${ph('','w-12 h-12 rounded-full')}<span class="text-sm">Foto profil</span></div>
+        ${liRow('Headline', d.headline)}
+        ${conflict ? `
+        <fieldset class="py-2 border-t border-neutral-200">
+          <legend class="text-xs text-neutral-500 mb-2">Kota · berbeda dengan data Anda</legend>
+          <div class="grid gap-2 sm:grid-cols-2">${[['Simpan data saat ini',d.city[0],false],['Pakai dari LinkedIn',d.city[1],true]].map(([t,v,c])=>`<label class="border ${c?'border-neutral-900':'border-neutral-300'} rounded p-2 flex gap-2 items-start text-sm"><input type="radio" name="liCity" ${c?'checked':''} class="mt-1 accent-neutral-900"><span><span class="block text-xs text-neutral-500">${t}</span>${v}</span></label>`).join('')}</div>
+        </fieldset>` : liRow('Kota', d.city[1], true, 'Sama dengan data registrasi')}
+        ${liRow('URL LinkedIn', 'linkedin.com/in/'+d.person.toLowerCase().replace(' ','-'))}`)}
+      ${pdf ? `
+      <div class="grid gap-4 md:grid-cols-2">
+        ${liGroup('Pengalaman', d.exp.map(([r,c,y],i)=>liRow(c, r, true, y)).join(''), d.exp.length)}
+        ${liGroup('Pendidikan', d.edu.map(([r,c,y])=>liRow(c, r, true, y)).join(''), d.edu.length)}
+      </div>
+      ${liGroup('Skill → minat di GSIH', `
+        <p class="text-xs text-neutral-500 mb-2">Skill dari LinkedIn kami cocokkan dengan pilihan minat ${roleName()}. Minat terpilih langsung tercentang di form profiling.</p>
+        <div class="flex flex-wrap gap-2 mb-3">${d.skills.map(s=>`<span class="border border-neutral-400 rounded-full px-3 py-1 text-xs">${s}</span>`).join('')}</div>
+        <div class="flex flex-wrap items-center gap-2 text-sm"><span class="text-xs text-neutral-500">Minat disarankan:</span>${d.interests.map(s=>`<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="true">✓ ${s}</button>`).join('')}</div>`, d.skills.length)}
+      <section class="border border-neutral-900 rounded p-4 flex gap-3 items-start">
+        <input type="checkbox" checked class="mt-1 accent-neutral-900 shrink-0">
+        <div class="min-w-0"><p class="text-sm font-semibold">${d.extra[0]} <span class="font-normal text-xs text-neutral-500">· khusus ${roleName()}</span></p><p class="text-sm text-neutral-600">${d.extra[1]}</p></div>
+      </section>` : `
+      <section class="border-2 border-dashed border-neutral-400 rounded p-4 flex flex-col sm:flex-row gap-3 sm:items-center bg-neutral-50">
+        <div class="min-w-0 flex-1"><p class="text-sm font-semibold">Pengalaman, pendidikan & skill belum terisi</p>
+        <p class="text-xs text-neutral-600">Koneksi akun LinkedIn hanya membagikan data dasar. Unggah PDF profil untuk melengkapinya dalam satu langkah.</p></div>
+        ${btn('Unggah PDF profil','liConnect','secondary','shrink-0','data-set-on-go="liMode:pdf"')}
+      </section>`}
+    </div>
+    <div class="flex flex-wrap items-center gap-3 mt-6 ${isMob()?'sticky bottom-0 bg-white border-t border-neutral-300 -mx-5 px-5 py-3':''}">
+      ${btn('Terapkan ke profil',null,'primary',isMob()?'flex-1':'','data-action="uf01-li-apply"')}${btn('Batal','profiling','ghost')}
+    </div>`)}`;
+};
+
+(() => {
+  const s = UF01.screens;
+  UF01.order = ['portal','register','checkEmail','email','profiling','liConnect','liReview','mentorPending','dashboard'];
+  s.liConnect = { title:'Hubungkan LinkedIn / unggah PDF', url:'gsih.id/onboarding/profil/linkedin', steps:'T8 · opsional', actor:'Participant',
+    notes:[
+      ['Bukan login','LinkedIn TIDAK dipakai untuk masuk/daftar. Akun tetap dibuat lewat email (T3–T6); LinkedIn hanya sumber data untuk mengisi profil.'],
+      ['Hubungkan akun','Lewat izin LinkedIn (OpenID Connect): data yang dibagikan hanya nama, foto, headline & email. Cepat, tapi pengalaman/pendidikan/skill tidak ikut.'],
+      ['Unggah PDF','Pengguna mengunduh "Simpan ke PDF" dari profil LinkedIn (atau CV) lalu sistem membaca pengalaman, pendidikan & skill. Ini cara utama untuk data lengkap.'],
+      ['Catatan teknis','Data pengalaman/skill via API hanya tersedia untuk partner LinkedIn yang disetujui. Bila kelak disetujui, tab "Hubungkan akun" bisa mengisi semuanya dan PDF jadi cadangan.'],
+      ['Simulasi','Ganti tab untuk melihat kedua cara.']
+    ], render: liConnect };
+  s.liReview = { title:'Tinjau data dari LinkedIn', url:'gsih.id/onboarding/profil/linkedin/tinjau', steps:'T8 · opsional', actor:'Participant',
+    notes:[
+      ['Konfirmasi dulu','Semua data hasil impor tampil dengan checkbox; tidak ada yang tersimpan sebelum "Terapkan ke profil".'],
+      ['Konflik data','Bila berbeda dengan data registrasi (contoh: kota pada role Digital Talent), pengguna memilih salah satu.'],
+      ['Skill → minat','Skill LinkedIn dicocokkan ke daftar minat role sehingga chip minat di profiling langsung terpilih.'],
+      ['Per role','Founder: perusahaan saat ini jadi draf startup · Talent: sertifikasi · UMKM: nama usaha · Researcher: afiliasi · Mentor: lama pengalaman & URL LinkedIn.'],
+      ['Penanda','Setelah diterapkan, field hasil impor diberi chip "dari LinkedIn" dan tetap bisa diedit.'],
+      ['Simulasi','Ganti "Role simulasi" untuk melihat data tiap role; sumber mengikuti tab di layar sebelumnya.']
+    ], render: liReview };
+  const p = s.profiling, oldR = p.render;
+  p.notes = [...p.notes, ['Isi dari LinkedIn','Card opsional di atas form: "Hubungkan LinkedIn" atau "Unggah PDF LinkedIn" → tinjau → terapkan. Setelah diterapkan card berubah jadi status impor dan minat ikut terpilih.']];
+  p.render = () => {
+    let h = oldR();
+    h = h.replace(/(Akun Anda aktif sebagai <b>[^<]*<\/b>\.<\/p>)/, `$1${liCard()}`);
+    if(liOn()){
+      const d = liD();
+      const fill = (id, val) => { h = h.replace(new RegExp(`(<input id="${id}"[^>]*?)placeholder="[^"]*"`), `$1placeholder="" value="${val}"`).replace(new RegExp(`(<label for="${id}"[^>]*>[^<]*)</label>`), `$1${liChip()}</label>`); };
+      if(state.role==='mentor'){ fill('mYears','8'); fill('mLink','https://linkedin.com/in/ferdi-wijaya'); }
+      if(state.role==='founder'){ fill('pStage','MVP'); fill('pSector','Agritech'); }
+      if(state.role==='sme'){ fill('pBiz','Kedai kopi · Kopi Rani'); }
+      h = h.replace(/(<p class="text-sm font-medium mb-2">(?:Minat|Bidang keahlian)[^<]*<span[^>]*>[^<]*<\/span>)/, `$1 ${liChip('minat dari skill LinkedIn')}`);
+    }
+    return h;
+  };
+  const dsh = s.dashboard, oldD = dsh.render;
+  dsh.render = () => oldD().replace(/(<ul class="flex flex-col gap-2">[\s\S]*?<\/ul>)(\s*<\/div>)/, (m,a,b)=> a + (liOn() ? '' : `<p class="text-xs text-neutral-600 border-t border-neutral-200 pt-2">Isi pengalaman & skill lebih cepat: ${btn('dari LinkedIn','liConnect','ghost','!p-0 text-xs','data-set-on-go="liMode:pdf"')}</p>`) + b);
+  UF01.sim.onChange = () => { picks={interests:new Set(),needs:new Set()}; state.liApplied='no'; };
+})();
 
 /* ======================================================================
    UF-02 children · Partner Login > Dashboard (Funder, Korporasi & BUMN)
@@ -3612,13 +3967,14 @@ const ACTIONS = {
     })();
   },
   'uf01-register': () => { if(!$('fConsent').checked){ $('regErr').hidden=false; $('fConsent').focus(); return; } go('checkEmail'); },
+  'uf01-li-apply': () => { liD().interests.forEach(t=>picks.interests.add(t)); state.liApplied='yes'; go('profiling'); },
   'uf01-profiling': () => { if(picks.interests.size===0){ $('profErr').hidden=false; return; } state.mentorStatus='pending'; go(isMentor()?'mentorPending':'dashboard'); },
   'uf02-account': () => { if(!$('pcConsent').checked){ $('pcErr').hidden=false; $('pcConsent').focus(); return; } go('email'); }
 };
 document.addEventListener('click',e=>{
   /* close an open ⋮ menu when clicking outside it */
   if(state.bgMenu!=='none' && !e.target.closest('[data-menu]')){ state.bgMenu='none'; if(!e.target.closest('[data-go],[data-set],[data-flow],[data-action]')){ render(); return; } }
-  const fl=e.target.closest('[data-flow]'); if(fl){ if(fl.dataset.flowScreen) state.screen[fl.dataset.flow]=fl.dataset.flowScreen; openFlow(fl.dataset.flow); return; }
+  const fl=e.target.closest('[data-flow]'); if(fl){ if(fl.dataset.setOnGo){ const [k,v]=fl.dataset.setOnGo.split(':'); state[k]=v; } if(fl.dataset.flowScreen) state.screen[fl.dataset.flow]=fl.dataset.flowScreen; openFlow(fl.dataset.flow); return; }
   const a=e.target.closest('[data-action]'); if(a){ ACTIONS[a.dataset.action](); return; }
   const g=e.target.closest('[data-go]'); if(g){ const so=g.dataset.setOnGo; if(so){ const [k,v]=so.split(':'); state[k]=v; } go(g.dataset.go); return; }
   const rs=e.target.closest('[data-reset="usr"]'); if(rs){ state.usrRole=state.usrLoc=state.usrStatus='Semua'; render(); return; }
