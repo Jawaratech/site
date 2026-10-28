@@ -175,6 +175,7 @@ const state = {
   spSek:'Semua', spKeh:'Semua', spSt:'Semua',      // UF-22 participant program
   arSpoke:'Semua', arProg:'Semua', arProgress:'Semua', // UF-22 activity report (Hub)
   bgStatus:'Semua', bgPoin:'Semua', bgMenu:'none',  // UF-25 badge list
+  evReg:'open', evTab:'tentang', prTab:'tentang', oppKind:'program', evKind:'open', // detail event/program (shared)                   // UF-10 detail event
   invSearch:'found',                               // UF-01-3 undang anggota tim
   liMode:'pdf', liApplied:'no',                    // UF-01 isi profil dari LinkedIn
   dashRole:'', fStartup:'panen',                    // UF-14 role aktif · UF-01-3 startup aktif
@@ -724,6 +725,256 @@ const UF02 = {
 }};
 
 /* ======================================================================
+   Shared · Halaman detail event & program (layout acuan: UF-10 › 02)
+   Dipakai di UF-10 › 02, UF-05 › 06, UF-15 › 03, UF-16 › 01, UF-03 › 02, UF-23 › pratinjau
+   ====================================================================== */
+const EVENTS = {
+  meetup:   {title:'AI Builders Meetup', date:'Sabtu, 24 Okt 2026', meta:'24 Okt', time:'09.00–12.00 WIB', fmt:'HYBRID', fmtTxt:'Hybrid · offline & online', loc:['Hub Malang · Ruang Serbaguna','Jl. Contoh No. 12, Malang'], reg:79, cap:120, tags:['AI','Networking','Meetup'], agenda:6, spk:4, prt:2, org:'Hub Malang', curated:false},
+  bootcamp: {title:'AI Builders Bootcamp', date:'Minggu–Selasa, 1–3 Nov 2026', meta:'1–3 Nov', time:'09.00–16.00 WIB', fmt:'OFFLINE', fmtTxt:'Offline · tatap muka', loc:['Hub Malang · Ruang Serbaguna','Jl. Contoh No. 12, Malang'], reg:22, cap:30, tags:['AI','Bootcamp','Hands-on'], agenda:9, spk:3, prt:2, org:'Hub Malang', curated:true},
+  pitching: {title:'Workshop Pitching Batu', date:'Sabtu, 7 Nov 2026', meta:'7 Nov', time:'09.00–12.00 WIB', fmt:'OFFLINE', fmtTxt:'Offline · tatap muka', loc:['Spoke Batu · Event Hall','Jl. Contoh No. 5, Batu'], reg:0, cap:60, tags:['Pitching','Startup','Workshop'], agenda:5, spk:2, prt:1, org:'Spoke Batu', curated:false}
+};
+const daysLabel = (meta) => { const m=meta.match(/(\d{1,2})(?:–\d{1,2})?\s(\w+)/); if(!m) return ''; const t=new Date(2026,MONTHS_ID.indexOf(m[2]),+m[1]),n=new Date(); n.setHours(0,0,0,0); const d=Math.round((t-n)/86400000); return d>0?d+' hari lagi':d===0?'Hari ini':''; };
+const dIcon = (t) => `<span class="w-7 h-7 shrink-0 rounded-full border border-neutral-400 flex items-center justify-center font-mono text-xs" aria-hidden="true">${t}</span>`;
+const infoCard = ([ic, label, main, sub, link]) => `
+  <div class="border border-neutral-300 rounded p-4 flex flex-col gap-3 min-w-0">
+    <div class="flex flex-col gap-1 min-w-0"><div class="flex items-center gap-2 mb-1">${dIcon(ic)}<p class="font-mono text-[11px] uppercase text-neutral-500">${label}</p></div><p class="text-sm font-semibold">${main}</p><p class="text-xs text-neutral-500">${sub}</p></div>
+    <div class="mt-auto border-t border-neutral-200 pt-2 text-xs flex items-center gap-2">${link}</div>
+  </div>`;
+const dLines = (ws) => `<ul class="text-sm flex flex-col gap-2">${ws.map(w=>`<li class="flex items-center gap-2"><span aria-hidden="true">•</span><div class="line ${w}"></div></li>`).join('')}</ul>`;
+const roleChips = (arr) => `<div class="flex flex-wrap gap-2">${arr.map(t=>`<span class="border border-neutral-400 rounded-full px-3 py-1 text-xs">${t}</span>`).join('')}</div>`;
+
+/* Kerangka halaman detail: kolom utama + panel kanan (+ bar CTA menempel di bawah pada mobile) */
+const detailPage = (c) => {
+  const tab = state[c.tabKey] && c.tabs.some(t=>t[0]===state[c.tabKey]) ? state[c.tabKey] : c.tabs[0][0];
+  const body = c.tabs.find(t=>t[0]===tab)[3];
+  return `
+  <div class="px-5 py-6 grid gap-6 md:grid-cols-[minmax(0,1fr)_300px]">
+    <div class="flex flex-col gap-4 min-w-0">
+      ${c.top||''}
+      <div class="flex flex-wrap items-center gap-2">${c.back?btn(c.back[0],c.back[1],'ghost','!p-0',c.back[2]||''):''}
+        <span class="ml-auto flex gap-2">${btn('Bagikan',null,'secondary','px-3 py-1.5 text-xs')}${btn('Salin tautan',null,'secondary','px-3 py-1.5 text-xs')}</span></div>
+      <div class="flex flex-wrap gap-2">${c.pills}<span class="text-xs text-neutral-500 self-center">Diselenggarakan ${c.org}</span></div>
+      <h2 class="text-2xl sm:text-3xl font-semibold leading-tight">${c.title}</h2>
+      ${ph(c.bannerLabel||'Banner','aspect-[3/1] w-full rounded')}
+      <div class="flex flex-wrap items-center gap-2 text-xs"><span class="text-neutral-500" aria-hidden="true">#</span>${c.tags.map(t=>`<span class="border border-neutral-300 rounded px-2 py-0.5">${t}</span>`).join('')}</div>
+      <div class="grid gap-3 sm:grid-cols-3">${c.info.map(infoCard).join('')}</div>
+      <div class="flex border-b border-neutral-300 text-sm overflow-x-auto [scrollbar-width:none] mt-2" role="tablist">${c.tabs.map(([k,t,n])=>`<button type="button" role="tab" data-set="${c.tabKey}:${k}" aria-selected="${tab===k}" class="px-3 sm:px-4 py-2 -mb-px border-b-2 whitespace-nowrap flex items-center gap-1.5 ${tab===k?'border-neutral-900 font-semibold':'border-transparent text-neutral-500'}">${t}${n?`<span class="font-mono text-[10px] border border-neutral-300 rounded-full px-1.5">${n}</span>`:''}</button>`).join('')}</div>
+      <div class="flex flex-col gap-4">${body}</div>
+    </div>
+    <aside class="border border-neutral-300 rounded p-4 flex flex-col gap-4 self-start min-w-0 md:sticky md:top-4">
+      ${isMob()?'':ph(c.posterLabel||'Poster','aspect-square w-full rounded')}
+      ${c.aside}
+    </aside>
+  </div>
+  ${isMob() && c.mobBar ? `<div class="sticky bottom-0 bg-white border-t border-neutral-300 px-5 py-3 flex items-center gap-3">${c.mobBar}</div>` : ''}`;
+};
+
+/* Event: kartu info + tab standar */
+const evInfo = (ev, opt={}) => [
+  ['◷','Tanggal & waktu', ev.date, ev.time+' · Asia/Jakarta', opt.calLink ?? '<span class="underline">+ Tambah ke kalender</span>'],
+  ['⌖','Lokasi', ev.fmt==='ONLINE'?'Online':ev.loc[0], ev.fmt==='ONLINE'?'Link dikirim setelah terdaftar':ev.loc[1], '<span class="underline">Buka di Google Maps</span><span class="ml-auto text-neutral-500">Salin</span>'],
+  ['◎','Format & peserta', ev.fmtTxt, `${ev.reg} terdaftar · kuota ${ev.cap}`, ev.curated?'<span>● Peserta dikurasi</span>':ev.fmt==='HYBRID'?'<span>● Link online dikirim H-1</span>':'<span>● Tunjukkan QR saat check-in</span>']];
+const evTabs = (ev, opt={}) => {
+  const spk = opt.speakers || ['Pembicara 1','Pembicara 2','Pembicara 3','Moderator'].slice(0,ev.spk).map(n=>[n,'Jabatan · Perusahaan','']);
+  return [
+  ['tentang','Tentang',0, `
+    <div class="border border-neutral-400 rounded p-4 bg-neutral-50 text-sm">Ringkasan singkat: ${lines(2,['w-full','w-3/4'])}</div>
+    <p class="text-sm font-semibold">${ev.title}</p>${lines(4)}
+    ${ev.curated?notice('<b>Curated Event.</b> Kurator meninjau profil pendaftar sesuai target audience: Digital Talent dengan minat Data & AI.'):''}
+    <p class="text-sm font-semibold">Yang akan Anda dapat</p>${dLines(['w-2/3','w-1/2','w-3/5'])}
+    <p class="text-sm font-semibold">Cocok untuk</p>${roleChips(['Digital Talent','Startup Founder','Researcher'])}`],
+  ['agenda','Agenda',ev.agenda, `<ol class="flex flex-col divide-y divide-neutral-200 border border-neutral-300 rounded">${(opt.agenda||[['09.00','Registrasi & check-in'],['09.30','Pembukaan'],['09.45','Keynote: AI agent di skala produksi'],['10.30','Panel diskusi'],['11.30','Networking'],['12.00','Penutupan']]).map(([t,a,hl])=>`<li class="flex gap-4 px-4 py-3 text-sm ${hl?'bg-neutral-100':''}"><span class="font-mono text-xs text-neutral-500 w-12 shrink-0 pt-0.5">${t}</span><span class="min-w-0"><span class="block ${hl?'font-semibold':''}">${a}</span><span class="block text-xs text-neutral-500">${hl||'Ruang utama'}</span></span></li>`).join('')}</ol>`],
+  ['pembicara','Pembicara',spk.length, `<div class="grid gap-3 grid-cols-2 sm:grid-cols-4">${spk.map(([n,j,st])=>`<div class="border ${st?'border-dashed border-neutral-900':'border-neutral-300'} rounded p-3 flex flex-col items-center text-center gap-2">${ph('','w-16 h-16 rounded-full')}<span class="text-sm font-medium">${n}</span><span class="text-xs text-neutral-500">${j}</span>${st?pill(st):''}</div>`).join('')}</div>`],
+  ['partner','Partner',ev.prt, `<div class="grid gap-3 grid-cols-2 sm:grid-cols-4">${['Penyelenggara','Didukung oleh','Media partner'].slice(0,ev.prt).map(t=>`<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2">${ph('Logo','h-12 w-full rounded-sm')}<span class="text-xs text-neutral-500">${t}</span></div>`).join('')}</div>`],
+  ['dokumentasi','Dokumentasi',0, `<div class="border-2 border-dashed border-neutral-400 rounded p-6 text-center flex flex-col items-center gap-2">${ph('','w-12 h-12 rounded')}<p class="text-sm font-medium">Dokumentasi tersedia setelah event</p><p class="text-xs text-neutral-500">Foto, rekaman & materi diunggah penyelenggara (UF-21).</p></div>`]];
+};
+const evPills = (ev) => pill(ev.fmt) + (ev.curated?pill('CURATED',true):pill('TERBUKA'));
+const peopleRow = (n, t='peserta terdaftar') => `<div class="flex items-center gap-2 border-t border-neutral-200 pt-3"><span class="flex -space-x-2">${[1,2,3].map(()=>ph('','w-6 h-6 rounded-full border-2 border-white')).join('')}</span><span class="text-xs text-neutral-500">${n} ${t}</span></div>`;
+
+/* Panel kanan pendaftaran (peserta). reg: open | full | closed | soon */
+const evRegAside = (ev, reg, o={}) => {
+  const open = reg==='open', left = ev.cap-ev.reg, pct = Math.round(ev.reg/ev.cap*100), cd = daysLabel(ev.meta);
+  const pillH = {open:pill('DIBUKA',true), full:pill('KUOTA PENUH'), closed:pill('DITUTUP'), soon:pill('BELUM DIBUKA')}[reg];
+  const txt = {open:`Pendaftaran ditutup H-1 atau saat kuota penuh.${cd?` Event ${cd.toLowerCase()}.`:''}`, full:'Kuota sudah penuh. Masuk daftar tunggu untuk mendapat kabar bila ada kursi kosong.', closed:'Event sudah selesai. Pendaftaran ditutup.', soon:'Pendaftaran dibuka setelah event disetujui dan tayang.'}[reg];
+  return `
+    <div class="flex flex-col gap-1"><div class="flex items-center gap-2"><p class="font-mono text-[11px] uppercase text-neutral-500">Status pendaftaran</p><span class="ml-auto">${pillH}</span></div><p class="text-xs text-neutral-500">${txt}</p></div>
+    ${meter('Kuota terisi', reg==='full'?100:pct, reg==='full'?`${ev.cap} / ${ev.cap} kursi`:`${ev.reg} / ${ev.cap} kursi · tersisa ${left}`)}
+    ${open && ev.fmt==='HYBRID'?`<fieldset><legend class="text-sm font-medium mb-2">Ikut secara</legend><div class="grid grid-cols-2 gap-2">${['Offline','Online'].map((t,i)=>`<button type="button" class="chip border border-neutral-400 rounded px-3 py-2 text-sm" aria-pressed="${i===0}">${t}</button>`).join('')}</div></fieldset>`:''}
+    ${open && o.profile!==false?`<div class="border border-neutral-300 rounded p-2 text-xs"><p class="text-neutral-500 mb-1">Didaftarkan dengan data profil</p><p>Sari Wulandari · sari@email.com</p><p class="mt-1 [&>span]:ml-0">${prefilled()}</p></div>`:''}
+    ${isMob()?'':o.cta}
+    ${btn('Salin tautan event',null,'secondary','w-full text-xs py-1.5')}
+    ${peopleRow(ev.reg)}
+    ${open && o.login!==false?`<p class="text-xs text-neutral-500">Belum login? Anda diarahkan ke ${flowLink('Login / registrasi (UF-01)','UF-01','ghost')}</p>`:''}`;
+};
+const regCta = (reg, go, attrs='', cls='w-full') => {
+  const lbl = {open:'Gabung Event', full:'Masuk daftar tunggu', closed:'Pendaftaran ditutup', soon:'Belum dibuka'}[reg];
+  const off = reg==='closed'||reg==='soon';
+  return btn(lbl, reg==='open'?go:null, reg==='open'?'primary':'secondary', cls+(off?' opacity-50 cursor-not-allowed':''), off?'disabled':attrs);
+};
+const regMobBar = (ev, reg, cta) => `<div class="min-w-0"><p class="text-xs text-neutral-500">${{open:`Tersisa ${ev.cap-ev.reg} kursi`,full:'Kuota penuh',closed:'Event selesai',soon:'Belum dibuka'}[reg]}</p><p class="text-sm font-semibold">Gratis</p></div><div class="ml-auto">${cta}</div>`;
+
+/* Program: varian layout yang sama (UF-03 › 02, UF-05 › 06) */
+const PROG = {title:'Inkubasi Startup Batch 5', org:'Hub Malang', deadline:'30 Okt', reg:34, cap:20, tags:['Inkubasi','MVP / early revenue','Fundraising']};
+const progInfo = () => [
+  ['◷','Periode pendaftaran','1–30 Okt 2026','Seleksi 1–14 Nov · program 18 Nov – 10 Feb','<span class="underline">+ Tambah tenggat ke kalender</span>'],
+  ['⌖','Lokasi & format','Hybrid · Hub Malang','Kelas mingguan offline + mentoring online','<span class="underline">Buka di Google Maps</span><span class="ml-auto text-neutral-500">Salin</span>'],
+  ['◎','Kuota & pendaftar',`${PROG.cap} startup`,`${PROG.reg} startup sudah mendaftar`,'<span>● Seleksi oleh Hub & Core Team</span>']];
+const progTabs = () => [
+  ['tentang','Tentang',0, `
+    <div class="border border-neutral-400 rounded p-4 bg-neutral-50 text-sm">Ringkasan singkat: ${lines(2,['w-full','w-3/4'])}</div>
+    <p class="text-sm font-semibold">${PROG.title}</p>${lines(4)}
+    <p class="text-sm font-semibold">Yang akan startup dapat</p>${dLines(['w-2/3','w-1/2','w-3/5'])}
+    <p class="text-sm font-semibold">Cocok untuk</p>${roleChips(['Startup Founder','Tahap MVP','Early revenue'])}`],
+  ['timeline','Timeline',3, timelineList([['Pendaftaran','1–30 Okt','now'],['Seleksi','1–14 Nov',false],['Onboarding & program','18 Nov – 10 Feb',false]])],
+  ['kurikulum','Kurikulum',6, `<ol class="flex flex-col divide-y divide-neutral-200 border border-neutral-300 rounded">${['Validasi masalah','Product-market fit','Model bisnis','Go-to-market','Fundraising','Demo day'].map((t,i)=>`<li class="flex gap-4 px-4 py-3 text-sm"><span class="font-mono text-xs text-neutral-500 w-16 shrink-0 pt-0.5">Mgg ${i*2+1}–${i*2+2}</span><span>${t}</span></li>`).join('')}</ol>`],
+  ['mentor','Mentor',4, `<div class="grid gap-3 grid-cols-2 sm:grid-cols-4">${['Mentor 1','Mentor 2','Mentor 3','Mentor 4'].map(n=>`<div class="border border-neutral-300 rounded p-3 flex flex-col items-center text-center gap-2">${ph('','w-16 h-16 rounded-full')}<span class="text-sm font-medium">${n}</span><span class="text-xs text-neutral-500">Keahlian · Kota</span></div>`).join('')}</div>`],
+  ['partner','Partner',2, `<div class="grid gap-3 grid-cols-2 sm:grid-cols-4">${['Penyelenggara','Didukung oleh'].map(t=>`<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2">${ph('Logo','h-12 w-full rounded-sm')}<span class="text-xs text-neutral-500">${t}</span></div>`).join('')}</div>`]];
+const progStatus = () => { const cd = daysLabel(PROG.deadline); return `<div class="flex flex-col gap-1"><div class="flex items-center gap-2"><p class="font-mono text-[11px] uppercase text-neutral-500">Status pendaftaran</p><span class="ml-auto">${pill('DIBUKA',true)}</span></div><p class="text-xs text-neutral-500">Ditutup ${PROG.deadline} 2026${cd?` · ${cd}`:''}.</p></div>`; };
+const progPage = (o) => detailPage({ top:o.top, back:o.back, pills:pill('INKUBASI')+pill('12 MINGGU'), org:PROG.org, title:PROG.title, bannerLabel:'Banner program', tags:PROG.tags, info:progInfo(), tabs:progTabs(), tabKey:'prTab', aside:o.aside, mobBar:o.mobBar });
+
+/* ---------- Layar yang memakai layout ---------- */
+const ev10Detail = () => {
+  const ev = state.curated==='yes' ? EVENTS.bootcamp : EVENTS.meetup, reg = state.evReg;
+  const go = state.curated==='yes'?'pending':'registered';
+  return `${evHeader()}${detailPage({
+    top: simBar('Simulasi status pendaftaran','evReg',[['open','Dibuka'],['full','Kuota penuh'],['closed','Ditutup']]),
+    back:['← Semua event','list'], pills:evPills(ev), org:ev.org, title:ev.title, bannerLabel:'Banner event', tags:ev.tags,
+    info:evInfo(ev), tabs:evTabs(ev), tabKey:'evTab',
+    aside: evRegAside(ev, reg, {cta:regCta(reg, go)}), mobBar: regMobBar(ev, reg, regCta(reg, go, '', ''))})}`;
+};
+
+const uf05Detail = () => {
+  const isEv = state.oppKind==='event';
+  const top = simBar('Jenis opportunity','oppKind',[['program','Program'],['event','Event']]);
+  if(isEv){
+    const ev = EVENTS.meetup, cta = (cls='w-full') => btn('Gabung Event',null,'primary',cls,'data-flow="UF-10" data-flow-screen="detail" data-set-on-go="evReg:open"');
+    return `${appHeader(avatar('Sari'))}${detailPage({ top, back:['← Opportunity','discover'], pills:evPills(ev), org:ev.org, title:ev.title, bannerLabel:'Banner event', tags:ev.tags,
+      info:evInfo(ev), tabs:evTabs(ev), tabKey:'evTab',
+      aside: evRegAside(ev,'open',{cta:cta()+'<p class="text-xs text-neutral-500 -mt-2">Lanjut ke alur Gabung Event (UF-10).</p>'}), mobBar: regMobBar(ev,'open',cta(''))})}`;
+  }
+  const cta = (cls='w-full') => btn('Daftar program',null,'primary',cls,'data-flow="UF-03" data-flow-screen="detail"');
+  return `${appHeader(avatar('Sari'))}${progPage({ top, back:['← Opportunity','discover'],
+    aside: `${progStatus()}<div class="border border-neutral-300 rounded p-2 text-xs"><p class="font-medium mb-1">Persyaratan utama</p><ul class="flex flex-col gap-1 text-neutral-600"><li>• Startup terdaftar di GSIH</li><li>• Tahap MVP atau early revenue</li><li>• Minimal 2 co-founder</li></ul><p class="text-neutral-500 mt-2">Kelayakan dicek otomatis saat mendaftar (UF-03).</p></div>${isMob()?'':cta()}${btn('Salin tautan program',null,'secondary','w-full text-xs py-1.5')}${peopleRow(PROG.reg,'startup mendaftar')}`,
+    mobBar: `<div class="min-w-0"><p class="text-xs text-neutral-500">Ditutup ${PROG.deadline}</p><p class="text-sm font-semibold">${PROG.cap} kursi</p></div><div class="ml-auto">${cta('')}</div>` })}`;
+};
+
+const uf03Detail = () => {
+  const ok = state.eligible==='yes';
+  const reqs = [['Startup terdaftar di GSIH',true],['Tahap MVP atau early revenue',true],['Memiliki minimal 2 co-founder',ok],['Badan hukum (PT/CV)',ok]];
+  const cta = (cls='w-full') => ok ? btn('Mulai aplikasi','form','primary',cls) : disabledBtn('Mulai aplikasi', cls);
+  return `${appHeader(avatar('Rani'))}${progPage({ back:['← Katalog program','catalog'],
+    aside: `${progStatus()}
+      <div class="flex flex-col gap-2"><div class="flex items-center gap-2"><p class="font-mono text-[11px] uppercase text-neutral-500">Kelayakan Panen.id</p><span class="ml-auto">${ok?pill('MEMENUHI',true):pill('BELUM MEMENUHI')}</span></div>
+      <ul class="flex flex-col gap-2">${reqs.map(([t,d])=>checkRow(t,d,d?'':'Belum terpenuhi')).join('')}</ul></div>
+      ${ok?'':`<p class="text-xs border-l-2 border-neutral-900 pl-2">Anda belum memenuhi 2 persyaratan. Lengkapi profil startup atau pilih program lain.</p>`}
+      ${isMob()?'':cta()}${ok?'':btn('Kembali ke katalog','catalog','secondary','w-full')}
+      ${btn('Salin tautan program',null,'secondary','w-full text-xs py-1.5')}${peopleRow(PROG.reg,'startup mendaftar')}`,
+    mobBar: `<div class="min-w-0"><p class="text-xs text-neutral-500">Ditutup ${PROG.deadline}</p><p class="text-sm font-semibold">${ok?'Memenuhi syarat':'Belum memenuhi'}</p></div><div class="ml-auto">${cta('')}</div>` })}`;
+};
+
+const uf15Detail = () => {
+  const ev = EVENTS.meetup, dec = state.mentorAns==='decline';
+  const agenda = [['09.00','Registrasi & check-in'],['09.30','Pembukaan'],['09.45','Keynote: AI agent di skala produksi'],['10.30','Panel diskusi'],['13.00','Mentoring 1:1 · sesi Anda','Meeting Room A · 13.00–15.00'],['15.00','Penutupan']];
+  const speakers = [['Ferdi Kurniawan','Product · Anda','DIUNDANG'],['Pembicara 1','Jabatan · Perusahaan',''],['Pembicara 2','Jabatan · Perusahaan',''],['Moderator','Jabatan · Perusahaan','']];
+  const acts = (cls='') => `${btn('Terima undangan','confirmed','primary',cls)}${btn('Tolak',null,'secondary',cls,'data-set="mentorAns:decline"')}`;
+  return `${appHeader(avatar('Ferdi · Mentor'), ['Dasbor','Undangan','Jadwal'])}${detailPage({
+    top: notice('<b>Anda diundang sebagai Mentor</b> oleh Dimas (Hub Malang) untuk sesi Mentoring 1:1. Halaman ini sama dengan yang dilihat peserta, ditambah panel undangan di kanan.'),
+    back:['← Undangan','email'], pills:pill(ev.fmt)+pill('UNDANGAN MENTOR',true), org:ev.org, title:ev.title, bannerLabel:'Banner event', tags:ev.tags,
+    info:evInfo(ev), tabs:evTabs(ev,{agenda, speakers}), tabKey:'evTab',
+    aside: `
+      <div class="flex items-center gap-2"><p class="font-mono text-[11px] uppercase text-neutral-500">Undangan untuk Anda</p><span class="ml-auto">${pill('MENUNGGU JAWABAN')}</span></div>
+      <dl class="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-2 text-sm">
+        <dt class="text-neutral-500">Sesi</dt><dd>Mentoring 1:1</dd><dt class="text-neutral-500">Waktu</dt><dd>Sabtu, 24 Okt · 13.00–15.00</dd>
+        <dt class="text-neutral-500">Ruang</dt><dd>Meeting Room A</dd><dt class="text-neutral-500">Peserta</dt><dd>12 orang (slot 20 menit)</dd>
+        <dt class="text-neutral-500">Pengundang</dt><dd>Dimas · Hub Malang</dd><dt class="text-neutral-500">Jawab s.d.</dt><dd>20 Okt 2026</dd></dl>
+      <blockquote class="border-l-2 border-neutral-400 pl-3 text-xs text-neutral-600">"Halo Ferdi, kami ingin Anda mengisi sesi mentoring product untuk peserta."</blockquote>
+      ${dec?`<div class="border border-neutral-900 rounded p-3 flex flex-col gap-3">${select('decWhy','Alasan menolak',['Jadwal bentrok','Topik di luar keahlian','Lainnya'])}${area('decNote','Keterangan (opsional)','',2)}<div class="flex gap-3">${btn('Kirim penolakan','declined')}${btn('Batal',null,'ghost','','data-set="mentorAns:accept"')}</div></div>`
+           :(isMob()?'':`<div class="grid grid-cols-2 gap-2">${acts('w-full')}</div>`)}
+      <p class="text-xs text-neutral-500">Setelah menerima, nama Anda tampil di tab Pembicara dan sesi masuk ke Jadwal.</p>`,
+    mobBar: dec ? '' : `<div class="grid grid-cols-2 gap-2 w-full">${acts('w-full')}</div>` })}`;
+};
+
+const uf16Today = () => {
+  const ev = EVENTS.meetup, on = isOnline();
+  const cta = (cls='w-full') => on ? btn('Check-in & dapatkan link','online','primary',cls) : btn('Buka QR akses','qr','primary',cls);
+  return `${evHeader()}${detailPage({
+    top: `<div class="border border-neutral-900 rounded px-3 py-2 text-sm flex flex-wrap items-center gap-2">${pill('HARI INI',true)}<span>Event dimulai pukul 09.00 · check-in dibuka 08.30</span></div>`,
+    back:['← Event saya',null], pills:pill(ev.fmt)+pill(on?'ANDA: ONLINE':'ANDA: OFFLINE',true), org:ev.org, title:ev.title, bannerLabel:'Banner event', tags:ev.tags,
+    info:evInfo(ev,{calLink:'<span class="text-neutral-500">Sedang berlangsung hari ini</span>'}), tabs:evTabs(ev), tabKey:'evTab',
+    aside: `
+      <div class="flex items-center gap-2"><p class="font-mono text-[11px] uppercase text-neutral-500">Kehadiran Anda</p><span class="ml-auto">${pill('BELUM CHECK-IN')}</span></div>
+      <p class="text-sm">${on?'Anda ikut <b>online</b>. Check-in untuk mendapatkan link meeting.':'Anda ikut <b>offline</b> di Hub Malang. Tunjukkan QR akses ke petugas.'}</p>
+      <p class="text-xs text-neutral-500">${on?'Check-in online ditutup 09.15 (diatur saat Buat Event, UF-23).':'Check-in di meja registrasi, lantai 1.'}</p>
+      ${isMob()?'':cta()}
+      ${on?'':btn('Petunjuk arah',null,'secondary','w-full text-xs py-1.5')}
+      ${peopleRow(64,'peserta sudah check-in')}`,
+    mobBar: `<div class="min-w-0"><p class="text-xs text-neutral-500">Hari ini · 09.00</p><p class="text-sm font-semibold">${on?'Online':'Hub Malang'}</p></div><div class="ml-auto">${cta('')}</div>` })}`;
+};
+
+/* UF-23 pratinjau halaman event (sebelum submit) */
+const uf23Preview = () => {
+  const ev = EVENTS.pitching;
+  return `${appHeader(`${pill('MODE PRATINJAU',true)}`)}${detailPage({
+    top: `<div class="border-2 border-dashed border-neutral-900 rounded p-3 flex flex-wrap items-center gap-3 text-sm"><span class="min-w-0 flex-1 basis-full sm:basis-0">Ini tampilan halaman event untuk peserta (layout sama dengan UF-10 › 02). Belum tayang sampai disetujui.</span><span class="flex gap-2">${btn('← Ubah data','form','secondary','px-3 py-1.5 text-xs')}${btn('Submit','approval','primary','px-3 py-1.5 text-xs')}</span></div>`,
+    back:null, pills:evPills(ev), org:ev.org, title:ev.title, bannerLabel:'Banner (dari form)', tags:ev.tags,
+    info:evInfo(ev), tabs:evTabs(ev,{agenda:[['09.00','Registrasi'],['09.30','Materi: struktur pitch deck'],['10.30','Latihan pitching'],['11.30','Feedback juri'],['12.00','Penutupan']], speakers:[['Lina Hartono','Fundraising · Mentor',''],['Tamu: Juri','Investor · VC','']]}), tabKey:'evTab',
+    posterLabel:'Poster (dari form)',
+    aside: evRegAside(ev,'soon',{cta:regCta('soon'), login:false}), mobBar: regMobBar(ev,'soon',regCta('soon',null,'','')) })}`;
+};
+
+/* UF-23 form: field dipetakan ke bagian halaman detail event (UF-10 › 02) */
+const shows = (t) => `<span class="font-mono text-[10px] border border-neutral-400 rounded px-1.5 py-px text-neutral-600 whitespace-nowrap">↗ ${t}</span>`;
+const fSec = (title, where, inner, sub='') => `
+  <section class="border border-neutral-300 rounded p-4 flex flex-col gap-4 min-w-0">
+    <div class="flex flex-wrap items-center gap-2"><h3 class="text-sm font-semibold">${title}</h3>${where?shows(where):''}</div>
+    ${sub?`<p class="text-xs text-neutral-500 -mt-2">${sub}</p>`:''}
+    ${inner}
+  </section>`;
+const chipInput = (label, chips, add) => `<div class="flex flex-col gap-1 min-w-0"><span class="text-sm font-medium">${label}</span><div class="border border-neutral-400 rounded px-2 py-1.5 flex flex-wrap gap-1.5 items-center bg-white">${chips.map(c=>`<span class="border border-neutral-400 rounded px-2 py-0.5 text-xs">${c} ×</span>`).join('')}<span class="text-xs text-neutral-400">${add}</span></div></div>`;
+const choiceChips = (key, opts) => `<div class="flex flex-wrap gap-2">${opts.map(([v,t])=>`<button type="button" data-set="${key}:${v}" class="chip border border-neutral-400 rounded px-3 py-1.5 text-sm" aria-pressed="${state[key]===v}">${t}</button>`).join('')}</div>`;
+const mediaUp = (label, ratio, hint, cls) => `<div class="flex flex-col gap-1 min-w-0"><span class="text-sm font-medium">${label}</span><div class="border-2 border-dashed border-neutral-400 rounded ${cls} flex flex-col items-center justify-center gap-1 text-center p-3 bg-neutral-50"><span class="text-xs font-medium">${ratio}</span><span class="text-[11px] text-neutral-500">${hint}</span>${btn('Pilih gambar',null,'secondary','px-3 py-1 text-xs mt-1')}</div></div>`;
+const rowEditor = (heads, rows, addLbl, cols) => `
+  <div class="flex flex-col gap-2">
+    <div class="${isMob()?'hidden':'grid'} ${cols} gap-2 text-xs text-neutral-500 px-1">${heads.map(h=>`<span>${h}</span>`).join('')}<span></span></div>
+    ${rows.map(r=>`<div class="grid ${isMob()?'grid-cols-1 border border-neutral-300 rounded p-2':cols} gap-2 items-center">${r.map((v,i)=>`<input aria-label="${heads[i]}" value="${v}" class="border border-neutral-400 rounded px-2 py-1.5 text-sm bg-white min-w-0">`).join('')}<button type="button" class="text-xs underline justify-self-start">Hapus</button></div>`).join('')}
+    <div>${btn(addLbl,null,'ghost','!p-0 text-sm')}</div>
+  </div>`;
+
+const uf23Form = () => evShell(0, `
+  ${notice('Isian di bawah langsung membentuk halaman event untuk peserta (layout UF-10 › 02). Label ↗ menunjukkan bagian halaman yang terisi.')}
+  ${fSec('Info utama','Judul, label & tag', `
+    <div class="grid gap-4 sm:grid-cols-2">${field('evName','Nama event','text','','','Workshop Pitching Batu')}${select('evCat','Kategori',['Workshop','Meetup','Webinar','Bootcamp','Demo day'])}</div>
+    ${chipInput('Topik / tag (maks. 5)',['Pitching','Startup','Workshop'],'Ketik lalu Enter…')}
+    <fieldset><legend class="text-sm font-medium mb-2">Jenis pendaftaran</legend>${choiceChips('evKind',[['open','Terbuka · langsung terdaftar'],['curated','Curated · ditinjau kurator']])}</fieldset>
+    ${state.evKind==='curated'?`<div class="grid gap-4 sm:grid-cols-2">${select('evAud','Target audience',['Digital Talent','Startup Founder','SME Owner','Researcher'])}${field('evCrit','Kriteria kurasi','text','Minat Data & AI, domisili Jawa Timur')}</div>`:''}`)}
+  ${fSec('Jadwal & kuota','Kartu Tanggal & waktu · Format & peserta', `
+    <div class="grid gap-4 grid-cols-2 sm:grid-cols-4">${field('evD1','Tanggal mulai','date')}${field('evD2','Tanggal selesai','date','','Kosongkan bila 1 hari')}${field('evT1','Jam mulai','time','','','09:00')}${field('evT2','Jam selesai','time','','','12:00')}</div>
+    <div class="grid gap-4 grid-cols-2 sm:grid-cols-3">${select('evTz','Zona waktu',['WIB · Asia/Jakarta','WITA · Asia/Makassar','WIT · Asia/Jayapura'])}${field('evQuota','Kuota','number','','','60')}${field('evClose','Pendaftaran ditutup','date','','Default H-1 · juga tutup saat kuota penuh')}</div>
+    <fieldset><legend class="text-sm font-medium mb-2">Format</legend>${choiceChips('eventFormat',[['online','Online'],['offline','Offline'],['hybrid','Hybrid']])}<p class="text-xs text-neutral-500 mt-2">Lokasi diisi di langkah ${hasOffline()?'Space':'Sesi online'} ${shows('Kartu Lokasi')}</p></fieldset>`)}
+  ${fSec('Media','Banner & poster', `
+    <div class="grid gap-4 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">${mediaUp('Banner','Rasio 3:1','Min. 1500×500 px · JPG/PNG','aspect-[3/1]')}${mediaUp('Poster','Rasio 1:1','Min. 1080×1080 px · tampil di panel kanan','aspect-square')}</div>`)}
+  ${fSec('Poin & badge','', `<div class="grid gap-4 sm:grid-cols-2">${field('evPts','Poin','number','','Default kategori Workshop: 50','50')}${select('evBadge','Badge',['Community Builder (default)','Pitch Ready','Tanpa badge'])}</div>`)}
+  <div class="flex flex-wrap gap-3">${btn('Lanjut: konten halaman','content')}${btn('Simpan draf',null,'secondary')}</div>`);
+
+const uf23Content = () => evShell(1, `
+  <div class="flex flex-wrap items-center gap-3"><p class="text-sm text-neutral-600 min-w-0 flex-1">Setiap bagian di bawah menjadi satu tab di halaman event.</p>${btn('Pratinjau halaman','preview','secondary')}</div>
+  ${fSec('Tentang','Tab Tentang', `
+    ${area('evSum','Ringkasan singkat (maks. 160 karakter)','Tampil di kotak sorotan paling atas tab Tentang',2)}
+    ${area('evDesc','Deskripsi lengkap','',4)}
+    <div class="flex flex-col gap-2"><span class="text-sm font-medium">Yang akan peserta dapat</span>${['Struktur pitch deck yang dilirik investor','Latihan pitching 3 menit','Feedback langsung dari juri'].map(v=>`<div class="flex gap-2 items-center"><input aria-label="Poin manfaat" value="${v}" class="flex-1 min-w-0 border border-neutral-400 rounded px-2 py-1.5 text-sm bg-white"><button type="button" class="text-xs underline">Hapus</button></div>`).join('')}<div>${btn('+ Tambah poin',null,'ghost','!p-0 text-sm')}</div></div>
+    <fieldset><legend class="text-sm font-medium mb-2">Cocok untuk</legend><div class="flex flex-wrap gap-2">${ROLES.map((r,i)=>`<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i<2}">${r.name}</button>`).join('')}</div></fieldset>`)}
+  ${fSec('Agenda','Tab Agenda', rowEditor(['Jam','Sesi','Ruang / keterangan'], [['09.00','Registrasi','Lobby'],['09.30','Materi: struktur pitch deck','Event Hall'],['10.30','Latihan pitching','Event Hall']], '+ Tambah sesi', 'grid-cols-[80px_minmax(0,2fr)_minmax(0,1fr)_auto]'))}
+  ${fSec('Pembicara','Tab Pembicara', `
+    ${field('evSpk','Cari Mentor terverifikasi','search','Nama atau keahlian')}
+    <ul class="flex flex-col gap-2">${[['Lina Hartono','Fundraising · Surabaya','Mentor GSIH · undangan dikirim (UF-15)'],['Juri tamu','Investor · VC','Pembicara tamu (bukan akun GSIH)']].map(([n,j,s])=>`<li class="border border-neutral-300 rounded p-2 flex items-center gap-3">${ph('','w-9 h-9 rounded-full shrink-0')}<span class="min-w-0 flex-1"><span class="block text-sm font-medium">${n}</span><span class="block text-xs text-neutral-500">${j} · ${s}</span></span><button type="button" class="text-xs underline">Hapus</button></li>`).join('')}</ul>
+    <div>${btn('+ Tambah pembicara tamu',null,'ghost','!p-0 text-sm')}</div>`, 'Mentor GSIH otomatis menerima undangan (UF-15) dan tampil setelah menerima.')}
+  ${fSec('Partner','Tab Partner', `
+    <ul class="flex flex-col gap-2">${[['Spoke Batu','Penyelenggara']].map(([n,r])=>`<li class="border border-neutral-300 rounded p-2 flex flex-wrap items-center gap-3">${ph('Logo','w-16 h-9 rounded-sm shrink-0')}<span class="text-sm font-medium flex-1 min-w-0">${n}</span><select aria-label="Peran partner" class="${isMob()?'w-full order-last':''} border border-neutral-400 rounded px-2 py-1 text-sm bg-white"><option>${r}</option><option>Didukung oleh</option><option>Media partner</option></select><button type="button" class="text-xs underline">Hapus</button></li>`).join('')}</ul>
+    <div>${btn('+ Tambah partner',null,'ghost','!p-0 text-sm')}</div>`)}
+  ${fSec('Dokumentasi','Tab Dokumentasi', `<p class="text-sm text-neutral-600">Tidak diisi sekarang. Foto, rekaman & materi diunggah setelah event lewat laporan (UF-21) dan otomatis tampil di tab ini.</p>`)}
+  <div class="flex flex-wrap gap-3">${btn('Lanjut', hasOnline()?'online':hasOffline()?'space':'budget')}${btn('← Kembali','form','ghost')}</div>`);
+
+/* ======================================================================
    UF-03 · Registrasi & Pendaftaran Program Startup
    ====================================================================== */
 const programCard = (title, meta, go) => `<div class="border border-neutral-300 rounded p-3 flex flex-col gap-2 min-w-0">${ph('Banner program','aspect-video w-full rounded-sm')}<span class="font-mono text-[11px] text-neutral-500">${meta}</span><span class="text-sm font-medium">${title}</span>${lines(1,['w-3/4'])}<div class="pt-1">${btn('Lihat detail',go,'secondary','w-full')}</div></div>`;
@@ -755,29 +1006,8 @@ const UF03 = {
   },
   detail: {
     title:'Detail program & eligibility', url:'gsih.id/program/inkubasi-batch-5', steps:'T3–T5', actor:'Founder',
-    notes:[['T3','Detail program: manfaat, timeline, kuota.'],['T4','Sistem mengecek eligibility dari profil startup dan menampilkan checklist persyaratan.'],['T5 · Ya','"Mulai aplikasi" aktif.'],['T5 · Tidak','Tombol nonaktif, syarat yang belum terpenuhi ditandai, dan founder diarahkan kembali ke katalog.']],
-    render: () => {
-      const ok=state.eligible==='yes';
-      const reqs=[['Startup terdaftar di GSIH',true],['Tahap MVP atau early revenue',true],['Memiliki minimal 2 co-founder',ok],['Badan hukum (PT/CV)',ok]];
-      return `
-      ${appHeader(avatar('Rani'))}
-      <div class="px-5 py-6 grid gap-6 md:grid-cols-[minmax(0,1fr)_280px]">
-        <div class="flex flex-col gap-4 min-w-0">
-          ${btn('← Katalog program','catalog','ghost','self-start px-0')}
-          ${ph('Banner program','aspect-[3/1] w-full rounded')}
-          <h2 class="text-2xl font-semibold">Inkubasi Startup Batch 5</h2>
-          <div class="flex flex-wrap gap-2">${pill('INKUBASI')}${pill('12 MINGGU')}${pill('KUOTA 20 STARTUP')}</div>
-          ${lines(4)}
-          <div><p class="text-sm font-semibold mb-2">Timeline</p>${timelineList([['Pendaftaran','1–30 Okt','now'],['Seleksi','1–14 Nov',false],['Onboarding & program','18 Nov – 10 Feb',false]])}</div>
-        </div>
-        <aside class="border border-neutral-300 rounded p-4 flex flex-col gap-3 self-start">
-          ${simBar('Simulasi','eligible',[['yes','Memenuhi'],['no','Belum']])}
-          <p class="text-sm font-semibold">Persyaratan</p>
-          <ul class="flex flex-col gap-2">${reqs.map(([t,d])=>checkRow(t,d,d?'':'Belum terpenuhi')).join('')}</ul>
-          ${ok?btn('Mulai aplikasi','form','primary','w-full'):`<p class="text-xs border-l-2 border-neutral-900 pl-2">Anda belum memenuhi 2 persyaratan. Lengkapi profil startup atau pilih program lain.</p>${btn('Kembali ke katalog','catalog','secondary','w-full')}`}
-        </aside>
-      </div>`;
-    }
+    notes:[['T3','Detail program: manfaat, timeline, kuota.'],['T4','Sistem mengecek eligibility dari profil startup dan menampilkan checklist persyaratan.'],['T5 · Ya','"Mulai aplikasi" aktif.'],['T5 · Tidak','Tombol nonaktif, syarat yang belum terpenuhi ditandai, dan founder diarahkan kembali ke katalog.'],['Layout','Varian program dari layout detail event (UF-10 › 02): kartu Periode pendaftaran, Lokasi & format, Kuota & pendaftar; tab Tentang / Timeline / Kurikulum / Mentor / Partner; panel kanan berisi status pendaftaran & checklist kelayakan.']],
+    render: uf03Detail
   },
   form: {
     title:'Form aplikasi (prefill)', url:'gsih.id/program/inkubasi-batch-5/daftar', steps:'T6–T9', actor:'Founder',
@@ -1025,13 +1255,8 @@ const UF05 = {
   },
   programDetail: {
     title:'Detail program / event', url:'gsih.id/opportunity/program/inkubasi-batch-5', steps:'T9 · alt', actor:'Participant',
-    notes:[['T9 · Program / Event','Klik "Daftar" meneruskan ke alur pendaftaran: program (UF-03) atau event (UF-10).']],
-    render: () => `
-      ${appHeader(avatar('Sari'))}
-      <div class="px-5 py-6 grid gap-6 md:grid-cols-[minmax(0,1fr)_300px]">
-        <div class="flex flex-col gap-4 min-w-0">${btn('← Opportunity','discover','ghost','self-start px-0')}${ph('Banner','aspect-[3/1] w-full rounded')}<h2 class="text-xl font-semibold">Inkubasi Startup Batch 5</h2>${lines(5)}</div>
-        <aside class="border border-neutral-300 rounded p-4 flex flex-col gap-3 self-start"><p class="text-sm">Pendaftaran dibuka s.d. <b>30 Okt</b></p>${flowLink('Daftar (lanjut ke UF-03)','UF-03','primary')}<p class="text-xs text-neutral-500">Untuk event, tombol "Daftar" meneruskan ke Gabung Event (UF-10).</p></aside>
-      </div>`
+    notes:[['T9 · Program / Event','Klik "Daftar" meneruskan ke alur pendaftaran: program (UF-03) atau event (UF-10).'],['Layout','Event memakai layout detail event UF-10 › 02; program memakai varian program yang sama dengan UF-03 › 02.'],['Simulasi','Ganti "Jenis opportunity" di atas layar.']],
+    render: uf05Detail
   }
 }};
 
@@ -1525,28 +1750,8 @@ const UF10 = {
   },
   detail: {
     title:'Detail event & gabung', url:'gsih.id/event/ai-builders', steps:'T3–T7', actor:'Peserta → Sistem',
-    notes:[['T3','Membuka detail event.'],['T4','Klik "Gabung Event"; event hybrid wajib memilih Online / Offline.'],['T5–T6','Belum login → login / registrasi (UF-01), lalu kembali ke halaman ini.'],['T7','Pendaftaran dicatat dari data profil — tanpa isi form ulang.']],
-    render: () => {
-      const cur = state.curated==='yes';
-      return `
-      ${evHeader()}
-      <div class="px-5 py-6 grid gap-6 md:grid-cols-[minmax(0,1fr)_300px]">
-        <div class="flex flex-col gap-4 min-w-0">${btn('← Event','list','ghost','self-start px-0')}${ph('Banner','aspect-[3/1] w-full rounded')}
-          <div class="flex flex-wrap gap-2">${cur?pill('OFFLINE')+pill('CURATED',true):pill('HYBRID')}</div>
-          <h2 class="text-xl font-semibold">${evTitle()}</h2>${lines(4)}
-          ${cur?notice('<b>Curated Event.</b> Kurator meninjau profil pendaftar sesuai target audience: Digital Talent dengan minat Data & AI.'):''}
-          <p class="text-sm font-semibold">Agenda</p>${lines(3,['w-2/3','w-1/2','w-3/5'])}
-        </div>
-        <aside class="border border-neutral-300 rounded p-4 flex flex-col gap-3 self-start">
-          <p class="text-sm">${cur?'1–3 Nov':'24 Okt'} · 09.00 WIB<br><span class="text-neutral-500">Hub Malang</span></p>
-          <p class="text-xs text-neutral-500 font-mono">Kuota ${cur?'30':'120'} · tersisa ${cur?'8':'41'}</p>
-          ${cur?'':`<fieldset><legend class="text-sm font-medium mb-2">Ikut secara</legend><div class="grid grid-cols-2 gap-2">${['Offline','Online'].map((t,i)=>`<button type="button" class="chip border border-neutral-400 rounded px-3 py-2 text-sm" aria-pressed="${i===0}">${t}</button>`).join('')}</div></fieldset>`}
-          <div class="border border-neutral-300 rounded p-2 text-xs"><p class="text-neutral-500 mb-1">Didaftarkan dengan data profil</p><p>Sari Wulandari · sari@email.com${prefilled()}</p></div>
-          ${btn('Gabung Event', cur?'pending':'registered','primary','w-full')}
-          <p class="text-xs text-neutral-500">Belum login? Anda diarahkan ke ${flowLink('Login / registrasi (UF-01)','UF-01','ghost')}</p>
-        </aside>
-      </div>`;
-    }
+    notes:[['T3','Membuka detail event.'],['T4','Klik "Gabung Event"; event hybrid wajib memilih Online / Offline.'],['T5–T6','Belum login → login / registrasi (UF-01), lalu kembali ke halaman ini.'],['T7','Pendaftaran dicatat dari data profil — tanpa isi form ulang.'],['Layout acuan','Layout ini dipakai bersama oleh UF-05 › 06, UF-15 › 03, UF-16 › 01, UF-03 › 02 (varian program) dan pratinjau UF-23.'],['Struktur','Header (format, judul, banner, tag) → 3 kartu info: tanggal & waktu (+ kalender), lokasi (+ Maps), format & peserta → tab Tentang / Agenda / Pembicara / Partner / Dokumentasi.'],['Panel kanan','Poster, status pendaftaran (Dibuka / Kuota penuh / Ditutup) dengan hitung mundur, kuota terisi, pilihan ikut secara (hybrid), CTA, salin tautan, jumlah peserta.'],['Mobile','Poster disembunyikan; CTA pindah ke bar bawah yang menempel (sticky) bersama sisa kursi.'],['Simulasi','Ganti status pendaftaran dengan tombol di atas layar.']],
+    render: ev10Detail
   },
   pending: {
     title:'Menunggu persetujuan', url:'gsih.id/event/saya', steps:'T8–T9', actor:'Sistem → Peserta', when: () => state.curated==='yes',
@@ -2131,18 +2336,8 @@ const UF15 = {
   },
   detail: {
     title:'Detail undangan', url:'gsih.id/mentor/undangan/ai-builders', steps:'T4–T6', actor:'Mentor',
-    notes:[['T4','Ferdi melihat detail: event, sesi, peserta, lokasi.'],['T5','Menerima atau menolak.'],['T6 · Tolak','Wajib mengisi alasan.']],
-    render: () => {
-      const dec = state.mentorAns==='decline';
-      return `
-      ${appHeader(avatar('Ferdi · Mentor'), ['Dasbor','Undangan','Jadwal'])}
-      ${page(`
-        <p class="font-mono text-xs text-neutral-500 mb-1">UNDANGAN MENTOR</p>
-        <h2 class="text-xl font-semibold mb-4">AI Builders Meetup</h2>
-        <dl class="grid grid-cols-[120px_1fr] gap-2 text-sm mb-6"><dt class="text-neutral-500">Sesi</dt><dd>Mentoring 1:1</dd><dt class="text-neutral-500">Waktu</dt><dd>Sabtu, 24 Okt · 13.00–15.00</dd><dt class="text-neutral-500">Lokasi</dt><dd>Hub Malang</dd><dt class="text-neutral-500">Peserta</dt><dd>±12 startup tahap MVP</dd><dt class="text-neutral-500">Pengundang</dt><dd>Dimas · Hub Management</dd></dl>
-        ${dec?`<div class="border border-neutral-900 rounded p-4 flex flex-col gap-3">${select('decWhy','Alasan menolak',['Jadwal bentrok','Topik di luar keahlian','Lainnya'])}${area('decNote','Keterangan (opsional)','',2)}<div class="flex gap-3">${btn('Kirim penolakan','declined')}${btn('Batal',null,'ghost')}</div></div>`
-             :`<div class="flex flex-wrap gap-3">${btn('Terima undangan','confirmed')}${btn('Tolak',null,'secondary','','data-set="mentorAns:decline"')}</div>`}`,'max-w-2xl')}`;
-    }
+    notes:[['Layout','Sama dengan halaman event peserta (UF-10 › 02); sesi Mentor disorot di tab Agenda dan namanya tampil "Diundang" di tab Pembicara. Panel kanan diganti detail undangan.'],['T4','Ferdi melihat detail: event, sesi, peserta, lokasi.'],['T5','Menerima atau menolak.'],['T6 · Tolak','Wajib mengisi alasan.']],
+    render: uf15Detail
   },
   declined: {
     title:'Pengundang: penolakan', url:'gsih.id/admin/event/ai-builders/pengisi', steps:'T7', actor:'Hub Management / Core Team', when: () => state.mentorAns==='decline',
@@ -2183,17 +2378,8 @@ const UF16 = {
   screens:{
   today: {
     title:'Hari H: event saya', url:'gsih.id/event/saya', steps:'T1–T2', actor:'Peserta → Sistem',
-    notes:[['T1','Peserta membuka event yang diikuti pada hari H.'],['T2','Sistem menampilkan cara check-in sesuai mode yang dipilih saat daftar (online / offline).']],
-    render: () => `
-      ${evHeader()}
-      ${page(`
-        <p class="font-mono text-xs text-neutral-500 mb-1">HARI INI</p>
-        <h2 class="text-xl font-semibold mb-4">AI Builders Meetup</h2>
-        <div class="border border-neutral-900 rounded p-4 flex flex-col gap-3">
-          <div class="flex flex-wrap gap-2">${pill('HYBRID')}${pill(isOnline()?'ANDA: ONLINE':'ANDA: OFFLINE',true)}</div>
-          <p class="text-sm">09.00–12.00 WIB · ${isOnline()?'via meeting online':'Hub Malang'}</p>
-          ${isOnline()?btn('Check-in & dapatkan link','online','primary','self-start'):btn('Buka QR akses','qr','primary','self-start')}
-        </div>`,'max-w-2xl')}`
+    notes:[['Layout','Halaman event yang sama (UF-10 › 02) dengan penanda "Hari ini"; panel kanan berisi status kehadiran dan tombol check-in / QR.'],['T1','Peserta membuka event yang diikuti pada hari H.'],['T2','Sistem menampilkan cara check-in sesuai mode yang dipilih saat daftar (online / offline).']],
+    render: uf16Today
   },
   online: {
     title:'Check-in online', url:'gsih.id/event/ai-builders/checkin', steps:'T3–T6', actor:'Peserta → Sistem', when: isOnline,
@@ -2797,7 +2983,7 @@ const UF22 = {
    ====================================================================== */
 const evProp = () => proposer();
 const hasOnline = () => state.eventFormat!=='offline', hasOffline = () => state.eventFormat!=='online';
-const EV_STEPS = ['Data event','Sesi online','Space','Anggaran & submit'];
+const EV_STEPS = ['Data event','Konten halaman','Sesi online','Space','Anggaran & submit'];
 const evShell = (a, inner) => adminShell(evProp()[0], evProp()[1], 'Event', `<h2 class="text-xl font-semibold">Create Event</h2>${wizard(EV_STEPS,a)}${inner}`);
 /* UF-23 daftar event: search, filter status, tab Tabel / Card */
 const evListBlock = (p) => {
@@ -2824,7 +3010,7 @@ const evListBlock = (p) => {
 const UF23 = {
   type:'Internal', name:'Buat Event', who:'Pengaju: Spoke (Jessica) / Hub Management (Dimas) · Core Team (Steven) · Komdigi Official (Sastro)',
   sim:{label:'Laporan event sebelumnya', key:'prevReport', options:[['done','Semua selesai'],['pending','Belum disubmit'],['overdue','Lewat batas waktu']]},
-  order:['events','form','online','space','budget','approval','live'],
+  order:['events','form','content','online','space','budget','preview','approval','live'],
   screens:{
   events: {
     title:'Menu Event', url:'gsih.id/event/kelola', steps:'T1–T4', actor:'Pengaju → Sistem',
@@ -2840,39 +3026,44 @@ const UF23 = {
   },
   form: {
     title:'Data event', url:'gsih.id/event/baru', steps:'T5–T6', actor:'Pengaju',
-    notes:[['T5','Mengisi data event, jadwal, poin & badge yang didapatkan (default sesuai kategori, bisa diubah).'],['T6','Format: online / offline / hybrid menentukan langkah berikutnya.']],
-    render: () => evShell(0, `
-      <div class="grid gap-4 sm:grid-cols-2">${field('evName','Nama event','text','Workshop Pitching Batu')}${select('evCat','Kategori',['Workshop','Meetup','Webinar','Demo day'])}${field('evDate','Tanggal','date')}${field('evTime','Jam','text','09.00–12.00')}${field('evQuota','Kuota','number','60')}${select('evAud','Target audience',['Semua participant','Startup Founder','Digital Talent','Curated (perlu kurasi)'])}</div>
-      ${area('evDesc','Deskripsi','',3)}
-      <fieldset><legend class="text-sm font-medium mb-2">Format</legend><div class="flex flex-wrap gap-2">${[['online','Online'],['offline','Offline'],['hybrid','Hybrid']].map(([v,t])=>`<button type="button" data-set="eventFormat:${v}" class="chip border border-neutral-400 rounded px-3 py-1.5 text-sm" aria-pressed="${state.eventFormat===v}">${t}</button>`).join('')}</div></fieldset>
-      <div class="grid gap-4 sm:grid-cols-2 border border-neutral-300 rounded p-3">${field('evPts','Poin','number','','Default kategori Workshop: 50','50')}${select('evBadge','Badge',['Community Builder (default)','Pitch Ready','Tanpa badge'])}</div>
-      <div class="flex flex-wrap gap-3">${btn('Lanjut', hasOnline()?'online':hasOffline()?'space':'budget')}</div>`)
+    notes:[['T5','Mengisi info utama (nama, kategori, tag, jenis pendaftaran), jadwal & kuota, media (banner 3:1, poster 1:1), poin & badge.'],['T6','Format: online / offline / hybrid menentukan langkah berikutnya.'],['Pemetaan','Label ↗ menunjukkan bagian halaman detail event (UF-10 › 02) yang terisi oleh field tersebut.'],['Curated','Memilih "Curated" memunculkan target audience & kriteria kurasi (dipakai di UF-10).']],
+    render: uf23Form
+  },
+  content: {
+    title:'Konten halaman event', url:'gsih.id/event/baru', steps:'T5–T6', actor:'Pengaju',
+    notes:[['Tujuan','Mengisi isi tab halaman event: Tentang, Agenda, Pembicara, Partner. Dokumentasi diisi setelah event (UF-21).'],['Pembicara','Mentor GSIH dipilih dari daftar terverifikasi dan otomatis diundang (UF-15); pembicara tamu diisi manual.'],['Pratinjau','Tombol "Pratinjau halaman" menampilkan halaman persis seperti dilihat peserta.']],
+    render: uf23Content
   },
   online: {
     title:'Sesi online', url:'gsih.id/event/baru', steps:'T7–T8', actor:'Pengaju → Sistem', when: hasOnline,
     notes:[['T7','Mengisi URL meeting & batas waktu check-in.'],['T8','Sistem membuat link check-in otomatis (dipakai di UF-16).']],
-    render: () => evShell(1, `
+    render: () => evShell(2, `
       <div class="grid gap-4 sm:grid-cols-2">${field('evUrl','URL meeting','url','https://meet…')}${field('evCut','Batas check-in','time','','Peserta tidak bisa check-in setelah jam ini','09.15')}</div>
       <div class="border border-dashed border-neutral-500 rounded p-3 text-sm bg-neutral-50">Link check-in otomatis: <span class="font-mono">gsih.id/event/workshop-pitching/checkin</span></div>
-      <div class="flex flex-wrap gap-3">${btn('Lanjut', hasOffline()?'space':'budget')}${btn('← Kembali','form','ghost')}</div>`)
+      <div class="flex flex-wrap gap-3">${btn('Lanjut', hasOffline()?'space':'budget')}${btn('← Kembali','content','ghost')}</div>`)
   },
   space: {
     title:'Event space', url:'gsih.id/event/baru', steps:'T9–T11', actor:'Sistem → Pengaju', when: hasOffline,
     notes:[['T9','Ada sesi offline (offline / hybrid)?'],['T10','Sistem menampilkan event space & jadwal ketersediaan.'],['T11','Memilih event space & slot waktu.']],
-    render: () => evShell(2, `
+    render: () => evShell(3, `
       <div class="grid gap-4 md:grid-cols-[220px_minmax(0,1fr)]">
         <ul class="flex flex-col gap-2">${SPACES.map(([n,c],i)=>`<li class="border ${i===2?'border-neutral-900':'border-neutral-300'} rounded p-2 text-sm"><b class="font-medium">${n}</b><br><span class="text-xs text-neutral-500">${c}</span></li>`).join('')}</ul>
         <div class="min-w-0">${ph('Ketersediaan Event Hall','h-48 w-full rounded')}</div>
       </div>
-      <div class="flex flex-wrap gap-3">${btn('Lanjut','budget')}${btn('← Kembali', hasOnline()?'online':'form','ghost')}</div>`)
+      <div class="flex flex-wrap gap-3">${btn('Lanjut','budget')}${btn('← Kembali', hasOnline()?'online':'content','ghost')}</div>`)
   },
   budget: {
     title:'Anggaran & submit', url:'gsih.id/event/baru', steps:'T12–T15', actor:'Pengaju → Sistem',
     notes:[['T12','Mengisi anggaran (jika ada).'],['T13','Submit.'],['T14','Sistem mengunci jadwal & space; status "Menunggu approval".'],['T15','Pengaju Spoke → Hub dulu; pengaju Hub → langsung Core Team.']],
-    render: () => evShell(3, `
+    render: () => evShell(4, `
       ${simBar('Anggaran','hasBudget',[['yes','Ada anggaran'],['no','Tanpa anggaran']])}
       ${state.hasBudget==='yes'?field('evBud','Total anggaran','text','Rp6.500.000'):notice('Tanpa anggaran — approval Komdigi dilewati.')}
-      <div class="flex flex-wrap gap-3">${btn('Submit','approval')}${btn('Simpan draf',null,'secondary')}</div>`)
+      <div class="flex flex-wrap gap-3">${btn('Submit','approval')}${btn('Pratinjau halaman','preview','secondary')}${btn('Simpan draf',null,'ghost')}</div>`)
+  },
+  preview: {
+    title:'Pratinjau halaman event', url:'gsih.id/event/workshop-pitching?pratinjau', steps:'T13 · opsional', actor:'Pengaju',
+    notes:[['Pratinjau','Menampilkan halaman event persis seperti yang dilihat peserta (layout UF-10 › 02), dibangun dari isian Data event & Konten halaman.'],['Status','Panel kanan menampilkan "Belum dibuka" karena event belum disetujui.'],['Aksi','"← Ubah data" kembali ke form; "Submit" mengirim untuk approval.']],
+    render: uf23Preview
   },
   approval: {
     title:'Status approval', url:'gsih.id/event/workshop-pitching', steps:'T16–T21', actor:'Hub → Core Team → Komdigi',
@@ -3856,7 +4047,7 @@ function renderNav(){
       ${g.subs.map(([sn,ids])=>`<div class="mt-2"><p class="font-mono text-[10px] uppercase tracking-wider text-neutral-500 px-2 mb-1">${sn}</p>
         <div class="flex flex-col gap-0.5">${ids.map(id=>item(id)+(CHILDREN[id]?`<div class="ml-3 mt-0.5 mb-1 flex flex-col gap-0.5">${CHILDREN[id].map(c=>item(c,true)).join('')}</div>`:'')).join('')}</div></div>`).join('')}
     </details>`).join('');
-  const opts = NAV_GROUPS.map(g=>g.subs.map(([sn,ids])=>`<optgroup label="${g.name.split(' ')[0]} · ${sn}">${ids.map(id=>`<option value="${id}" ${id===state.flow?'selected':''}>${id} ${flowName(id)}</option>`+(CHILDREN[id]||[]).map(c=>`<option value="${c}" ${c===state.flow?'selected':''}>  └ ${c} ${flowName(c)}</option>`).join('')).join('')}</optgroup>`).join('')).join('');
+  const opts = NAV_GROUPS.map(g=>g.subs.map(([sn,ids])=>`<optgroup label="${g.name.split(' ')[0]} · ${sn}">${ids.map(id=>`<option value="${id}" ${id===state.flow?'selected':''}>${id} ${flowName(id)}</option>`+(CHILDREN[id]||[]).map(c=>`<option value="${c}" ${c===state.flow?'selected':''}>  └ ${c} ${flowName(c)}</option>`).join('')).join('')}</optgroup>`).join('')).join('');
   $('flowNav').className = 'block';
   $('flowNav').innerHTML = `
     <label for="flowSelect" class="sr-only">Pilih user flow</label>
