@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+#jtd-preloader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#ffffff;transition:opacity .5s ease,visibility .5s;}
+html[data-theme="dark"] #jtd-preloader{background:#202020;}
+#jtd-preloader .jl{display:flex;flex-direction:column;align-items:center;gap:20px;animation:jtdIn .4s ease both;}
+#jtd-preloader img{width:150px;height:auto;display:block;}
+#jtd-preloader .wl{display:none;}
+html[data-theme="dark"] #jtd-preloader .bl{display:none;}
+html[data-theme="dark"] #jtd-preloader .wl{display:block;}
+#jtd-preloader .bar{width:120px;height:3px;border-radius:9999px;background:#e9e9eb;overflow:hidden;}
+html[data-theme="dark"] #jtd-preloader .bar{background:#4a4a4b;}
+#jtd-preloader .bar i{display:block;width:40%;height:100%;border-radius:9999px;background:#2c71f6;animation:jtdBar 1.1s ease-in-out infinite;}
+@keyframes jtdBar{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+@keyframes jtdIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+</style>
+<script>try{var t=localStorage.getItem('jtd-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<!-- React UMD vendored locally: support.js falls back to unpkg.com when window.React is absent. -->
+<script src="assets/vendor/react-18.3.1.production.min.js"></script>
+<script src="assets/vendor/react-dom-18.3.1.production.min.js"></script>
+<script src="support.js"></script>
+</head>
+<body>
+<div id="jtd-preloader" role="status" aria-label="Loading"><div class="jl"><img class="bl" src="assets/jtd/jtd-ds-logo.svg" alt="Jawara Teknologi Digital" width="150" height="65"><img class="wl" src="assets/jtd/jtd-ds-logo-white.svg" alt="" width="150" height="65"><div class="bar"><i></i></div></div></div>
+<x-dc>
+<helmet>
+  <title>Jawara Teknologi Digital (JTD) — Web, Mobile &amp; AI Solutions</title>
+  <!-- viewport is declared once, in the raw <head> above — support.js's helmet
+       manager APPENDS these tags to <head> rather than replacing it, so a
+       second copy here would survive into the live DOM as a duplicate. -->
+  <meta name="description" content="Jawara Teknologi Digital (JTD) builds mobile apps, backends, dashboards, and AI-powered systems for businesses and public institutions across Indonesia.">
+  <meta name="keywords" content="Jawara Teknologi Digital, JTD, Jawaratech, software house Jakarta, aplikasi mobile, web development, backend, dashboard, AI solutions, konsultasi IT">
+  <meta name="author" content="Jawara Teknologi Digital">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#2c71f6">
+  <link rel="canonical" href="https://jawaratech.co.id/">
+  <link rel="alternate" hreflang="en" href="https://jawaratech.co.id/">
+  <link rel="alternate" hreflang="id" href="https://jawaratech.co.id/">
+  <link rel="alternate" hreflang="x-default" href="https://jawaratech.co.id/">
+  <link rel="icon" type="image/svg+xml" href="assets/jtd/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/jtd/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Jawara Teknologi Digital">
+  <meta property="og:title" content="Jawara Teknologi Digital (JTD) — Web, Mobile &amp; AI Solutions">
+  <meta property="og:description" content="Jawara Teknologi Digital (JTD) builds mobile apps, backends, dashboards, and AI-powered systems for businesses and public institutions across Indonesia.">
+  <meta property="og:url" content="https://jawaratech.co.id/">
+  <meta property="og:image" content="https://jawaratech.co.id/assets/jtd/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="671">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:alt" content="Jawara Teknologi Digital — Web, Mobile &amp; AI Solutions">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="id_ID">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jawara Teknologi Digital (JTD) — Web, Mobile &amp; AI Solutions">
+  <meta name="twitter:description" content="Jawara Teknologi Digital (JTD) builds mobile apps, backends, dashboards, and AI-powered systems for businesses and public institutions across Indonesia.">
+  <meta name="twitter:image" content="https://jawaratech.co.id/assets/jtd/og-image.jpg">
+  <meta name="twitter:image:alt" content="Jawara Teknologi Digital — Web, Mobile &amp; AI Solutions">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Jawara Teknologi Digital",
+  "alternateName": "JTD",
+  "url": "https://jawaratech.co.id/",
+  "logo": "https://jawaratech.co.id/assets/jtd/jtd-ds-logo.svg",
+  "description": "Jawara Teknologi Digital (JTD) builds mobile apps, backends, dashboards, and AI-powered systems for businesses and public institutions across Indonesia.",
+  "email": "info@jawaratech.co.id",
+  "telephone": "+628138145618",
+  "sameAs": [
+    "https://www.linkedin.com/company/105967384",
+    "https://www.instagram.com/jawara.teknologi.digital/"
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/tokens/effects.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/tokens/layout.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/tokens/base.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/components/components.css">
+  <link rel="stylesheet" href="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/styles.css">
+  <script src="_ds/jtd-design-system-e5c26090-42ce-48e3-bedb-bc46c2faf568/_ds_bundle.js"></script>
+  <script src="image-slot.js"></script>
+  <style>
+    html{scroll-behavior:smooth}
+    body{margin:0}
+    *{box-sizing:border-box}
+    a{color:var(--text-primary)}
+    a:hover{color:var(--text-primary-secondary)}
+    section{scroll-margin-top:64px}
+    @keyframes jtd-marquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+  </style>
+  <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-2230 -2725 6200 6200"><rect x="-2230" y="-2725" width="6200" height="6200" fill="#ffffff"></rect>
+<path d="M657.35 720V682.6H661.2C674.767 682.6 686.133 679.667 695.3 673.8C704.467 667.933 711.433 657.85 716.2 643.55C720.967 629.617 723.35 610.367 723.35 585.8V360.85C723.35 350.217 721.333 342.333 717.3 337.2C713.267 332.067 707.95 328.767 701.35 327.3C695.117 325.467 687.967 324.55 679.9 324.55H678.25V293.2H819.6V592.4C819.6 625.033 813.183 650.7 800.35 669.4C787.517 688.1 769.733 701.117 747 708.45C724.267 716.15 698.417 720 669.45 720H657.35ZM769.55 245.9C754.517 245.9 741.867 242.417 731.6 235.45C721.333 228.483 716.2 218.033 716.2 204.1C716.2 189.433 721.333 178.8 731.6 172.2C741.867 165.6 754.517 162.3 769.55 162.3C783.85 162.3 796.317 165.6 806.95 172.2C817.583 178.8 822.9 189.433 822.9 204.1C822.9 218.033 817.583 228.483 806.95 235.45C796.317 242.417 783.85 245.9 769.55 245.9ZM1043.05 593.5C1016.29 593.5 995.021 587.083 979.255 574.25C963.488 561.05 955.605 538.317 955.605 506.05V332.8H914.905V302.55C928.838 302.55 940.571 299.8 950.105 294.3C960.005 288.8 967.705 283.117 973.205 277.25C978.338 271.75 983.105 264.6 987.505 255.8C992.271 247 995.938 236.55 998.505 224.45H1052.4V293.2H1121.7V332.8H1052.4V497.25C1052.4 513.017 1054.79 524.567 1059.55 531.9C1064.32 538.867 1073.3 542.35 1086.5 542.35C1093.84 542.35 1100.8 541.983 1107.4 541.25C1114.37 540.15 1120.79 538.867 1126.65 537.4V577.55C1120.42 580.483 1110.15 583.967 1095.85 588C1081.55 591.667 1063.95 593.5 1043.05 593.5ZM1305.28 593.5C1281.45 593.5 1261.1 588.183 1244.23 577.55C1227.73 566.917 1215.08 550.417 1206.28 528.05C1197.48 505.317 1193.08 476.35 1193.08 441.15C1193.08 405.583 1197.48 376.433 1206.28 353.7C1215.08 330.967 1227.73 314.1 1244.23 303.1C1260.73 291.733 1280.53 286.05 1303.63 286.05C1324.17 286.05 1340.67 289.9 1353.13 297.6C1365.6 305.3 1375.68 314.833 1383.38 326.2H1386.68C1386.32 320.333 1385.77 313.733 1385.03 306.4C1384.67 298.7 1384.3 291 1383.93 283.3C1383.93 275.233 1383.93 268.083 1383.93 261.85V234.35C1383.93 224.45 1381.92 217.3 1377.88 212.9C1373.85 208.133 1368.53 205.017 1361.93 203.55C1355.33 202.083 1348 201.35 1339.93 201.35H1335.53V170H1480.73V514.3C1480.73 525.667 1482.38 534.467 1485.68 540.7C1489.35 546.567 1494.3 550.783 1500.53 553.35C1507.13 555.55 1514.65 556.65 1523.08 556.65H1526.38V588H1411.98L1394.38 547.85H1390.53C1382.47 561.783 1371.65 572.967 1358.08 581.4C1344.52 589.467 1326.92 593.5 1305.28 593.5ZM1334.98 550.05C1353.68 550.05 1366.52 541.067 1373.48 523.1C1380.45 504.767 1383.93 476.9 1383.93 439.5C1383.93 415.667 1382.47 395.683 1379.53 379.55C1376.6 363.05 1371.65 350.583 1364.68 342.15C1357.72 333.35 1347.82 328.95 1334.98 328.95C1324.35 328.95 1315.73 333.35 1309.13 342.15C1302.9 350.583 1298.13 363.05 1294.83 379.55C1291.9 396.05 1290.43 416.4 1290.43 440.6C1290.43 464.8 1291.9 485.15 1294.83 501.65C1297.77 517.783 1302.53 529.883 1309.13 537.95C1315.73 546.017 1324.35 550.05 1334.98 550.05Z" fill="#333333"></path>
+<path d="M1653.48 592.95C1639.91 592.95 1628.18 589.467 1618.28 582.5C1608.75 575.533 1603.98 563.433 1603.98 546.2C1603.98 528.233 1608.75 515.95 1618.28 509.35C1628.18 502.75 1639.91 499.45 1653.48 499.45C1666.68 499.45 1678.05 502.75 1687.58 509.35C1697.48 515.95 1702.43 528.233 1702.43 546.2C1702.43 563.433 1697.48 575.533 1687.58 582.5C1678.05 589.467 1666.68 592.95 1653.48 592.95Z" fill="#152B7F"></path>
+<circle cx="345" cy="380" r="176" fill="#37AEF2" fill-opacity="0.8"></circle>
+<circle cx="225" cy="514" r="225" fill="#0095FF" fill-opacity="0.9"></circle>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M192.975 291.262C203.436 289.771 214.128 289 225 289C349.264 289 450 389.736 450 514C450 516.459 449.961 518.909 449.882 521.349C420.591 543.119 384.3 556 345 556C247.798 556 169 477.202 169 380C169 347.638 177.735 317.315 192.975 291.262Z" fill="#152B7F"></path>
+</svg></template>
+</helmet>
+
+<div data-theme="{{ pageTheme }}" style="min-height:100vh;background:var(--bg-default);color:var(--text-default);font:var(--type-body1-regular);overflow-x:clip;--jtd-ink-2:{{ ink2 }};--jtd-ink-3:{{ ink3 }};transition:background 300ms ease, color 300ms ease;">
+
+  <!-- TOP BAR -->
+  <header data-theme="{{ navTheme }}" style="position:sticky;top:0;z-index:50;background:var(--bg-default);color:var(--text-default);border-bottom:1px solid var(--border-default);transform:{{ navY }};box-shadow:{{ navShadow }};transition:transform 320ms cubic-bezier(.2,.7,.2,1), box-shadow 320ms ease;">
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(16px,7.8vw,112px);height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <a href="#home" style="display:flex;align-items:center;text-decoration:none;"><sc-if value="{{ navLight }}" hint-placeholder-val="{{ true }}"><img src="assets/jtd/jtd-ds-logo.svg" alt="Jawara Teknologi Digital" style="height:34px;width:auto;display:block;"></sc-if><sc-if value="{{ navDark }}" hint-placeholder-val="{{ false }}"><img src="assets/jtd/jtd-ds-logo-white.svg" alt="Jawara Teknologi Digital" style="height:34px;width:auto;display:block;"></sc-if></a>
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <nav style="display:flex;align-items:center;gap:32px;font:var(--type-body2-medium);">
+          <a href="#service" style="color:var(--text-default);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Services</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Layanan</sc-if></a>
+          <a href="#consulting" style="color:var(--text-default);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Consulting</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Konsultasi</sc-if></a>
+          <a href="#growth" style="color:var(--text-default);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Growth</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Pertumbuhan</sc-if></a>
+          <a href="#team" style="color:var(--text-default);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Team</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Tim</sc-if></a>
+          <a href="#contact" style="color:var(--text-default);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Contact</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kontak</sc-if></a>
+        </nav>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="secondary" size="medium" icon="{{ themeIcon }}" icon-only="{{ true }}" shape="rounded" aria-label="{{ themeLabel }}" title="{{ themeLabel }}" onClick="{{ toggleTheme }}" hint-size="38px,38px"></x-import>
+        <sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">
+          <div role="group" aria-label="Language" style="display:flex;padding:2px;gap:2px;border:1px solid var(--border-secondary);border-radius:var(--radius-md);font:var(--type-button3-semibold);">
+            <span style="padding:8px 10px;border-radius:4px;background:var(--bg-primary);color:var(--text-on-primary);">EN</span>
+            <span onClick="{{ setId }}" style="padding:8px 10px;border-radius:4px;color:var(--text-default);cursor:pointer;transition:background 120ms;" style-hover="background:var(--bg-secondary)">ID</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">
+          <div role="group" aria-label="Bahasa" style="display:flex;padding:2px;gap:2px;border:1px solid var(--border-secondary);border-radius:var(--radius-md);font:var(--type-button3-semibold);">
+            <span onClick="{{ setEn }}" style="padding:8px 10px;border-radius:4px;color:var(--text-default);cursor:pointer;transition:background 120ms;" style-hover="background:var(--bg-secondary)">EN</span>
+            <span style="padding:8px 10px;border-radius:4px;background:var(--bg-primary);color:var(--text-on-primary);">ID</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="primary" size="medium" onClick="{{ goContact }}" hint-size="120px,38px">{{ L.quote }}</x-import>
+        </sc-if>
+        <sc-if value="{{ narrow }}" hint-placeholder-val="{{ false }}">
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="secondary" size="medium" icon="{{ menuIcon }}" icon-only="{{ true }}" aria-label="Menu" onClick="{{ toggleMenu }}" hint-size="38px,38px"></x-import>
+        </sc-if>
+      </div>
+    </div>
+    <sc-if value="{{ menuVisible }}" hint-placeholder-val="{{ false }}">
+      <nav style="display:flex;flex-direction:column;padding:0 16px 24px;background:var(--bg-default);border-top:1px solid var(--border-default);box-shadow:var(--shadow-lg);font:var(--type-header-h3);max-height:calc(100vh - 64px);overflow-y:auto;">
+        <a href="#service" onClick="{{ closeMenu }}" style="color:var(--text-default);text-decoration:none;padding:14px 0;border-bottom:1px solid var(--border-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Services</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Layanan</sc-if></a>
+        <a href="#consulting" onClick="{{ closeMenu }}" style="color:var(--text-default);text-decoration:none;padding:14px 0;border-bottom:1px solid var(--border-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Consulting</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Konsultasi</sc-if></a>
+        <a href="#growth" onClick="{{ closeMenu }}" style="color:var(--text-default);text-decoration:none;padding:14px 0;border-bottom:1px solid var(--border-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Growth</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Pertumbuhan</sc-if></a>
+        <a href="#team" onClick="{{ closeMenu }}" style="color:var(--text-default);text-decoration:none;padding:14px 0;border-bottom:1px solid var(--border-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Team</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Tim</sc-if></a>
+        <a href="#contact" onClick="{{ closeMenu }}" style="color:var(--text-default);text-decoration:none;padding:14px 0 20px;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Contact</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kontak</sc-if></a>
+        <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="primary" size="large" onClick="{{ goContactClose }}" hint-size="140px,48px">{{ L.quote }}</x-import>
+      </nav>
+    </sc-if>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" data-screen-label="01 Hero">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(16px,7.8vw,112px) clamp(56px,7vw,96px);display:flex;flex-direction:column;gap:clamp(32px,4vw,56px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:28px clamp(40px,6vw,96px);align-items:end;">
+      <div style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;">
+        <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" tone="primary" icon="sparkles" hint-size="160px,24px">AI-powered solutions</x-import>
+        <h1 style="margin:0;font:500 clamp(40px,5.6vw,80px)/1.08 var(--font-playfair);letter-spacing:-0.01em;color:var(--text-default);text-wrap:balance;">
+          <sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Indonesia's leading innovator in <span style="color:var(--text-primary);">web &amp; mobile</span> solutions.</sc-if>
+          <sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Inovator terdepan Indonesia untuk solusi <span style="color:var(--text-primary);">web &amp; mobile</span>.</sc-if>
+        </h1>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:24px;align-items:flex-start;padding-bottom:8px;">
+        <p style="margin:0;max-width:540px;font:400 clamp(17px,1.4vw,19px)/1.6 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;">
+          <sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">We design, build, and maintain mobile apps, robust backends, and dynamic dashboards — turning every investment into sustainable growth.</sc-if>
+          <sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kami merancang, membangun, dan merawat aplikasi mobile, backend yang andal, serta dashboard dinamis — mengubah setiap investasi menjadi pertumbuhan berkelanjutan.</sc-if>
+        </p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;">
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="primary" size="xlarge" icon="arrow-right" icon-position="suffix" onClick="{{ goContact }}" hint-size="170px,52px">{{ L.quote }}</x-import>
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="secondary" size="xlarge" onClick="{{ goServices }}" hint-size="160px,52px">{{ L.services }}</x-import>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:8px;">
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" icon="smartphone" hint-size="110px,24px">{{ L.c1 }}</x-import>
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" icon="server" hint-size="120px,24px">{{ L.c2 }}</x-import>
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" icon="layout-dashboard" hint-size="140px,24px">{{ L.c3 }}</x-import>
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" icon="sparkles" hint-size="120px,24px">{{ L.c4 }}</x-import>
+        </div>
+      </div>
+      </div>
+      <div onMouseEnter="{{ heroPause }}" onMouseLeave="{{ heroPlay }}" style="position:relative;">
+        <div style="position:relative;aspect-ratio:{{ heroRatio }};border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-secondary);">
+          <div style="position:absolute;inset:0;opacity:{{ hs0 }};transition:opacity 700ms ease;"><image-slot id="jtd-hero-wide" src="assets/jtd/stock/pexels-3183150-w2400.jpeg" shape="rect" placeholder="Wide team consulting photo, 2400×1000"></image-slot></div>
+          <div style="position:absolute;inset:0;opacity:{{ hs1 }};transition:opacity 700ms ease;"><image-slot id="jtd-hero-wide-2" src="assets/jtd/stock/pexels-3184465-w2400.jpeg" shape="rect" placeholder="Wide business growth photo, 2400×1000"></image-slot></div>
+        </div>
+        <div style="position:{{ cardPos }};left:clamp(16px,2vw,32px);bottom:clamp(16px,2vw,32px);margin-top:{{ cardMt }};width:{{ cardW }};background:var(--bg-default);border:1px solid var(--border-default);border-radius:var(--radius-md);padding:clamp(20px,2.2vw,28px);display:flex;flex-direction:column;gap:20px;">
+          <div style="display:grid;">
+            <div aria-hidden="{{ hh0 }}" style="grid-area:1/1;display:flex;flex-direction:column;gap:10px;opacity:{{ hs0 }};visibility:{{ hv0 }};transition:opacity 700ms ease, visibility 700ms;">
+              <span style="font:var(--type-body2-medium);color:var(--text-primary);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Business Solution</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Solusi Bisnis</sc-if></span>
+              <span style="font:500 clamp(22px,2vw,28px)/1.25 var(--font-playfair);color:var(--text-default);text-wrap:balance;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">We Provide Quality Consulting Services</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kami Menyediakan Layanan Konsultasi Berkualitas</sc-if></span>
+              <p style="margin:0;font:400 15px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">We don’t just build software — we help you make the right digital decisions. Our consulting services guide you from strategy to execution, ensuring every solution aligns with your business goals.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kami tidak hanya membangun software — kami membantu Anda mengambil keputusan digital yang tepat. Layanan konsultasi kami mendampingi dari strategi hingga eksekusi, memastikan setiap solusi selaras dengan tujuan bisnis Anda.</sc-if></p>
+            </div>
+            <div aria-hidden="{{ hh1 }}" style="grid-area:1/1;display:flex;flex-direction:column;gap:10px;opacity:{{ hs1 }};visibility:{{ hv1 }};transition:opacity 700ms ease, visibility 700ms;">
+              <span style="font:var(--type-body2-medium);color:var(--text-primary);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Business</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Bisnis</sc-if></span>
+              <span style="font:500 clamp(22px,2vw,28px)/1.25 var(--font-playfair);color:var(--text-default);text-wrap:balance;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Scale Your Business with Technology</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kembangkan Bisnis Anda dengan Teknologi</sc-if></span>
+              <p style="margin:0;font:400 15px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">We help you unlock new growth through smart, scalable tech. By combining deep technical knowledge with business insight, we build digital solutions that grow with you — from MVPs to enterprise systems.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kami membantu Anda membuka pertumbuhan baru lewat teknologi yang cerdas dan skalabel. Dengan memadukan keahlian teknis dan wawasan bisnis, kami membangun solusi digital yang tumbuh bersama Anda — dari MVP hingga sistem enterprise.</sc-if></p>
+              <p style="margin:0;font:500 15px/1.5 var(--font-roboto);color:var(--text-default);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Let technology do the heavy lifting, so you can focus on what matters most: <span style="color:var(--text-primary);">expanding your impact.</span></sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Biarkan teknologi mengerjakan bagian terberat, agar Anda bisa fokus pada hal terpenting: <span style="color:var(--text-primary);">memperluas dampak Anda.</span></sc-if></p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:16px;border-top:1px solid var(--border-default);">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font:var(--type-text-xs-medium);color:var(--text-default);min-width:16px;">{{ heroNum }}</span>
+              <div style="display:flex;gap:6px;">
+                <span role="button" aria-label="Slide 1" onClick="{{ heroGo0 }}" style="height:4px;width:{{ hd0w }};border-radius:var(--radius-full);background:{{ hd0c }};cursor:pointer;transition:width 300ms ease, background 300ms ease;"></span>
+                <span role="button" aria-label="Slide 2" onClick="{{ heroGo1 }}" style="height:4px;width:{{ hd1w }};border-radius:var(--radius-full);background:{{ hd1c }};cursor:pointer;transition:width 300ms ease, background 300ms ease;"></span>
+              </div>
+              <span style="font:var(--type-text-xs-medium);color:var(--jtd-ink-3);">02</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="secondary" size="small" icon="chevron-left" icon-only="{{ true }}" shape="rounded" aria-label="Previous slide" onClick="{{ heroPrev }}" hint-size="36px,36px"></x-import>
+              <x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="primary" size="small" icon="chevron-right" icon-only="{{ true }}" shape="rounded" aria-label="Next slide" onClick="{{ heroNext }}" hint-size="36px,36px"></x-import>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section id="client" data-screen-label="02 Clients" style="border-top:1px solid var(--border-default);border-bottom:1px solid var(--border-default);background:var(--bg-secondary);">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(32px,4vw,48px) clamp(16px,7.8vw,112px);display:flex;flex-direction:column;gap:20px;">
+      <span style="font:var(--type-body2-medium);color:var(--jtd-ink-3);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Trusted by public institutions and industry associations</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Dipercaya oleh lembaga publik dan asosiasi industri</sc-if></span>
+      <div style="position:relative;margin:-36px calc(-1 * clamp(16px,7.8vw,112px)) 0;padding:44px 0 4px;overflow:hidden;">
+        <div onMouseEnter="{{ pauseMarquee }}" onMouseLeave="{{ playMarquee }}" style="display:flex;width:max-content;animation:jtd-marquee 48s linear infinite;animation-play-state:{{ marqueeState }};will-change:transform;">
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Bank Indonesia" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-bank-indonesia.webp" alt="Bank Indonesia" draggable="false" style="max-height:36px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Bank Negara Indonesia (BNI)" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-bni.svg" alt="Bank Negara Indonesia (BNI)" draggable="false" style="max-height:30px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Kementerian Komunikasi dan Digital" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-komdigi.webp" alt="Kementerian Komunikasi dan Digital" draggable="false" style="max-height:52px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Sekretariat Presiden" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-setpres.svg" alt="Sekretariat Presiden" draggable="false" style="max-height:52px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Program Kartu Prakerja" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-prakerja.webp" alt="Program Kartu Prakerja" draggable="false" style="max-height:40px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="KP2MI / BP2MI" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-KPPMIBP2MI.webp" alt="KP2MI / BP2MI" draggable="false" style="max-height:44px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Fintech Indonesia" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-fintech.webp" alt="Fintech Indonesia" draggable="false" style="max-height:26px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Asosiasi Perusahaan Pembiayaan Indonesia" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-aspi.webp" alt="Asosiasi Perusahaan Pembiayaan Indonesia" draggable="false" style="max-height:40px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Bank Indonesia" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-bank-indonesia.webp" alt="" draggable="false" style="max-height:36px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Bank Negara Indonesia (BNI)" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-bni.svg" alt="" draggable="false" style="max-height:30px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Kementerian Komunikasi dan Digital" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-komdigi.webp" alt="" draggable="false" style="max-height:52px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Sekretariat Presiden" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-setpres.svg" alt="" draggable="false" style="max-height:52px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Program Kartu Prakerja" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-prakerja.webp" alt="" draggable="false" style="max-height:40px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="KP2MI / BP2MI" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-KPPMIBP2MI.webp" alt="" draggable="false" style="max-height:44px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Fintech Indonesia" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-fintech.webp" alt="" draggable="false" style="max-height:26px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+          <div style="flex:none;padding-right:12px;" aria-hidden="true"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Tooltip" text="Asosiasi Perusahaan Pembiayaan Indonesia" placement="top-center" hint-size="200px,88px"><div style="width:clamp(156px,16vw,200px);height:clamp(76px,7vw,88px);background:#ffffff;border:1px solid var(--border-default);border-radius:var(--radius-xl);display:flex;align-items:center;justify-content:center;padding:16px 20px;transition:border-color 120ms;" style-hover="border-color:var(--border-secondary)"><img src="assets/jtd/logo-aspi.webp" alt="" draggable="false" style="max-height:40px;max-width:100%;object-fit:contain;display:block;"></div></x-import></div>
+        </div>
+        <div aria-hidden="true" style="position:absolute;left:0;top:44px;bottom:4px;width:clamp(64px,14vw,200px);background:linear-gradient(90deg,var(--bg-secondary) 15%,transparent);pointer-events:none;"></div>
+        <div aria-hidden="true" style="position:absolute;right:0;top:44px;bottom:4px;width:clamp(32px,5vw,72px);background:linear-gradient(270deg,var(--bg-secondary),transparent);pointer-events:none;"></div>
+      </div>
+      </div>
+    </section></div>
+  
+
+  <!-- SERVICES -->
+  <section id="service" data-screen-label="03 Services">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(64px,8vw,120px) clamp(16px,7.8vw,112px);display:flex;flex-direction:column;gap:clamp(32px,4vw,56px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px clamp(32px,6vw,96px);align-items:end;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border:1px solid var(--border-primary-secondary);background:var(--bg-primary-subdued);border-radius:var(--radius-full);"><span style="min-width:28px;height:28px;padding:0 8px;border-radius:var(--radius-full);background:var(--bg-primary);color:var(--text-on-primary);font:var(--type-text-xs-semibold);display:inline-flex;align-items:center;justify-content:center;">01</span><span style="font:var(--type-body2-medium);color:var(--text-primary);letter-spacing:0.01em;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">What we offer</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Yang kami tawarkan</sc-if></span><span aria-hidden="true" style="display:inline-flex;gap:3px;"><i style="width:6px;height:6px;border-radius:2px;background:var(--primary-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--yellow-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--green-500);"></i></span></span>
+          <h2 style="margin:0;font:500 clamp(32px,3.8vw,52px)/1.15 var(--font-playfair);color:var(--text-default);text-wrap:balance;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Six disciplines, one team.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Enam keahlian, satu tim.</sc-if></h2>
+        </div>
+        <p style="margin:0;font:400 17px/1.6 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Delivering impactful digital solutions with precision and passion — from the first sketch to production and beyond.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Menghadirkan solusi digital yang berdampak dengan presisi dan semangat — dari sketsa awal hingga produksi dan seterusnya.</sc-if></p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1px;background:var(--border-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);overflow:hidden;">
+        <div onMouseEnter="{{ sv0.enter }}" onMouseLeave="{{ svLeave }}" style="background:var(--bg-default);padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:14px;transition:background 120ms;" style-hover="background:var(--bg-secondary)">
+          <div style="position:relative;aspect-ratio:16/9;margin:calc(-1 * clamp(24px,2.6vw,36px)) calc(-1 * clamp(24px,2.6vw,36px)) 4px;overflow:hidden;background:var(--neutral-900);">
+            <div style="position:absolute;inset:0;transform:scale({{ sv0.zoom }});filter:{{ sv0.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-svc-dev" src="assets/jtd/stock/pexels-1181675-w1200.jpeg" shape="rect" placeholder="Product shot: web &amp; mobile build, 1120×400"></image-slot></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 35%,rgba(32,32,32,0.55) 72%,rgba(32,32,32,0.85) 100%);"></div>
+            <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 70%,var(--bg-default) 100%);opacity:0.18;"></div>
+            <div style="position:absolute;left:clamp(24px,2.6vw,36px);right:clamp(24px,2.6vw,36px);bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;">
+              <span style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="code" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+              <span style="font:500 40px/1 var(--font-playfair);color:#fff;letter-spacing:-0.01em;">01</span>
+            </div>
+          </div>
+          <h3 style="margin:4px 0 0;font:var(--type-header-h2);color:var(--text-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Custom development</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Pengembangan kustom</sc-if></h3>
+          <p style="margin:0;font:400 16px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Fast, reliable, and scalable digital products — from responsive websites to feature-rich mobile applications.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Produk digital yang cepat, andal, dan skalabel — dari website responsif hingga aplikasi mobile yang kaya fitur.</sc-if></p>
+        </div>
+        <div onMouseEnter="{{ sv1.enter }}" onMouseLeave="{{ svLeave }}" style="background:var(--bg-default);padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:14px;transition:background 120ms;" style-hover="background:var(--bg-secondary)">
+          <div style="position:relative;aspect-ratio:16/9;margin:calc(-1 * clamp(24px,2.6vw,36px)) calc(-1 * clamp(24px,2.6vw,36px)) 4px;overflow:hidden;background:var(--neutral-900);">
+            <div style="position:absolute;inset:0;transform:scale({{ sv1.zoom }});filter:{{ sv1.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-svc-design" src="assets/jtd/stock/pexels-196644-w1200.jpeg" shape="rect" placeholder="Design workspace or UI close-up, 1120×400"></image-slot></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 35%,rgba(32,32,32,0.55) 72%,rgba(32,32,32,0.85) 100%);"></div>
+            <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 70%,var(--bg-default) 100%);opacity:0.18;"></div>
+            <div style="position:absolute;left:clamp(24px,2.6vw,36px);right:clamp(24px,2.6vw,36px);bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;">
+              <span style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="pen-tool" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+              <span style="font:500 40px/1 var(--font-playfair);color:#fff;letter-spacing:-0.01em;">02</span>
+            </div>
+          </div>
+          <h3 style="margin:4px 0 0;font:var(--type-header-h2);color:var(--text-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">UI/UX &amp; product design</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Desain UI/UX &amp; produk</sc-if></h3>
+          <p style="margin:0;font:400 16px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Beautiful meets functional. Seamless experiences that bring your brand to life and keep users coming back.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Indah sekaligus fungsional. Pengalaman yang mulus, menghidupkan brand Anda, dan membuat pengguna terus kembali.</sc-if></p>
+        </div>
+        <div onMouseEnter="{{ sv2.enter }}" onMouseLeave="{{ svLeave }}" style="background:var(--bg-default);padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:14px;transition:background 120ms;" style-hover="background:var(--bg-secondary)">
+          <div style="position:relative;aspect-ratio:16/9;margin:calc(-1 * clamp(24px,2.6vw,36px)) calc(-1 * clamp(24px,2.6vw,36px)) 4px;overflow:hidden;background:var(--neutral-900);">
+            <div style="position:absolute;inset:0;transform:scale({{ sv2.zoom }});filter:{{ sv2.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-svc-ai" src="assets/jtd/stock/pexels-8386434-w1200.jpeg" shape="rect" placeholder="Abstract 3D render: AI, 1120×400"></image-slot></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 35%,rgba(32,32,32,0.55) 72%,rgba(32,32,32,0.85) 100%);"></div>
+            <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 70%,var(--bg-default) 100%);opacity:0.18;"></div>
+            <div style="position:absolute;left:clamp(24px,2.6vw,36px);right:clamp(24px,2.6vw,36px);bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;">
+              <span style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="sparkles" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+              <span style="font:500 40px/1 var(--font-playfair);color:#fff;letter-spacing:-0.01em;">03</span>
+            </div>
+          </div>
+          <h3 style="margin:4px 0 0;font:var(--type-header-h2);color:var(--text-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">AI-powered solutions</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Solusi berbasis AI</sc-if></h3>
+          <p style="margin:0;font:400 16px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Integrate AI to boost automation, personalization, and decision-making inside your applications.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Integrasikan AI untuk meningkatkan otomasi, personalisasi, dan pengambilan keputusan di aplikasi Anda.</sc-if></p>
+        </div>
+        <div onMouseEnter="{{ sv3.enter }}" onMouseLeave="{{ svLeave }}" style="background:var(--bg-default);padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:14px;transition:background 120ms;" style-hover="background:var(--bg-secondary)">
+          <div style="position:relative;aspect-ratio:16/9;margin:calc(-1 * clamp(24px,2.6vw,36px)) calc(-1 * clamp(24px,2.6vw,36px)) 4px;overflow:hidden;background:var(--neutral-900);">
+            <div style="position:absolute;inset:0;transform:scale({{ sv3.zoom }});filter:{{ sv3.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-svc-backend" src="assets/jtd/stock/pexels-1148820-w1200.jpeg" shape="rect" placeholder="Server rack / data center, 1120×400"></image-slot></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 35%,rgba(32,32,32,0.55) 72%,rgba(32,32,32,0.85) 100%);"></div>
+            <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 70%,var(--bg-default) 100%);opacity:0.18;"></div>
+            <div style="position:absolute;left:clamp(24px,2.6vw,36px);right:clamp(24px,2.6vw,36px);bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;">
+              <span style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="server" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+              <span style="font:500 40px/1 var(--font-playfair);color:#fff;letter-spacing:-0.01em;">04</span>
+            </div>
+          </div>
+          <h3 style="margin:4px 0 0;font:var(--type-header-h2);color:var(--text-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">System &amp; backend architecture</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Arsitektur sistem &amp; backend</sc-if></h3>
+          <p style="margin:0;font:400 16px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Solid backend and system integration that keeps operations running smoothly behind the scenes.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Backend dan integrasi sistem yang solid, agar operasional di balik layar berjalan lancar.</sc-if></p>
+        </div>
+        <div onMouseEnter="{{ sv4.enter }}" onMouseLeave="{{ svLeave }}" style="background:var(--bg-default);padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:14px;transition:background 120ms;" style-hover="background:var(--bg-secondary)">
+          <div style="position:relative;aspect-ratio:16/9;margin:calc(-1 * clamp(24px,2.6vw,36px)) calc(-1 * clamp(24px,2.6vw,36px)) 4px;overflow:hidden;background:var(--neutral-900);">
+            <div style="position:absolute;inset:0;transform:scale({{ sv4.zoom }});filter:{{ sv4.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-svc-strategy" src="assets/jtd/stock/pexels-3184292-w1200.jpeg" shape="rect" placeholder="Team workshop / whiteboard, 1120×400"></image-slot></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 35%,rgba(32,32,32,0.55) 72%,rgba(32,32,32,0.85) 100%);"></div>
+            <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 70%,var(--bg-default) 100%);opacity:0.18;"></div>
+            <div style="position:absolute;left:clamp(24px,2.6vw,36px);right:clamp(24px,2.6vw,36px);bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;">
+              <span style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="compass" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+              <span style="font:500 40px/1 var(--font-playfair);color:#fff;letter-spacing:-0.01em;">05</span>
+            </div>
+          </div>
+          <h3 style="margin:4px 0 0;font:var(--type-header-h2);color:var(--text-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Digital strategy &amp; tech consulting</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Strategi digital &amp; konsultasi teknologi</sc-if></h3>
+          <p style="margin:0;font:400 16px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Turn ideas into executable plans, with strategic insight that aligns technology to your business goals.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Ubah ide menjadi rencana yang siap dijalankan, dengan wawasan strategis yang menyelaraskan teknologi dan tujuan bisnis.</sc-if></p>
+        </div>
+        <div onMouseEnter="{{ sv5.enter }}" onMouseLeave="{{ svLeave }}" style="background:var(--bg-default);padding:clamp(24px,2.6vw,36px);display:flex;flex-direction:column;gap:14px;transition:background 120ms;" style-hover="background:var(--bg-secondary)">
+          <div style="position:relative;aspect-ratio:16/9;margin:calc(-1 * clamp(24px,2.6vw,36px)) calc(-1 * clamp(24px,2.6vw,36px)) 4px;overflow:hidden;background:var(--neutral-900);">
+            <div style="position:absolute;inset:0;transform:scale({{ sv5.zoom }});filter:{{ sv5.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-svc-cloud" src="assets/jtd/stock/pexels-1148820-w1200.jpeg" shape="rect" placeholder="Abstract 3D render: cloud, 1120×400"></image-slot></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 35%,rgba(32,32,32,0.55) 72%,rgba(32,32,32,0.85) 100%);"></div>
+            <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:40%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 70%,var(--bg-default) 100%);opacity:0.18;"></div>
+            <div style="position:absolute;left:clamp(24px,2.6vw,36px);right:clamp(24px,2.6vw,36px);bottom:20px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;">
+              <span style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="cloud-upload" size="{{ 20 }}" hint-size="20px,20px"></x-import></span>
+              <span style="font:500 40px/1 var(--font-playfair);color:#fff;letter-spacing:-0.01em;">06</span>
+            </div>
+          </div>
+          <h3 style="margin:4px 0 0;font:var(--type-header-h2);color:var(--text-default);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Cloud &amp; DevOps</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Cloud &amp; DevOps</sc-if></h3>
+          <p style="margin:0;font:400 16px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Deploy, monitor, and scale with confidence — automated pipelines and cloud infrastructure that stay fast and available.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Deploy, pantau, dan skalakan dengan yakin — pipeline otomatis dan infrastruktur cloud yang tetap cepat dan selalu tersedia.</sc-if></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSULTING -->
+  <section id="consulting" data-screen-label="04 Consulting" style="background:var(--bg-secondary);border-top:1px solid var(--border-default);border-bottom:1px solid var(--border-default);">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(64px,8vw,120px) clamp(16px,7.8vw,112px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px);align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+        <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border:1px solid var(--border-primary-secondary);background:var(--bg-primary-subdued);border-radius:var(--radius-full);"><span style="min-width:28px;height:28px;padding:0 8px;border-radius:var(--radius-full);background:var(--bg-primary);color:var(--text-on-primary);font:var(--type-text-xs-semibold);display:inline-flex;align-items:center;justify-content:center;">02</span><span style="font:var(--type-body2-medium);color:var(--text-primary);letter-spacing:0.01em;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Business solution</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Solusi bisnis</sc-if></span><span aria-hidden="true" style="display:inline-flex;gap:3px;"><i style="width:6px;height:6px;border-radius:2px;background:var(--primary-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--yellow-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--green-500);"></i></span></span>
+        <h2 style="margin:0;font:500 clamp(32px,3.8vw,52px)/1.15 var(--font-playfair);color:var(--text-default);text-wrap:balance;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">We provide quality consulting services.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kami menyediakan layanan konsultasi berkualitas.</sc-if></h2>
+        <p style="margin:0;font:400 17px/1.6 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">We don't just build software — we help you make the right digital decisions. Our consulting guides you from strategy to execution, so every solution aligns with your business goals.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kami tidak hanya membangun software — kami membantu Anda mengambil keputusan digital yang tepat. Konsultasi kami mendampingi dari strategi hingga eksekusi, agar setiap solusi selaras dengan tujuan bisnis Anda.</sc-if></p>
+        <div style="padding-top:8px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="primary" size="large" icon="calendar" onClick="{{ goContact }}" hint-size="210px,48px">{{ L.consult }}</x-import></div>
+      </div>
+      <ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;background:var(--bg-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);">
+        <li style="display:grid;grid-template-columns:56px 1fr;gap:16px;padding:24px clamp(20px,2.4vw,32px);border-bottom:1px solid var(--border-default);">
+          <span style="font:500 32px/1 var(--font-playfair);color:var(--text-primary);">01</span>
+          <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-header-h3);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Frame the problem</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Petakan masalah</sc-if></span><span style="font:400 15px/1.5 var(--font-roboto);color:var(--jtd-ink-2);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Understand your business, users, and constraints first.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Memahami bisnis, pengguna, dan batasan Anda terlebih dulu.</sc-if></span></div>
+        </li>
+        <li style="display:grid;grid-template-columns:56px 1fr;gap:16px;padding:24px clamp(20px,2.4vw,32px);border-bottom:1px solid var(--border-default);">
+          <span style="font:500 32px/1 var(--font-playfair);color:var(--text-primary);">02</span>
+          <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-header-h3);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Shape the strategy</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Susun strategi</sc-if></span><span style="font:400 15px/1.5 var(--font-roboto);color:var(--jtd-ink-2);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Define product direction and the priorities that move your goals.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Menentukan arah produk dan prioritas yang mendorong tujuan Anda.</sc-if></span></div>
+        </li>
+        <li style="display:grid;grid-template-columns:56px 1fr;gap:16px;padding:24px clamp(20px,2.4vw,32px);border-bottom:1px solid var(--border-default);">
+          <span style="font:500 32px/1 var(--font-playfair);color:var(--text-primary);">03</span>
+          <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-header-h3);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Design the architecture</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Rancang arsitektur</sc-if></span><span style="font:400 15px/1.5 var(--font-roboto);color:var(--jtd-ink-2);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Choose the stack and structure that scales with you.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Memilih teknologi dan struktur yang tumbuh bersama Anda.</sc-if></span></div>
+        </li>
+        <li style="display:grid;grid-template-columns:56px 1fr;gap:16px;padding:24px clamp(20px,2.4vw,32px);">
+          <span style="font:500 32px/1 var(--font-playfair);color:var(--text-primary);">04</span>
+          <div style="display:flex;flex-direction:column;gap:6px;"><span style="font:var(--type-header-h3);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Execute to launch</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Eksekusi hingga rilis</sc-if></span><span style="font:400 15px/1.5 var(--font-roboto);color:var(--jtd-ink-2);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">End-to-end delivery, and continuous improvement after go-live.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Pengerjaan dari awal hingga akhir, dan terus disempurnakan setelah rilis.</sc-if></span></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- GROWTH -->
+  <section id="growth" data-screen-label="05 Growth" data-theme="{{ growthTheme }}" style="background:var(--bg-default);color:var(--text-default);">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(64px,8vw,120px) clamp(16px,7.8vw,112px);display:flex;flex-direction:column;gap:clamp(40px,5vw,64px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px clamp(32px,6vw,96px);align-items:end;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border:1px solid var(--border-primary-secondary);background:var(--bg-primary-subdued);border-radius:var(--radius-full);"><span style="min-width:28px;height:28px;padding:0 8px;border-radius:var(--radius-full);background:var(--bg-primary);color:var(--text-on-primary);font:var(--type-text-xs-semibold);display:inline-flex;align-items:center;justify-content:center;">03</span><span style="font:var(--type-body2-medium);color:var(--primary-400);letter-spacing:0.01em;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Business growth</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Pertumbuhan bisnis</sc-if></span><span aria-hidden="true" style="display:inline-flex;gap:3px;"><i style="width:6px;height:6px;border-radius:2px;background:var(--primary-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--yellow-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--green-500);"></i></span></span>
+          <h2 style="margin:0;font:500 clamp(32px,3.8vw,52px)/1.15 var(--font-playfair);text-wrap:balance;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Scale your business with technology.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kembangkan bisnis Anda dengan teknologi.</sc-if></h2>
+        </div>
+        <p style="margin:0;font:400 17px/1.6 var(--font-roboto);color:var(--neutral-400);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Deep technical knowledge combined with business insight — digital solutions that grow with you, from MVP to enterprise.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Keahlian teknis yang dipadukan dengan wawasan bisnis — solusi digital yang tumbuh bersama Anda, dari MVP hingga enterprise.</sc-if></p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;">
+        <div onMouseEnter="{{ tr0.enter }}" onMouseLeave="{{ trLeave }}" style="position:relative;overflow:hidden;min-height:clamp(300px,28vw,380px);border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--neutral-900);display:flex;flex-direction:column;justify-content:flex-end;">
+          <div style="position:absolute;inset:0;transform:scale({{ tr0.zoom }});filter:{{ tr0.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-tier-mvp" src="assets/jtd/stock/pexels-3184418-w1000.jpeg" shape="rect" placeholder="Startup team sketching a first version, 1000×1000"></image-slot></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0.15) 0%,rgba(32,32,32,0.7) 42%,rgba(32,32,32,0.94) 72%,#202020 100%);"></div>
+          <div style="position:relative;padding:clamp(24px,2.6vw,32px);display:flex;flex-direction:column;gap:12px;align-items:flex-start;color:#fff;">
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" tone="primary" hint-size="48px,24px">MVP</x-import>
+          <span style="font:var(--type-header-h2);color:#fff;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Validate fast</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Validasi cepat</sc-if></span>
+          <span style="font:400 16px/1.55 var(--font-roboto);color:var(--neutral-200);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Ship a focused first version to real users and learn quickly.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Rilis versi pertama yang fokus ke pengguna nyata dan belajar dengan cepat.</sc-if></span>
+          </div>
+        </div>
+        <div onMouseEnter="{{ tr1.enter }}" onMouseLeave="{{ trLeave }}" style="position:relative;overflow:hidden;min-height:clamp(300px,28vw,380px);border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--neutral-900);display:flex;flex-direction:column;justify-content:flex-end;">
+          <div style="position:absolute;inset:0;transform:scale({{ tr1.zoom }});filter:{{ tr1.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-tier-growth" src="assets/jtd/stock/pexels-7688336-w1000.jpeg" shape="rect" placeholder="Team reviewing growth dashboards, 1000×1000"></image-slot></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0.15) 0%,rgba(32,32,32,0.7) 42%,rgba(32,32,32,0.94) 72%,#202020 100%);"></div>
+          <div style="position:relative;padding:clamp(24px,2.6vw,32px);display:flex;flex-direction:column;gap:12px;align-items:flex-start;color:#fff;">
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" tone="primary" hint-size="64px,24px">Growth</x-import>
+          <span style="font:var(--type-header-h2);color:#fff;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Scale with confidence</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Skalakan dengan yakin</sc-if></span>
+          <span style="font:400 16px/1.55 var(--font-roboto);color:var(--neutral-200);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Harden backends and add dashboards as users and data grow.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Perkuat backend dan tambah dashboard seiring bertambahnya pengguna dan data.</sc-if></span>
+          </div>
+        </div>
+        <div onMouseEnter="{{ tr2.enter }}" onMouseLeave="{{ trLeave }}" style="position:relative;overflow:hidden;min-height:clamp(300px,28vw,380px);border:1px solid var(--border-default);border-radius:var(--radius-lg);background:var(--neutral-900);display:flex;flex-direction:column;justify-content:flex-end;">
+          <div style="position:absolute;inset:0;transform:scale({{ tr2.zoom }});filter:{{ tr2.fx }};transition:transform 700ms cubic-bezier(.2,.7,.2,1), filter 500ms ease;"><image-slot id="jtd-tier-enterprise" src="assets/jtd/stock/pexels-380768-w1000.jpeg" shape="rect" placeholder="Modern corporate office, 1000×1000"></image-slot></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0.15) 0%,rgba(32,32,32,0.7) 42%,rgba(32,32,32,0.94) 72%,#202020 100%);"></div>
+          <div style="position:relative;padding:clamp(24px,2.6vw,32px);display:flex;flex-direction:column;gap:12px;align-items:flex-start;color:#fff;">
+          <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" tone="primary" hint-size="84px,24px">Enterprise</x-import>
+          <span style="font:var(--type-header-h2);color:#fff;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Run at enterprise level</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Siap skala enterprise</sc-if></span>
+          <span style="font:400 16px/1.55 var(--font-roboto);color:var(--neutral-200);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Reliable systems, integrations, and AI for the whole organization.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Sistem andal, integrasi, dan AI untuk seluruh organisasi.</sc-if></span>
+          </div>
+        </div>
+      </div>
+      <p style="margin:0;max-width:880px;font:500 clamp(22px,2.4vw,32px)/1.35 var(--font-playfair);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Let technology do the heavy lifting, so you can focus on what matters most: <span style="color:var(--primary-400);">expanding your impact.</span></sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Biarkan teknologi mengerjakan bagian terberat, agar Anda bisa fokus pada hal terpenting: <span style="color:var(--primary-400);">memperluas dampak Anda.</span></sc-if></p>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team" data-screen-label="06 Team">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(64px,8vw,120px) clamp(16px,7.8vw,112px);display:flex;flex-direction:column;gap:clamp(32px,4vw,56px);">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px clamp(32px,6vw,96px);align-items:end;">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border:1px solid var(--border-primary-secondary);background:var(--bg-primary-subdued);border-radius:var(--radius-full);"><span style="min-width:28px;height:28px;padding:0 8px;border-radius:var(--radius-full);background:var(--bg-primary);color:var(--text-on-primary);font:var(--type-text-xs-semibold);display:inline-flex;align-items:center;justify-content:center;">04</span><span style="font:var(--type-body2-medium);color:var(--text-primary);letter-spacing:0.01em;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Team</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Tim</sc-if></span><span aria-hidden="true" style="display:inline-flex;gap:3px;"><i style="width:6px;height:6px;border-radius:2px;background:var(--primary-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--yellow-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--green-500);"></i></span></span>
+          <h2 style="margin:0;font:500 clamp(32px,3.8vw,52px)/1.15 var(--font-playfair);text-wrap:balance;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">The people behind JTD.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Orang-orang di balik JTD.</sc-if></h2>
+        </div>
+        <p style="margin:0;font:400 17px/1.6 var(--font-roboto);color:var(--jtd-ink-2);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Experts in banking, operations, engineering, and product.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Ahli di bidang perbankan, operasional, engineering, dan produk.</sc-if></p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(24px,3vw,40px);">
+        <div onMouseEnter="{{ t0.enter }}" onMouseLeave="{{ teamLeave }}" style="display:flex;flex-direction:column;gap:20px;padding:12px 12px 24px;background:var(--bg-default);border:1px solid {{ t0.border }};border-radius:var(--radius-xl);box-shadow:{{ t0.shadow }};transform:{{ t0.lift }};opacity:{{ t0.op }};transition:box-shadow 400ms ease, transform 400ms ease, border-color 400ms ease, opacity 400ms ease;">
+          <div style="position:relative;aspect-ratio:4/4.4;border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-secondary);"><div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 55%,rgba(22,56,123,0.35) 100%);opacity:{{ t0.veil }};transition:opacity 500ms ease;"></div><img src="assets/jtd/simon-team.webp" alt="Simon Charlie" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transform:scale({{ t0.zoom }});transition:transform 700ms cubic-bezier(.2,.7,.2,1);"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:0 8px;">
+            <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" hint-size="180px,24px">{{ L.r1 }}</x-import>
+            <span style="font:var(--type-header-h);color:{{ t0.name }};transition:color 300ms ease;">Simon Charlie</span>
+            <p style="margin:0;font:400 15px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">With a strong background in banking and operations, Simon drives growth and streamlines processes across teams. An expert in blockchain and crypto, he leads strategic initiatives and partnerships.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Berlatar belakang kuat di perbankan dan operasional, Simon mendorong pertumbuhan dan merapikan proses lintas tim. Ahli blockchain dan kripto, ia memimpin inisiatif strategis dan kemitraan.</sc-if></p>
+            <a href="https://www.linkedin.com/in/simoncharlie/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font:var(--type-link1-medium);padding-top:4px;">LinkedIn<x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="arrow-up-right" size="{{ 16 }}" hint-size="16px,16px"></x-import></a>
+          </div>
+        </div>
+        <div onMouseEnter="{{ t1.enter }}" onMouseLeave="{{ teamLeave }}" style="display:flex;flex-direction:column;gap:20px;padding:12px 12px 24px;background:var(--bg-default);border:1px solid {{ t1.border }};border-radius:var(--radius-xl);box-shadow:{{ t1.shadow }};transform:{{ t1.lift }};opacity:{{ t1.op }};transition:box-shadow 400ms ease, transform 400ms ease, border-color 400ms ease, opacity 400ms ease;">
+          <div style="position:relative;aspect-ratio:4/4.4;border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-secondary);"><div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 55%,rgba(22,56,123,0.35) 100%);opacity:{{ t1.veil }};transition:opacity 500ms ease;"></div><img src="assets/jtd/jepri-team.webp" alt="Jepri Sinaga" style="width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block;transform:scale({{ t1.zoom }});transition:transform 700ms cubic-bezier(.2,.7,.2,1);"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:0 8px;">
+            <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" hint-size="140px,24px">{{ L.r2 }}</x-import>
+            <span style="font:var(--type-header-h);color:{{ t1.name }};transition:color 300ms ease;">Jepri Sinaga</span>
+            <p style="margin:0;font:400 15px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">A visionary tech leader whose passion, experience, and commitment have shaped JTD into a trusted and innovative force in the industry.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Pemimpin teknologi visioner yang semangat, pengalaman, dan komitmennya membentuk JTD menjadi kekuatan tepercaya dan inovatif di industri.</sc-if></p>
+            <a href="https://www.linkedin.com/in/jeprisinaga/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font:var(--type-link1-medium);padding-top:4px;">LinkedIn<x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="arrow-up-right" size="{{ 16 }}" hint-size="16px,16px"></x-import></a>
+          </div>
+        </div>
+        <div onMouseEnter="{{ t2.enter }}" onMouseLeave="{{ teamLeave }}" style="display:flex;flex-direction:column;gap:20px;padding:12px 12px 24px;background:var(--bg-default);border:1px solid {{ t2.border }};border-radius:var(--radius-xl);box-shadow:{{ t2.shadow }};transform:{{ t2.lift }};opacity:{{ t2.op }};transition:box-shadow 400ms ease, transform 400ms ease, border-color 400ms ease, opacity 400ms ease;">
+          <div style="position:relative;aspect-ratio:4/4.4;border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-secondary);"><div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(32,32,32,0) 55%,rgba(22,56,123,0.35) 100%);opacity:{{ t2.veil }};transition:opacity 500ms ease;"></div><img src="assets/jtd/hengki-team.webp" alt="Hengki Sihombing" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transform:scale({{ t2.zoom }});transition:transform 700ms cubic-bezier(.2,.7,.2,1);"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;padding:0 8px;">
+            <x-import component-from-global-scope="JTDDesignSystem_e5c260.Tag" hint-size="160px,24px">{{ L.r3 }}</x-import>
+            <span style="font:var(--type-header-h);color:{{ t2.name }};transition:color 300ms ease;">Hengki Sihombing</span>
+            <p style="margin:0;font:400 15px/1.55 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">An expert in technical project management, operations, and software development whose leadership has been instrumental in JTD's success.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Ahli manajemen proyek teknis, operasional, dan pengembangan software yang kepemimpinannya berperan besar dalam kesuksesan JTD.</sc-if></p>
+            <a href="https://www.linkedin.com/in/hengkisihombing/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:6px;font:var(--type-link1-medium);padding-top:4px;">LinkedIn<x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="arrow-up-right" size="{{ 16 }}" hint-size="16px,16px"></x-import></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-screen-label="07 Contact" style="background:var(--bg-primary-subdued);border-top:1px solid var(--border-primary-secondary);">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(64px,8vw,120px) clamp(16px,7.8vw,112px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,96px);align-items:start;">
+      <div style="display:flex;flex-direction:column;gap:20px;align-items:flex-start;">
+        <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border:1px solid var(--border-primary-secondary);background:var(--bg-primary-subdued);border-radius:var(--radius-full);"><span style="min-width:28px;height:28px;padding:0 8px;border-radius:var(--radius-full);background:var(--bg-primary);color:var(--text-on-primary);font:var(--type-text-xs-semibold);display:inline-flex;align-items:center;justify-content:center;">05</span><span style="font:var(--type-body2-medium);color:var(--text-primary);letter-spacing:0.01em;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Get to know us</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kenali kami</sc-if></span><span aria-hidden="true" style="display:inline-flex;gap:3px;"><i style="width:6px;height:6px;border-radius:2px;background:var(--primary-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--yellow-500);"></i><i style="width:6px;height:6px;border-radius:2px;background:var(--green-500);"></i></span></span>
+        <h2 style="margin:0;font:500 clamp(32px,3.8vw,52px)/1.15 var(--font-playfair);text-wrap:balance;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Let's help your business grow smarter.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Mari bantu bisnis Anda tumbuh lebih cerdas.</sc-if></h2>
+        <p style="margin:0;font:400 17px/1.6 var(--font-roboto);color:var(--jtd-ink-2);text-wrap:pretty;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Have a project in mind or need expert advice? Reach out — we'll turn your ideas into impactful digital solutions.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Punya rencana proyek atau butuh saran ahli? Hubungi kami — kami siap mengubah ide Anda menjadi solusi digital yang berdampak.</sc-if></p>
+        <div style="display:flex;flex-direction:column;gap:12px;padding-top:8px;font:var(--type-body1-medium);">
+          <a href="tel:+628138145618" style="display:flex;align-items:center;gap:12px;color:var(--text-default);text-decoration:none;"><span style="width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--border-primary-secondary);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;flex:none;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="phone" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>(+62) 813-814-5618</a>
+          <a href="mailto:info@jawaratech.co.id" style="display:flex;align-items:center;gap:12px;color:var(--text-default);text-decoration:none;"><span style="width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--border-primary-secondary);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;flex:none;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="mail" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>info@jawaratech.co.id</a>
+          <span style="display:flex;align-items:center;gap:12px;"><span style="width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--border-primary-secondary);background:var(--bg-default);color:var(--icon-primary);display:flex;align-items:center;justify-content:center;flex:none;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Icon" name="map-pin" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>Capital Eight, Jakarta, Indonesia</span>
+        </div>
+        <div style="position:relative;width:100%;max-width:520px;aspect-ratio:3/2;border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-default);border:1px solid var(--border-primary-secondary);margin-top:8px;"><image-slot id="jtd-office" src="assets/jtd/stock/pexels-1170412-w1200.jpeg" shape="rect" placeholder="JTD office, Capital Eight Jakarta, 1200×800"></image-slot></div>
+        <div style="padding-top:8px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="secondary" size="medium" icon="download" onClick="{{ openCreds }}" hint-size="200px,38px">{{ L.creds }}</x-import></div>
+      </div>
+
+      <div style="background:var(--bg-default);border:1px solid var(--border-default);border-radius:var(--radius-lg);padding:clamp(24px,3vw,40px);">
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <span style="font:var(--type-header-h1);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Request a call back</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Minta kami menghubungi Anda</sc-if></span>
+            <x-import component-from-global-scope="JTDDesignSystem_e5c260.Input" label="{{ L.fName }}" required="{{ true }}" placeholder="{{ L.namePh }}" value="{{ fv.name }}" onChange="{{ fc.name }}" state="{{ fs.name }}" help="{{ fe.name }}" hint-size="100%,62px"></x-import>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px;">
+              <x-import component-from-global-scope="JTDDesignSystem_e5c260.Input" label="Email" type="email" required="{{ true }}" placeholder="you@company.com" value="{{ fv.email }}" onChange="{{ fc.email }}" state="{{ fs.email }}" help="{{ fe.email }}" hint-size="100%,62px"></x-import>
+              <x-import component-from-global-scope="JTDDesignSystem_e5c260.Input" label="{{ L.fPhone }}" type="tel" placeholder="+62 8xx xxxx xxxx" value="{{ fv.phone }}" onChange="{{ fc.phone }}" state="{{ fs.phone }}" help="{{ fe.phone }}" hint-size="100%,62px"></x-import>
+            </div>
+            <x-import component-from-global-scope="JTDDesignSystem_e5c260.Select" label="{{ L.fService }}" required="{{ true }}" placeholder="{{ L.selectPh }}" options="{{ serviceOptions }}" value="{{ fv.service }}" onChange="{{ fc.service }}" state="{{ fs.service }}" help="{{ fe.service }}" hint-size="100%,62px"></x-import>
+            <x-import component-from-global-scope="JTDDesignSystem_e5c260.TextArea" label="{{ L.fMsg }}" required="{{ true }}" rows="{{ 4 }}" placeholder="{{ L.msgPh }}" value="{{ fv.msg }}" onChange="{{ fc.msg }}" state="{{ fs.msg }}" help="{{ fe.msg }}" hint-size="100%,120px"></x-import>
+            <div style="padding-top:4px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="primary" size="large" icon="send" icon-position="suffix" onClick="{{ send }}" hint-size="200px,48px">{{ L.submit }}</x-import><span style="font:var(--type-body2-regular);color:var(--jtd-ink-3);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Opens WhatsApp with your details pre-filled.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Membuka WhatsApp dengan data Anda yang sudah terisi.</sc-if></span></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start;">
+            <x-import component-from-global-scope="JTDDesignSystem_e5c260.Alert" type="success" description="{{ L.sentDesc }}" hint-size="100%,72px">{{ L.sentTitle }}</x-import>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;"><x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="secondary" size="medium" icon="external-link" onClick="{{ reopenWa }}" hint-size="180px,38px">{{ L.reopen }}</x-import><x-import component-from-global-scope="JTDDesignSystem_e5c260.Button" variant="text" size="medium" onClick="{{ reset }}" hint-size="160px,38px">{{ L.again }}</x-import></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--bg-default);border-top:1px solid var(--border-default);">
+    <div style="max-width:1440px;margin:0 auto;padding:clamp(48px,6vw,80px) clamp(16px,7.8vw,112px) 32px;display:flex;flex-direction:column;gap:48px;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:40px;">
+        <div style="display:flex;flex-direction:column;gap:16px;grid-column:{{ brandSpan }};min-width:0;">
+          <sc-if value="{{ pageLight }}" hint-placeholder-val="{{ true }}"><img src="assets/jtd/jtd-ds-logo.svg" alt="Jawara Teknologi Digital" style="height:40px;width:auto;align-self:flex-start;"></sc-if><sc-if value="{{ pageDark }}" hint-placeholder-val="{{ false }}"><img src="assets/jtd/jtd-ds-logo-white.svg" alt="Jawara Teknologi Digital" style="height:40px;width:auto;align-self:flex-start;"></sc-if>
+          <p style="margin:0;max-width:420px;font:var(--type-body2-regular);color:var(--jtd-ink-2);"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Designing, building, and maintaining mobile apps, robust backends, and dynamic dashboards tailored to elevate businesses.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Merancang, membangun, dan merawat aplikasi mobile, backend yang andal, serta dashboard dinamis untuk memajukan bisnis.</sc-if></p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;font:var(--type-body2-regular);">
+          <span style="font:var(--type-header-h5);margin-bottom:4px;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Company</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Perusahaan</sc-if></span>
+          <a href="#service" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Services</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Layanan</sc-if></a>
+          <a href="#team" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Team</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Tim</sc-if></a>
+          <a href="#client" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Clients</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Klien</sc-if></a>
+          <a href="https://jawaratech.co.id/cred/jtd_credentials_2025.pdf" target="_blank" rel="noopener" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)">JTD Credentials</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;font:var(--type-body2-regular);">
+          <span style="font:var(--type-header-h5);margin-bottom:4px;"><sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">Contact</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Kontak</sc-if></span>
+          <a href="tel:+628138145618" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)">(+62) 813-814-5618</a>
+          <a href="mailto:info@jawaratech.co.id" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)">info@jawaratech.co.id</a>
+          <a href="https://www.instagram.com/jawara.teknologi.digital/" target="_blank" rel="noopener" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)">Instagram</a>
+          <a href="https://www.linkedin.com/company/105967384" target="_blank" rel="noopener" style="color:var(--jtd-ink-2);text-decoration:none;" style-hover="color:var(--text-primary)">LinkedIn</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:24px;border-top:1px solid var(--border-default);font:var(--type-body3-regular);color:var(--jtd-ink-3);">
+        <span>© 2026 Jawara Teknologi Digital. <sc-if value="{{ isEn }}" hint-placeholder-val="{{ true }}">All rights reserved.</sc-if><sc-if value="{{ isId }}" hint-placeholder-val="{{ false }}">Hak cipta dilindungi.</sc-if></span>
+        <span>Capital Eight, Jakarta, Indonesia</span>
+      </div>
+    </div>
+    <sc-if value="{{ showBand }}" hint-placeholder-val="{{ true }}">
+      <div aria-hidden="true" style="height:16px;display:flex;">
+        <i style="flex:360;background:var(--primary-500);"></i>
+        <i style="flex:160;background:var(--neutral-900);"></i>
+        <i style="flex:120;background:var(--primary-100);"></i>
+        <i style="flex:120;background:var(--yellow-500);"></i>
+        <i style="flex:200;background:var(--green-500);"></i>
+      </div>
+    </sc-if>
+  </footer>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;id&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en'|'id'&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;showBand&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;growthDark&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;navTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;'light'|'dark'&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  state = {
+    lang: (typeof localStorage !== 'undefined' && localStorage.getItem('jtd-lang')) || this.props.defaultLang || 'en',
+    narrow: typeof window !== 'undefined' && window.matchMedia('(max-width: 959px)').matches,
+    menu: false,
+    sent: false,
+    form: { name: '', email: '', phone: '', service: '', msg: '' },
+    errs: {},
+    waUrl: '',
+    paused: false,
+    hero: 0,
+    heroHold: false,
+    teamHover: -1,
+    navHidden: false,
+    theme: (typeof localStorage !== 'undefined' && localStorage.getItem('jtd-theme')) || 'light',
+    svHover: -1,
+    trHover: -1,
+    scrolled: false,
+  };
+  reduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  componentDidMount() {
+    const hide = () => { const el = document.getElementById('jtd-preloader'); if (!el || el.dataset.out) return; el.dataset.out = '1'; el.style.opacity = '0'; el.style.visibility = 'hidden'; setTimeout(() => el.remove(), 600); };
+    const done = () => setTimeout(hide, 250);
+    if (document.readyState === 'complete') done(); else window.addEventListener('load', done, { once: true });
+    this.bootFallback = setTimeout(hide, 3500);
+    document.documentElement.lang = this.state.lang === 'id' ? 'id' : 'en';
+    document.documentElement.setAttribute('data-theme', this.state.theme);
+    this.lastY = window.scrollY; this.ticking = false;
+    this.onScroll = () => {
+      if (this.ticking) return; this.ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY, dy = y - this.lastY;
+        let hidden = this.state.navHidden;
+        if (y < 80) hidden = false; else if (dy > 6) hidden = true; else if (dy < -6) hidden = false;
+        if (this.state.menu) hidden = false;
+        const scrolled = y > 8;
+        if (hidden !== this.state.navHidden || scrolled !== this.state.scrolled) this.setState({ navHidden: hidden, scrolled });
+        if (Math.abs(dy) > 6) this.lastY = y;
+        this.ticking = false;
+      });
+    };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    if (!this.reduced) this.heroTimer = setInterval(() => { if (!this.state.heroHold) this.setState(s => ({ hero: (s.hero + 1) % 2 })); }, 7000);
+    this.mq = window.matchMedia('(max-width: 959px)');
+    this.onMq = (e) => { if (e.matches !== this.state.narrow) this.setState({ narrow: e.matches, menu: false }); };
+    this.mq.addEventListener('change', this.onMq);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.bootFallback);
+    window.removeEventListener('scroll', this.onScroll);
+    clearInterval(this.heroTimer); this.mq && this.mq.removeEventListener('change', this.onMq); }
+  setTheme(theme) { try { localStorage.setItem('jtd-theme', theme); } catch (e) {} document.documentElement.setAttribute('data-theme', theme); this.setState({ theme }); }
+  setLang(lang) { document.documentElement.lang = lang; try { localStorage.setItem('jtd-lang', lang); } catch (e) {} this.setState({ lang }); }
+  go(id) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+  }
+  renderVals() {
+    const isEn = this.state.lang !== 'id';
+    const narrow = this.state.narrow;
+    const L = isEn ? {
+      quote: 'Get a quote', services: 'Our services', consult: 'Book a consultation', creds: 'JTD Credentials 2025',
+      c1: 'Mobile apps', c2: 'Robust backends', c3: 'Dynamic dashboards', c4: 'AI systems',
+      r1: 'Founder · President Director', r2: 'Founder · Director', r3: 'Founder · Commissioner',
+      fName: 'Full name', fPhone: 'Phone / WhatsApp', fService: 'Service', fMsg: 'Message',
+      namePh: 'Your full name', selectPh: 'Choose a service', msgPh: 'Tell us about your project',
+      submit: 'Send via WhatsApp', sentTitle: 'Your message is ready in WhatsApp', sentDesc: "Tap send in WhatsApp to deliver it — we'll reply very soon.", again: 'Send another request', reopen: 'Open WhatsApp again',
+      eReq: 'This field is required', eEmail: 'Enter a valid email address', ePhone: 'Enter a valid phone number', eSvc: 'Please choose a service',
+      waHead: 'New enquiry — jawaratech.co.id', waName: 'Name', waPhone: 'Phone', waSvc: 'Service', waMsg: 'Message',
+      svc: ['Custom development', 'UI/UX & product design', 'AI-powered solutions', 'System & backend architecture', 'Digital strategy & consulting', 'Cloud & DevOps'],
+    } : {
+      quote: 'Minta penawaran', services: 'Layanan kami', consult: 'Jadwalkan konsultasi', creds: 'Profil JTD 2025',
+      c1: 'Aplikasi mobile', c2: 'Backend andal', c3: 'Dashboard dinamis', c4: 'Sistem AI',
+      r1: 'Pendiri · Presiden Direktur', r2: 'Pendiri · Direktur', r3: 'Pendiri · Komisaris',
+      fName: 'Nama lengkap', fPhone: 'Telepon / WhatsApp', fService: 'Layanan', fMsg: 'Pesan',
+      namePh: 'Nama lengkap Anda', selectPh: 'Pilih layanan', msgPh: 'Ceritakan tentang proyek Anda',
+      submit: 'Kirim via WhatsApp', sentTitle: 'Pesan Anda siap di WhatsApp', sentDesc: 'Tekan kirim di WhatsApp untuk mengirimkannya — kami akan segera membalas.', again: 'Kirim permintaan lain', reopen: 'Buka WhatsApp lagi',
+      eReq: 'Kolom ini wajib diisi', eEmail: 'Masukkan alamat email yang valid', ePhone: 'Masukkan nomor telepon yang valid', eSvc: 'Silakan pilih layanan',
+      waHead: 'Permintaan baru — jawaratech.co.id', waName: 'Nama', waPhone: 'Telepon', waSvc: 'Layanan', waMsg: 'Pesan',
+      svc: ['Pengembangan kustom', 'Desain UI/UX & produk', 'Solusi berbasis AI', 'Arsitektur sistem & backend', 'Strategi digital & konsultasi', 'Cloud & DevOps'],
+    };
+        return {
+      isEn, isId: !isEn, L,
+            ...(() => { const o = {}; const mk = (key, n, st) => { const h = this.state[st]; for (let i = 0; i < n; i++) { const on = h === i, dim = h !== -1 && !on; o[key + i] = { enter: () => this.setState({ [st]: i }), zoom: on ? 1.08 : 1, fx: on ? 'saturate(1.1) brightness(1.04)' : dim ? 'grayscale(0.6) brightness(0.92)' : 'none' }; } }; mk('sv', 6, 'svHover'); mk('tr', 3, 'trHover'); return o; })(),
+      svLeave: () => this.setState({ svHover: -1 }),
+      trLeave: () => this.setState({ trHover: -1 }),
+      ...(() => { const dark = this.state.theme === 'dark'; const nav = dark || (this.props.navTheme ?? 'light') === 'dark'; return {
+        pageTheme: dark ? 'dark' : 'light', pageDark: dark, pageLight: !dark,
+        ink2: dark ? 'var(--neutral-300)' : 'var(--neutral-700)', ink3: dark ? 'var(--neutral-400)' : 'var(--neutral-600)',
+        navTheme: nav ? 'dark' : 'light', navDark: nav, navLight: !nav,
+        themeIcon: dark ? 'sun' : 'moon',
+        themeLabel: dark ? (isEn ? 'Switch to light mode' : 'Ganti ke mode terang') : (isEn ? 'Switch to dark mode' : 'Ganti ke mode gelap'),
+        toggleTheme: () => this.setTheme(dark ? 'light' : 'dark'),
+      }; })(),
+      navY: this.state.navHidden ? 'translateY(-100%)' : 'translateY(0)',
+      navShadow: this.state.scrolled && !this.state.navHidden ? '0 8px 24px -12px rgba(32,32,32,0.18)' : 'none',
+      ...(() => { const h = this.state.teamHover; const o = {}; [0, 1, 2].forEach(i => { const on = h === i, dim = h !== -1 && !on; o['t' + i] = { enter: () => this.setState({ teamHover: i }), shadow: on ? '0 24px 48px -16px rgba(22,56,123,0.28), 0 8px 16px -8px rgba(32,32,32,0.12)' : '0 0 0 0 rgba(0,0,0,0)', border: on ? 'var(--border-primary-secondary)' : 'var(--border-default)', lift: on ? 'translateY(-6px)' : 'translateY(0)', op: dim ? 0.6 : 1, zoom: on ? 1.07 : 1, veil: on ? 1 : 0, name: on ? 'var(--text-primary)' : 'var(--text-default)' }; }); return o; })(),
+      teamLeave: () => this.setState({ teamHover: -1 }),
+      ...(() => { const h = this.state.hero; const o = {}; [0, 1].forEach(i => { const on = h === i; o['hs' + i] = on ? 1 : 0; o['hv' + i] = on ? 'visible' : 'hidden'; o['hh' + i] = on ? 'false' : 'true'; o['hd' + i + 'w'] = on ? '28px' : '12px'; o['hd' + i + 'c'] = on ? 'var(--bg-primary)' : 'var(--border-secondary)'; }); return o; })(),
+      heroNum: '0' + (this.state.hero + 1),
+      heroGo0: () => this.setState({ hero: 0 }),
+      heroGo1: () => this.setState({ hero: 1 }),
+      heroPrev: () => this.setState(s => ({ hero: (s.hero + 1) % 2 })),
+      heroNext: () => this.setState(s => ({ hero: (s.hero + 1) % 2 })),
+      heroPause: () => this.setState({ heroHold: true }),
+      heroPlay: () => this.setState({ heroHold: false }),
+      cardW: narrow ? 'auto' : 'min(520px, calc(100% - 32px))',
+      marqueeState: this.state.paused || this.reduced ? 'paused' : 'running',
+      pauseMarquee: () => this.setState({ paused: true }),
+      playMarquee: () => this.setState({ paused: false }),
+      cardPos: narrow ? 'static' : 'absolute', heroRatio: narrow ? '4 / 3' : '12 / 5', bannerRatio: narrow ? '16 / 9' : '3 / 1', cardMt: narrow ? '12px' : '0px', cardMax: narrow ? 'none' : '360px',
+      brandSpan: narrow ? '1 / -1' : 'span 2',
+      serviceOptions: L.svc,
+      setEn: () => this.setLang('en'),
+      setId: () => this.setLang('id'),
+      wide: !narrow, narrow,
+      menuVisible: narrow && this.state.menu,
+      menuIcon: this.state.menu ? 'x' : 'menu',
+      toggleMenu: () => this.setState(s => ({ menu: !s.menu })),
+      closeMenu: () => this.setState({ menu: false }),
+      goContact: () => this.go('contact'),
+      goContactClose: () => { this.setState({ menu: false }); this.go('contact'); },
+      goServices: () => this.go('service'),
+      openCreds: () => window.open('https://jawaratech.co.id/cred/jtd_credentials_2025.pdf', '_blank', 'noopener'),
+      showBand: this.props.showBand ?? true,
+      growthTheme: (this.props.growthDark ?? true) ? 'dark' : 'light',
+      sent: this.state.sent, notSent: !this.state.sent,
+      ...(() => {
+        const f = this.state.form, e = this.state.errs, keys = ['name', 'email', 'phone', 'service', 'msg'];
+        const fv = {}, fc = {}, fs = {}, fe = {};
+        keys.forEach(k => {
+          fv[k] = f[k];
+          fc[k] = ev => { const v = ev && ev.target ? ev.target.value : ev; this.setState(st => ({ form: { ...st.form, [k]: v }, errs: { ...st.errs, [k]: undefined } })); };
+          fs[k] = e[k] ? 'error' : 'default';
+          fe[k] = e[k] ? L[e[k]] : undefined;
+        });
+        const validate = () => {
+          const x = {};
+          if (!f.name.trim()) x.name = 'eReq';
+          if (!f.email.trim()) x.email = 'eReq'; else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) x.email = 'eEmail';
+          if (f.phone.trim() && !/^\+?[\d\s\-()]{8,18}$/.test(f.phone.trim())) x.phone = 'ePhone';
+          if (!f.service) x.service = 'eSvc';
+          if (!f.msg.trim()) x.msg = 'eReq';
+          return x;
+        };
+        const send = () => {
+          const x = validate();
+          if (Object.keys(x).length) { this.setState({ errs: x }); return; }
+          const lines = [
+            '*' + L.waHead + '*', '',
+            '*' + L.waName + ':* ' + f.name.trim(),
+            '*Email:* ' + f.email.trim(),
+            '*' + L.waPhone + ':* ' + (f.phone.trim() || '-'),
+            '*' + L.waSvc + ':* ' + f.service, '',
+            '*' + L.waMsg + ':*', f.msg.trim(),
+          ];
+          const url = 'https://wa.me/628138145618?text=' + encodeURIComponent(lines.join('\n'));
+          window.open(url, '_blank', 'noopener');
+          this.setState({ sent: true, waUrl: url, errs: {} });
+        };
+        return {
+          fv, fc, fs, fe, send,
+          reopenWa: () => { if (this.state.waUrl) window.open(this.state.waUrl, '_blank', 'noopener'); },
+          reset: () => this.setState({ sent: false, errs: {}, waUrl: '', form: { name: '', email: '', phone: '', service: '', msg: '' } }),
+        };
+      })(),
+    };
+  }
+}
+</script>
+</body>
+</html>

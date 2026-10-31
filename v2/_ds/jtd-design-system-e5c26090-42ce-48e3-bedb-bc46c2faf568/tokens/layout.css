@@ -1,0 +1,14 @@
+/* Layout grid tokens (12 / 6 / 4 columns). */
+:root {
+  --screen-mobile: 375px;
+  --screen-tablet: 768px;
+  --screen-desktop-1280: 1280px;
+  --screen-desktop-1440: 1440px;
+  --screen-desktop-1536: 1536px;
+  --grid-margin-desktop: 112px;
+  --grid-margin-tablet: 32px;
+  --grid-margin-mobile: 16px;
+  --grid-gutter-desktop: 32px;
+  --grid-gutter-mobile: 16px;
+  --nav-height-desktop: 64px;
+}
