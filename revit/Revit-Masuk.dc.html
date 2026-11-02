@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#F5F7FB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B5FEF"/><text x="50" y="64" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Masuk</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5}button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}img,svg,video,canvas{display:block;max-width:100%}table{border-collapse:collapse;text-indent:0}ol,ul{list-style:none}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}[hidden]{display:none}</style>
+<script src="lc-icon.js"></script>
+<style>body{margin:0;background:var(--background);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}input{font:inherit;color:inherit}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" loading="lazy" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans);{{ shell.outer }}" data-theme="{{ theme }}" data-screen-label="L01 Login">
+<div style="{{ shell.frame }}">
+  <sc-if value="{{ shell.desktop }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:48px;flex:0 0 60%;min-width:0;background-color:var(--brand-navy);color:var(--on-primary);display:flex;flex-direction:column;justify-content:space-between">
+      <div style="border-radius:var(--radius-md);align-self:flex-start;background-color:#ffffff;padding-left:12px;padding-right:12px;padding-top:8px;padding-bottom:8px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.BrandLockup" emblem-src="assets/logo-setneg-ri.svg" size="{{ 48 }}" hint-size="160px,48px"></x-import></div>
+      <div style="gap:12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:360px">
+        <div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--primary)"></div><div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--chart-seq-2)"></div><div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--chart-seq-1)"></div><div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--primary)"></div>
+        <div style="border-radius:var(--radius-full);grid-column:span 2 / span 2;height:32px;align-self:center;background-color:#ffffff"></div><div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--emblem-gold)"></div><div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--chart-seq-3)"></div>
+        <div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--chart-seq-3)"></div><div style="border-radius:var(--radius-md);aspect-ratio:1/1;background-color:var(--primary)"></div><div style="border-radius:var(--radius-full);grid-column:span 2 / span 2;height:32px;align-self:center;background-color:var(--chart-seq-1)"></div>
+      </div>
+      <div><div style="font-size:32px;line-height:40px;font-weight:700">Satu pintu bantuan revitalisasi sekolah</div><div class="body-lg" style="color:var(--chart-seq-1);margin-top:12px">Kementerian Sekretariat Negara Republik Indonesia</div></div>
+    </div>
+  </sc-if>
+  <div style="flex:1 1 0%;min-width:0;display:flex;align-items:center;justify-content:center;{{ shell.formPad }}">
+    <div style="gap:24px;width:100%;max-width:400px;display:flex;flex-direction:column">
+      <sc-if value="{{ shell.mobile }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.BrandLockup" emblem-src="assets/logo-setneg-ri.svg" size="{{ 40 }}" portal="Satu pintu bantuan revitalisasi sekolah" hint-size="260px,40px"></x-import></sc-if>
+      <div style="padding:4px;border-radius:var(--radius-md);border-width:1px;display:flex;background-color:var(--surface-muted);border-color:var(--border)">
+        <sc-for list="{{ portals }}" as="p" hint-placeholder-count="2"><button class="body" style="border-radius:var(--radius-md);flex:1 1 0%;height:40px;font-weight:600;cursor:pointer;{{ p.cls }}" style-hover="color:var(--hv-c, inherit)" onClick="{{ p.pick }}">{{ p.label }}</button></sc-for>
+      </div>
+
+      <sc-if value="{{ st.login }}" hint-placeholder-val="{{ true }}">
+        <div style="border-width:1px;border-radius:var(--radius-lg);padding:24px;gap:16px;background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);display:flex;flex-direction:column">
+          <div><div class="caption" style="color:var(--text-secondary)">{{ portalLabel }}</div><h1 class="h2" style="margin-top:4px">Masuk</h1></div>
+          <sc-if value="{{ internal }}" hint-placeholder-val="{{ false }}"><div class="caption" style="border-radius:var(--radius-md);gap:8px;padding-left:12px;padding-right:12px;padding-top:8px;padding-bottom:8px;background-color:var(--success-subtle);color:var(--success-text);display:flex;align-items:center"><lc-icon name="shield-check" size="16"></lc-icon>Terhubung via VPN Setpres</div></sc-if>
+          <sc-if value="{{ err.show }}" hint-placeholder-val="{{ false }}"><div class="body" style="border-radius:var(--radius-md);padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;{{ err.cls }}">{{ err.msg }}</div></sc-if>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Email" type="email" value="{{ email }}" on-change="{{ onEmail }}" disabled="{{ locked }}" hint-size="100%,72px"></x-import>
+          <div style="gap:6px;display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><label class="body" style="font-weight:600">Kata sandi</label><button class="caption" style="color:var(--primary);cursor:pointer" onClick="{{ go.lupa }}">Lupa kata sandi</button></div>
+            <div style="border-width:1px;border-radius:var(--radius-md);height:44px;display:flex;align-items:center;border-color:var(--border-strong);background-color:var(--surface)" style-focus-within="outline-style:solid;outline-width:2px;outline-color:var(--primary)"><input class="body-lg" style="flex:1 1 0%;min-width:0;height:100%;padding-left:12px;padding-right:12px;outline:none;background-color:transparent" type="{{ pwType }}" value="{{ pw }}" onChange="{{ onPw }}" disabled="{{ locked }}"><button style="width:44px;height:44px;display:grid;place-items:center;color:var(--text-secondary);cursor:pointer" onClick="{{ togglePw }}" title="Tampilkan atau sembunyikan"><lc-icon name="{{ pwIcon }}" size="18"></lc-icon></button></div>
+          </div>
+          <sc-if value="{{ internal }}" hint-placeholder-val="{{ false }}">
+            <div style="gap:6px;display:flex;flex-direction:column">
+              <label class="body" style="font-weight:600">Captcha</label>
+              <div style="gap:8px;display:flex"><div style="border-radius:var(--radius-md);border-width:1px;height:44px;width:128px;background-color:var(--surface-muted);border-color:var(--border);display:grid;place-items:center;font-weight:700;letter-spacing:0.3em;font-style:italic;color:var(--text-secondary);user-select:none;text-decoration-line:line-through;text-decoration-color:var(--border-strong)">7KQ4M</div><input class="body-lg" style="border-radius:var(--radius-md);border-width:1px;flex:1 1 0%;min-width:0;height:44px;padding-left:12px;padding-right:12px;border-color:var(--border-strong);outline:none;text-transform:uppercase" style-focus="outline-style:solid;outline-width:2px;outline-color:var(--primary)" value="{{ cap }}" onChange="{{ onCap }}" placeholder="Ketik kode"></div>
+              <span class="caption" style="color:var(--text-secondary)">Akses portal internal hanya melalui VPN Setpres.</span>
+            </div>
+          </sc-if>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="touch" full-width="{{ true }}" disabled="{{ locked }}" disabled-reason="{{ lockReason }}" on-click="{{ submit }}" hint-size="100%,44px">Masuk</x-import>
+          <sc-if value="{{ external }}" hint-placeholder-val="{{ true }}"><div class="body" style="text-align:center;color:var(--text-secondary)">Sekolah belum punya akun? <a href="Revit-Aktivasi.dc.html" style="font-weight:600">Aktifkan akun sekolah</a></div></sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ st.totp }}" hint-placeholder-val="{{ false }}">
+        <div style="border-width:1px;border-radius:var(--radius-lg);padding:24px;gap:20px;background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);display:flex;flex-direction:column">
+          <div><div class="caption" style="color:var(--text-secondary)">Langkah 2 dari 2</div><h1 class="h2" style="margin-top:4px">Kode autentikasi</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Buka aplikasi authenticator di ponsel Anda.</p></div>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.OtpInput" title="Masukkan kode dari aplikasi authenticator" error="{{ otpErr }}" on-complete="{{ onOtp }}" hint-size="100%,120px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="ghost" on-click="{{ go.login }}" hint-size="100px,40px">Kembali</x-import>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ st.lupa }}" hint-placeholder-val="{{ false }}">
+        <div style="border-width:1px;border-radius:var(--radius-lg);padding:24px;gap:16px;background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);display:flex;flex-direction:column">
+          <div><div class="caption" style="color:var(--text-secondary)">Lupa kata sandi</div><h1 class="h2" style="margin-top:4px">Lupa kata sandi</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Masukkan email akun Anda. Kami kirim tautan untuk membuat kata sandi baru.</p></div>
+          <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}"><div class="body" style="border-radius:var(--radius-md);padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;background-color:var(--primary-subtle)">Bila email terdaftar, tautan sudah dikirim. Tautan berlaku 30 menit.</div></sc-if>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Email" value="{{ email }}" on-change="{{ onEmail }}" hint-size="100%,72px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="touch" full-width="{{ true }}" on-click="{{ sendReset }}" hint-size="100%,44px">Kirim tautan</x-import>
+          <button class="body" style="color:var(--primary);font-weight:600;cursor:pointer;align-self:center" onClick="{{ go.login }}">Kembali ke halaman masuk</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ st.done }}" hint-placeholder-val="{{ false }}">
+        <div style="border-width:1px;border-radius:var(--radius-lg);padding:24px;gap:16px;background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);display:flex;flex-direction:column;align-items:flex-start">
+          <span style="width:48px;height:48px;border-radius:var(--radius-full);background-color:var(--success-subtle);color:var(--success-text);display:grid;place-items:center;font-size:24px;font-weight:700">✓</span>
+          <h1 class="h2">Berhasil masuk</h1>
+          <p class="body" style="color:var(--text-secondary)">Lanjutkan ke prototipe portal.</p>
+          <a class="body" style="font-weight:600" href="{{ nextHref }}">{{ nextLabel }}</a>
+        </div>
+      </sc-if>
+      <a class="caption" style="color:var(--text-secondary);align-self:center" href="index.dc.html">Semua peran</a>
+    </div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;portal&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;eksternal&quot;,&quot;internal&quot;],&quot;default&quot;:&quot;eksternal&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Login&quot;},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;salah&quot;,&quot;terkunci&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Login&quot;},&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;desktop&quot;,&quot;ponsel&quot;],&quot;default&quot;:&quot;desktop&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;}}">
+class Component extends DCLogic {
+  state = { step: 'login', portal: null, email: 'panitia.sukamaju01@contoh.id', pw: 'Sukamaju#2026', showPw: false, cap: '', sent: false, otpErr: undefined, tries: 0, secs: 872 };
+  componentDidMount() { this._iv = setInterval(() => { if ((this.props.state ?? 'normal') === 'terkunci') this.setState((s) => ({ secs: Math.max(0, s.secs - 1) })); }, 1000); }
+  componentWillUnmount() { clearInterval(this._iv); }
+  renderVals() {
+    const s = this.state;
+    const portal = s.portal || this.props.portal || 'eksternal';
+    const internal = portal === 'internal';
+    const mobile = (this.props.device ?? 'desktop') === 'ponsel';
+    const ps = this.props.state ?? 'normal';
+    const locked = ps === 'terkunci';
+    const mm = String(Math.floor(s.secs / 60)).padStart(2, '0'), ss = String(s.secs % 60).padStart(2, '0');
+    const err = locked ? { show: true, msg: 'Terlalu banyak percobaan. Coba lagi dalam ' + mm + ':' + ss + '.', cls: 'background-color:var(--warning-subtle);color:var(--warning-text);--hv-c:var(--warning-text);' }
+      : ps === 'salah' || s.tries > 0 ? { show: true, msg: 'Email atau kata sandi tidak sesuai.', cls: 'background-color:var(--danger-subtle);color:var(--danger-text);--hv-c:var(--danger-text);' } : { show: false, msg: '', cls: '' };
+    const on = 'background-color:var(--surface);color:var(--text-primary);box-shadow:var(--shadow-card);--hv-c:var(--text-primary);', off = 'color:var(--text-secondary);--hv-c:var(--text-primary);';
+    return {
+      theme: this.props.theme ?? 'light', internal, external: !internal, locked,
+      shell: mobile
+        ? { desktop: false, mobile: true, outer: 'background-color:var(--surface-muted);padding-top:32px;padding-bottom:32px;display:flex;justify-content:center;--hv-c:initial;', frame: 'border-radius:28px;border-width:8px;width:360px;height:780px;background-color:var(--background);border-color:var(--text-primary);overflow-y:auto;display:flex;--hv-c:initial;', formPad: 'padding:16px;align-items:flex-start;padding-top:32px;--hv-c:initial;' }
+        : { desktop: true, mobile: false, outer: '', frame: 'min-height:100vh;display:flex;--hv-c:initial;', formPad: 'padding:32px;--hv-c:initial;' },
+      portals: [['eksternal', 'Sekolah / Konsultan'], ['internal', 'Setpres']].map(([id, label]) => ({ label, cls: portal === id ? on : off, pick: () => this.setState({ portal: id, step: 'login', tries: 0, email: id === 'internal' ? 'rina.k@setpres.contoh.id' : 'panitia.sukamaju01@contoh.id' }) })),
+      portalLabel: internal ? 'Portal internal Setpres' : 'Portal Sekolah dan Konsultan',
+      st: { login: s.step === 'login', totp: s.step === 'totp', lupa: s.step === 'lupa', done: s.step === 'done' },
+      go: { login: () => this.setState({ step: 'login', sent: false, otpErr: undefined }), lupa: () => this.setState({ step: 'lupa' }) },
+      err, email: s.email, onEmail: (e) => this.setState({ email: e.target.value }),
+      pw: s.pw, onPw: (e) => this.setState({ pw: e.target.value }), pwType: s.showPw ? 'text' : 'password', pwIcon: s.showPw ? 'eye-off' : 'eye', togglePw: () => this.setState((x) => ({ showPw: !x.showPw })),
+      cap: s.cap, onCap: (e) => this.setState({ cap: e.target.value }),
+      lockReason: locked ? 'Akun terkunci sementara.' : undefined,
+      submit: () => { if (ps === 'salah' && s.tries === 0) { this.setState({ tries: 1 }); return; } this.setState({ tries: 0, step: internal ? 'done' : 'totp' }); },
+      otpErr: s.otpErr,
+      onOtp: (code) => { if (code === '000000') this.setState({ otpErr: 'Kode tidak sesuai. Pastikan jam di ponsel Anda tepat, lalu coba kode terbaru.' }); else this.setState({ step: 'done', otpErr: undefined }); },
+      sent: s.sent, sendReset: () => this.setState({ sent: true }),
+      nextHref: internal ? 'Revit-ADM-Kelengkapan.dc.html' : 'Revit-SKL-Sekolah.dc.html', nextLabel: internal ? 'Buka Portal Setpres' : 'Buka Portal Sekolah'
+    };
+  }
+}
+</script>
+</body>
+</html>

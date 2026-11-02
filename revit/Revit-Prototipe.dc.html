@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1a3a8f"/><text x="50" y="62" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Prototipe</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+<style>body{margin:0;background-color:var(--background)}</style>
+</helmet>
+<div style="min-height:100vh">
+  <img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+  <img data-revit-geo="1" loading="lazy" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+  <sc-if value="{{ is.p0 }}" hint-placeholder-val="{{ true }}"><dc-import name="index" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p1 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-Masuk" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p2 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-Aktivasi" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p3 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-SKL-Sekolah" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p4 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-SKL-Data-Sekolah" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p5 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-SKL-Konfirmasi-OCR" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p6 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-SKL-Pelaksanaan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p7 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-SKL-Perpanjangan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p8 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-ADM-Kelengkapan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p9 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-KPR-Konsultan-Perencanaan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p10 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-PPK-Bendahara" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p11 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-PPK-Penyaluran-Addendum" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p12 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-APV-Approver" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p13 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-KPL-Konsultan-Pelaksanaan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p14 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-KPL-Detail-Pengawasan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p15 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-SA-Super-Admin" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p16 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-PIM-Pimpinan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p17 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-Dashboard" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p18 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-Daftar-Sekolah" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p19 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-Detail-Proposal" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+  <sc-if value="{{ is.p20 }}" hint-placeholder-val="{{ false }}"><dc-import name="Revit-Riwayat-Keputusan" style="display:block;width:100%;min-height:100vh" hint-size="100%,100vh"></dc-import></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PAGES = ['index', 'Revit-Masuk', 'Revit-Aktivasi', 'Revit-SKL-Sekolah', 'Revit-SKL-Data-Sekolah', 'Revit-SKL-Konfirmasi-OCR', 'Revit-SKL-Pelaksanaan', 'Revit-SKL-Perpanjangan', 'Revit-ADM-Kelengkapan', 'Revit-KPR-Konsultan-Perencanaan', 'Revit-PPK-Bendahara', 'Revit-PPK-Penyaluran-Addendum', 'Revit-APV-Approver', 'Revit-KPL-Konsultan-Pelaksanaan', 'Revit-KPL-Detail-Pengawasan', 'Revit-SA-Super-Admin', 'Revit-PIM-Pimpinan', 'Revit-Dashboard', 'Revit-Daftar-Sekolah', 'Revit-Detail-Proposal', 'Revit-Riwayat-Keputusan'];
+const fromUrl = () => { const p = new URLSearchParams(location.search).get('p'); return PAGES.includes(p) ? p : 'index'; };
+
+class Component extends DCLogic {
+  state = { page: fromUrl() };
+  componentDidMount() {
+    const geo = document.querySelector('img[data-revit-geo]');
+    const gsrc = geo && geo.getAttribute('src');
+    if (gsrc && !/indonesia-provinsi-contoh\.json$/.test(gsrc) && !window.__revitFetch) {
+      const orig = window.fetch.bind(window);
+      const blob = Object.values(window.__resourceBlobs || {}).find((b) => b && /json/.test(b.type || ''));
+      window.__revitFetch = true;
+      window.fetch = (u, o) => {
+        if (typeof u === 'string' && /indonesia-provinsi-contoh\.json$/.test(u)) return blob ? Promise.resolve(new Response(blob, { headers: { 'Content-Type': 'application/json' } })) : orig(geo.src, o);
+        return orig(u, o);
+      };
+    }
+    const logo = document.querySelector('img[data-revit-logo]');
+    if (logo && !/logo-setneg-ri\.svg$/.test(logo.getAttribute('src') || '')) {
+      const fix = () => document.querySelectorAll('img[src$="logo-setneg-ri.svg"]').forEach((im) => { im.src = logo.src; });
+      fix();
+      this._mo = new MutationObserver(fix);
+      this._mo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['src'] });
+    }
+    window.__revitHub = true;
+    window.revitGo = (u) => { if (!this.go(u)) location.assign(u); };
+    const rewrite = (a) => {
+      const h = a.getAttribute('href'); const m = /^(?:\.\/)?([^#?\/]+)\.dc\.html(?:#(.*))?$/.exec(h || '');
+      if (!m || !PAGES.includes(decodeURIComponent(m[1]))) return;
+      a.setAttribute('data-dc-href', h);
+      a.setAttribute('href', this.hubUrl(decodeURIComponent(m[1]), m[2]));
+    };
+    const scan = (root) => { if (root.matches && root.matches('a[href]')) rewrite(root); if (root.querySelectorAll) root.querySelectorAll('a[href]').forEach(rewrite); };
+    scan(document.body);
+    this._amo = new MutationObserver((list) => list.forEach((r) => { if (r.type === 'attributes') rewrite(r.target); else r.addedNodes.forEach((n) => n.nodeType === 1 && scan(n)); }));
+    this._amo.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ['href'] });
+    this._click = (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target && e.target.closest && e.target.closest('a[href]');
+      if (!a || (a.target && a.target !== '_self')) return;
+      if (this.go(a.getAttribute('data-dc-href') || a.getAttribute('href'))) e.preventDefault();
+    };
+    this._pop = () => this.setState({ page: fromUrl() });
+    document.addEventListener('click', this._click);
+    window.addEventListener('popstate', this._pop);
+  }
+  hubUrl(name, hash) { return (name === 'index' ? location.pathname : '?p=' + encodeURIComponent(name)) + (hash ? '#' + hash : ''); }
+  componentWillUnmount() { if (this._mo) this._mo.disconnect(); if (this._amo) this._amo.disconnect(); document.removeEventListener('click', this._click); window.removeEventListener('popstate', this._pop); }
+  go(u) {
+    let m = /^(?:\.\/)?([^#?\/]+)\.dc\.html(?:#(.*))?$/.exec(u || '');
+    if (!m) { const q = /^\?p=([^#]+)(?:#(.*))?$/.exec(u || ''); if (q) m = [u, q[1], q[2]]; }
+    if (!m) return false;
+    const name = decodeURIComponent(m[1]);
+    if (!PAGES.includes(name)) return false;
+    history.pushState(null, '', this.hubUrl(name, m[2]));
+    if (name === this.state.page) this.setState({ page: null }, () => this.setState({ page: name }));
+    else this.setState({ page: name });
+    window.scrollTo(0, 0);
+    return true;
+  }
+  renderVals() {
+    const i = PAGES.indexOf(this.state.page);
+    return { is: Object.fromEntries(PAGES.map((_, n) => ['p' + n, n === i])) };
+  }
+}
+</script>
+</body>
+</html>

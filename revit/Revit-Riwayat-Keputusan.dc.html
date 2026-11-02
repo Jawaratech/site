@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#F5F7FB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B5FEF"/><text x="50" y="64" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Riwayat keputusan</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5;background:var(--background);color:var(--text-primary);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}button,input,select{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}table{border-collapse:collapse}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" loading="lazy" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div data-theme="{{ theme }}" style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans);display:flex;flex-direction:column">
+  <dc-import name="RevitHeader" style="display:block;width:100%;min-width:0;flex:none" role="{{ roleCode }}" compact="{{ false }}" hint-size="100%,64px"></dc-import>
+  <div style="flex:1;display:flex;min-height:0">
+    <aside style="width:248px;flex:none;display:flex;flex-direction:column;background-color:var(--surface);border-right:1px solid var(--border)">
+      <nav style="padding:12px;display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ menu }}" as="m" hint-placeholder-count="5">
+          <a href="{{ m.href }}" class="body" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);text-decoration:none;{{ m.sty }}" style-hover="background-color:var(--hv-bg, transparent);text-decoration-line:none"><lc-icon name="{{ m.icon }}" size="20"></lc-icon><span style="flex:1">{{ m.label }}</span></a>
+        </sc-for>
+      </nav>
+      <div class="caption" style="margin-top:auto;padding:20px;border-top:1px solid var(--border);color:var(--text-secondary)">Revit · Tahun anggaran 2026</div>
+    </aside>
+    <main data-screen-label="{{ R.title }}" style="flex:1;min-width:0;padding:32px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+        <div>
+          <div class="caption" style="color:var(--text-secondary)">{{ R.title }}</div>
+          <h1 class="h1" style="margin-top:4px">{{ R.title }}</h1>
+          <p class="body" style="color:var(--text-secondary);margin-top:4px">{{ R.sub }}</p>
+        </div>
+        <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ exportCsv }}" hint-size="120px,40px">Ekspor CSV</x-import>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+        <sc-for list="{{ kpi }}" as="k" hint-placeholder-count="4">
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="{{ k.label }}" value="{{ k.value }}" tone="{{ k.tone }}" note="{{ k.note }}" hint-size="100%,104px"></x-import>
+        </sc-for>
+      </div>
+      <div style="background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card);overflow:hidden">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;padding:16px;border-bottom:1px solid var(--border)">
+          <label style="flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:4px"><span class="caption" style="color:var(--text-secondary)">Cari</span>
+            <span style="height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border-strong);border-radius:var(--radius-md);background-color:var(--surface)" style-focus-within="outline:2px solid var(--primary);outline-offset:1px"><span style="display:inline-flex;color:var(--text-secondary)"><lc-icon name="search" size="16"></lc-icon></span><input value="{{ q }}" onChange="{{ onQ }}" placeholder="Nama sekolah atau NPSN" class="body" style="flex:1;min-width:0;height:100%;outline:none"></span>
+          </label>
+          <label style="display:flex;flex-direction:column;gap:4px"><span class="caption" style="color:var(--text-secondary)">Periode</span>
+            <select value="{{ per }}" onChange="{{ onPer }}" class="body" style="height:40px;min-width:170px;padding:0 10px;border:1px solid var(--border-strong);border-radius:var(--radius-md);background-color:var(--surface);cursor:pointer" style-focus="outline:2px solid var(--primary);outline-offset:1px">
+              <sc-for list="{{ perOpts }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+          </label>
+          <div style="display:flex;flex-direction:column;gap:4px"><span class="caption" style="color:var(--text-secondary)">Keputusan</span>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.pick }}" class="caption" style="height:32px;padding:0 12px;border-radius:var(--radius-full);border:1px solid var(--border-strong);cursor:pointer;white-space:nowrap;{{ c.sty }}">{{ c.label }} <span class="tabular" style="font-weight:400">{{ c.n }}</span></button></sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="body" style="width:100%;min-width:860px">
+            <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding:10px 12px;font-weight:600">Waktu</th><th style="padding:10px 12px;font-weight:600">Sekolah</th><th style="padding:10px 12px;font-weight:600">{{ R.colA }}</th><th style="padding:10px 12px;font-weight:600">Keputusan</th><th style="padding:10px 12px;font-weight:600;text-align:right">{{ R.colB }}</th><th style="padding:10px 12px;font-weight:600">Waktu kerja</th><th style="padding:10px 12px;font-weight:600">Catatan</th></tr></thead>
+            <tbody>
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="10">
+                <tr onClick="{{ r.open }}" style="border-top:1px solid var(--border);cursor:pointer;vertical-align:top" style-hover="background-color:var(--surface-muted)">
+                  <td class="tabular" style="padding:10px 12px;white-space:nowrap;color:var(--text-secondary)">{{ r.when }}</td>
+                  <td style="padding:10px 12px"><div style="font-weight:600">{{ r.nama }}</div><div class="caption" style="color:var(--text-secondary)">{{ r.kab }}</div></td>
+                  <td class="tabular" style="padding:10px 12px;white-space:nowrap">{{ r.a }}</td>
+                  <td style="padding:10px 12px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ r.tone }}" hint-size="120px,24px">{{ r.dec }}</x-import></td>
+                  <td class="tabular" style="padding:10px 12px;text-align:right;white-space:nowrap">{{ r.b }}</td>
+                  <td class="tabular" style="padding:10px 12px;white-space:nowrap;{{ r.slaSty }}">{{ r.sla }}</td>
+                  <td style="padding:10px 12px;max-width:280px;color:var(--text-secondary)"><span style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ r.note }}</span></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center"><div class="body" style="color:var(--text-secondary)">Belum ada keputusan yang cocok dengan filter ini.</div><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ reset }}" hint-size="120px,40px">Reset filter</x-import></div>
+        </sc-if>
+        <div class="caption tabular" style="padding:12px 16px;border-top:1px solid var(--border);color:var(--text-secondary)">{{ footer }}</div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;role&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ADM&quot;,&quot;KPR&quot;,&quot;APV&quot;,&quot;KPL&quot;],&quot;default&quot;:&quot;APV&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Riwayat&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;}}">
+const USERINFO = { 'Rina Kartikasari': ['rina.k@setpres.contoh.id', '0812-8810-4402', 'Setpres Kelengkapan Administrasi', 'Sekretariat Presiden'], 'Dr. Hendra Wijaya': ['hendra.w@setpres.contoh.id', '0811-9020-3318', 'Approver Dana', 'Sekretariat Presiden'], 'Ir. Dedi Hermawan': ['dedi.h@agrinas.contoh.id', '0812-1100-2233', 'Konsultan Perencanaan · Jawa Barat', 'Agrinas'], 'Siti Nurhaliza, S.T.': ['siti.n@agrinas.contoh.id', '0813-4455-7810', 'Konsultan Pelaksanaan · Kota Kupang, Kota Makassar', 'Agrinas'], 'Agus Prasetyo, S.E.': ['agus.p@setpres.contoh.id', '0812-7731-0094', 'Bendahara / PPK', 'Sekretariat Presiden'], 'Yudi Firmansyah': ['yudi.f@setpres.contoh.id', '0813-1209-5571', 'Super Admin', 'Sekretariat Presiden'], 'Drs. Bambang Suryadi': ['panitia.sukamaju01@contoh.id', '0812-3456-7890', 'Ketua Panitia', 'SD Negeri Sukamaju 01'], 'Pimpinan': ['pimpinan@setneg.contoh.id', '—', 'Pimpinan · hanya baca', 'Kementerian Sekretariat Negara'] };
+const uinfo = (n) => { const u = USERINFO[n] || ['—', '—', '', '']; return { email: u[0], phone: u[1], roleLabel: u[2], instansi: u[3] }; };
+
+const ADM_F = 'Revit-ADM-Kelengkapan.dc.html', KPR_F = 'Revit-KPR-Konsultan-Perencanaan.dc.html', APV_F = 'Revit-APV-Approver.dc.html', KPL_F = 'Revit-KPL-Konsultan-Pelaksanaan.dc.html';
+const rp = (n) => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+// [when, nama, kab, a, decIdx, b, hari, note, bulan]
+const DATA = {
+  ADM: {
+    portal: 'Portal Setpres', user: 'Rina Kartikasari', org: 'Verifikator · Setpres', ini: 'RK', title: 'Riwayat keputusan', sub: 'Verifikasi kelengkapan administrasi yang sudah diputuskan · tidak dapat diubah setelah dikirim', colA: 'Pengajuan', colB: 'Dokumen sesuai', sla: 3, status: 'S03',
+    decs: [['Lengkap', 'success'], ['Perlu perbaikan', 'warning'], ['Ditolak', 'danger']],
+    menu: [['Antrian verifikasi', 'inbox', ADM_F], ['Riwayat keputusan', 'history', ''], ['Daftar sekolah', 'list', ADM_F + '#daftar'], ['Peta sekolah', 'map', ADM_F + '#peta']],
+    rows: [['5 Okt 2026, 14.22', 'SD Negeri Margahayu 03', 'Kab. Bandung', 'Pertama', 0, '10/10', 1, 'Lengkap. Ditugaskan ke Ir. Dedi Hermawan untuk survei.', 'Okt'], ['5 Okt 2026, 10.08', 'SD Negeri Cileunyi 2', 'Kab. Bandung', 'Ulang ke-2', 0, '10/10', 1, 'SK Panitia sudah ditandatangani. Ditugaskan ke Asep Saepudin, S.T.', 'Okt'], ['4 Okt 2026, 15.40', 'SD Negeri Cibinong 05', 'Kab. Bogor', 'Pertama', 1, '8/10', 2, 'Dokumentasi kerusakan tanpa titik lokasi. KTP ketua panitia buram.', 'Okt'], ['3 Okt 2026, 09.15', 'SD Negeri Jatinangor 1', 'Kab. Sumedang', 'Pertama', 0, '10/10', 4, 'Lengkap. Ditugaskan ke Rahmat Hidayat, S.T.', 'Okt'], ['1 Okt 2026, 13.30', 'SD Swasta Harapan Bangsa', 'Kota Depok', 'Ulang ke-3', 2, '7/10', 2, 'Sekolah tidak memenuhi syarat: bangunan milik yayasan belum bersertifikat.', 'Okt'], ['28 Sep 2026, 11.02', 'SD Negeri Bojongsoang 4', 'Kab. Bandung', 'Pertama', 1, '9/10', 3, 'Nilai RAB di narasi berbeda dengan lampiran RAB.', 'Sep'], ['24 Jul 2026, 09.05', 'SD Negeri Sukamaju 01', 'Kab. Bogor', 'Ulang ke-2', 0, '10/10', 1, 'Lengkap. Ditugaskan ke Ir. Dedi Hermawan untuk survei.', 'Jul'], ['22 Jul 2026, 11.20', 'SD Negeri Sukamaju 01', 'Kab. Bogor', 'Pertama', 1, '9/10', 1, 'SK Panitia belum ditandatangani kepala sekolah.', 'Jul']]
+  },
+  KPR: {
+    portal: 'Portal Konsultan', user: 'Ir. Dedi Hermawan', org: 'Konsultan Perencanaan · Agrinas', ini: 'DH', title: 'Riwayat rekomendasi', sub: 'Rekomendasi RAB yang sudah dikirim ke Setpres · terkunci setelah dikirim', colA: 'Nilai pengajuan', colB: 'Nilai rekomendasi', sla: 10, status: 'S06',
+    decs: [['Sesuai pengajuan', 'success'], ['Dikoreksi', 'warning'], ['Tidak direkomendasikan', 'danger']],
+    menu: [['Tugas saya', 'clipboard-check', KPR_F], ['Riwayat rekomendasi', 'history', ''], ['Daftar sekolah', 'list', 'Revit-Daftar-Sekolah.dc.html#KPR-daftar'], ['Peta', 'map', KPR_F]],
+    rows: [['2 Okt 2026, 16.40', 'SD Negeri Cibinong 02', 'Kab. Bogor', 612300000, 1, 588400000, 8, 'Volume pembongkaran disesuaikan dengan hasil ukur.', 'Okt'], ['30 Sep 2026, 11.15', 'SD Negeri Tasikmalaya 12', 'Kota Tasikmalaya', 598000000, 0, 598000000, 6, 'Harga satuan sesuai HSPK 2026.', 'Sep'], ['26 Sep 2026, 14.02', 'SD Negeri Ciparay 01', 'Kab. Bandung', 744100000, 1, 698600000, 9, 'Pos atap disesuaikan agar total di bawah plafon.', 'Sep'], ['22 Sep 2026, 09.30', 'SD Negeri Soreang 06', 'Kab. Bandung', 655000000, 1, 631200000, 11, 'Kusen kayu diganti aluminium sesuai standar.', 'Sep'], ['18 Sep 2026, 15.48', 'SD Negeri Garut Kota 1', 'Kab. Garut', 702500000, 0, 702500000, 7, 'Kondisi rusak berat terverifikasi.', 'Sep'], ['12 Sep 2026, 10.20', 'SD Negeri Leles 3', 'Kab. Garut', 520000000, 2, 0, 5, 'Bangunan dibangun ulang 2024. Tidak memenuhi kriteria rusak.', 'Sep'], ['5 Agu 2026, 16.40', 'SD Negeri Sukamaju 01', 'Kab. Bogor', 658277000, 1, 642150000, 9, 'Tiga pos RAB disesuaikan dengan HSPK Kab. Bogor 2026.', 'Agu']]
+  },
+  APV: {
+    portal: 'Portal Setpres', user: 'Dr. Hendra Wijaya', org: 'Approver (Kabag) · Setpres', ini: 'HW', title: 'Riwayat keputusan', sub: 'Persetujuan proposal setelah rekomendasi konsultan · tidak dapat diubah setelah dikirim', colA: 'Konsultan', colB: 'Nilai rekomendasi', sla: 2, status: 'S06',
+    decs: [['Disetujui', 'success'], ['Ditolak', 'danger']],
+    menu: [['Dashboard', 'layout-dashboard', APV_F], ['Persetujuan proposal', 'check-check', APV_F], ['Memo pencairan', 'file-pen-line', APV_F], ['Riwayat keputusan', 'history', ''], ['Daftar sekolah', 'list', 'Revit-Daftar-Sekolah.dc.html#APV-daftar'], ['Peta', 'map', 'Revit-Daftar-Sekolah.dc.html#APV-peta']],
+    rows: [['4 Okt 2026, 09.12', 'SD Negeri Klojen 3', 'Kota Malang', 'Yuliani Putri, M.T.', 0, 588200000, 1, 'Sesuai rekomendasi. Diteruskan ke PPK.', 'Okt'], ['3 Okt 2026, 15.30', 'SD Negeri Rungkut 2', 'Kota Surabaya', 'Rahmat Hidayat, S.T.', 1, 645000000, 2, 'Kerusakan tidak memenuhi kriteria rusak berat.', 'Okt'], ['2 Okt 2026, 10.05', 'SD Negeri Medan Johor 060', 'Kota Medan', 'Andi Saputra, S.T.', 0, 600000000, 1, '—', 'Okt'], ['29 Sep 2026, 14.48', 'SD Negeri Gedongtengen 1', 'Kota Yogyakarta', 'Bayu Pratama, S.T.', 0, 612500000, 3, 'Disetujui setelah klarifikasi rekening.', 'Sep'], ['25 Sep 2026, 08.40', 'SD Negeri Bontoala 3', 'Kota Makassar', 'Andi Saputra, S.T.', 0, 658277000, 1, '—', 'Sep'], ['22 Sep 2026, 16.10', 'SD Negeri Tegalrejo 2', 'Kota Yogyakarta', 'Bayu Pratama, S.T.', 1, 712400000, 2, 'Pengajuan tumpang tindih dengan bantuan DAK 2025.', 'Sep'], ['6 Agu 2026, 10.15', 'SD Negeri Sukamaju 01', 'Kab. Bogor', 'Ir. Dedi Hermawan', 0, 642150000, 1, '—', 'Agu']]
+  },
+  KPL: {
+    portal: 'Portal Konsultan', user: 'Siti Nurhaliza, S.T.', org: 'Konsultan Pelaksanaan · Agrinas', ini: 'SN', title: 'Riwayat reviu', sub: 'Reviu laporan mingguan sekolah yang diawasi', colA: 'Laporan', colB: 'Nilai reviu', sla: 3, status: 'S10',
+    decs: [['Sesuai', 'success'], ['Perlu perbaikan', 'warning'], ['Tidak sesuai', 'danger']],
+    menu: [['Sekolah diawasi', 'eye', KPL_F], ['Laporan masuk', 'file-check', KPL_F], ['Riwayat reviu', 'history', ''], ['Peta', 'map', 'Revit-Daftar-Sekolah.dc.html#KPL-peta']],
+    rows: [['3 Okt 2026, 13.20', 'SD Negeri Oesapa 3', 'Kota Kupang', 'Minggu ke-6', 0, 4, 1, 'Progres sesuai rencana.', 'Okt'], ['2 Okt 2026, 10.45', 'SD Negeri Maulafa 1', 'Kota Kupang', 'Minggu ke-7', 1, 3, 2, 'Foto pembesian kurang jelas. Unggah ulang.', 'Okt'], ['30 Sep 2026, 16.02', 'SD Negeri Panakkukang 1', 'Kota Makassar', 'Minggu ke-7', 0, 5, 1, 'Pekerjaan rapi, sesuai gambar.', 'Sep'], ['29 Sep 2026, 09.10', 'SD Inpres Kayu Putih', 'Kota Kupang', 'Minggu ke-5', 1, 3, 3, 'Realisasi biaya struktur belum disertai kuitansi.', 'Sep'], ['26 Sep 2026, 14.30', 'SD Negeri Alak 2', 'Kota Kupang', 'Minggu ke-3', 2, 2, 4, 'Foto tidak sesuai lokasi sekolah. Kunjungan dijadwalkan.', 'Sep'], ['24 Sep 2026, 11.00', 'SD Negeri Bontoala 3', 'Kota Makassar', 'Minggu ke-5', 0, 4, 2, '—', 'Sep'], ['18 Sep 2026, 15.40', 'SD Negeri Tamalate 4', 'Kota Makassar', 'Minggu ke-3', 1, 3, 2, 'Kendala material dilaporkan. Minta jadwal pengiriman.', 'Sep']]
+  }
+};
+const PER = ['Semua periode', 'Oktober 2026', 'September 2026', 'Agustus 2026', 'Juli 2026'];
+
+class Component extends DCLogic {
+  state = { hRole: null, q: '', per: 'Semua periode', dec: 'Semua' };
+  componentDidMount() { const r = (location.hash || '').slice(1); if (DATA[r]) this.setState({ hRole: r }); }
+  componentDidUpdate(p) { if (p.role !== this.props.role && this.state.hRole) this.setState({ hRole: null }); }
+  renderVals() {
+    const s = this.state;
+    const role = s.hRole || this.props.role || 'APV';
+    const R = DATA[role];
+    const q = s.q.trim().toLowerCase();
+    const mon = { 'Oktober 2026': 'Okt', 'September 2026': 'Sep', 'Agustus 2026': 'Agu', 'Juli 2026': 'Jul' }[s.per];
+    const base = R.rows.filter((r) => (!q || r[1].toLowerCase().includes(q)) && (!mon || r[8] === mon));
+    const di = R.decs.findIndex((d) => d[0] === s.dec);
+    const rows = base.filter((r) => di < 0 || r[4] === di);
+    const avg = R.rows.reduce((a, r) => a + r[6], 0) / R.rows.length;
+    const late = R.rows.filter((r) => r[6] > R.sla).length;
+    const cnt = (i) => R.rows.filter((r) => r[4] === i).length;
+    const kpi = role === 'ADM'
+      ? [['Keputusan', String(R.rows.length), 'Sejak 1 Jul 2026'], ['Lengkap', String(cnt(0)), 'Diteruskan ke survei konsultan', 'success'], ['Perlu perbaikan / ditolak', String(cnt(1) + cnt(2)), 'Dikembalikan ke sekolah'], ['Rata-rata waktu', avg.toLocaleString('id-ID', { maximumFractionDigits: 1 }) + ' hari', late + ' melewati SLA ' + R.sla + ' hari', late ? 'warning' : '']]
+      : role === 'APV'
+      ? [['Keputusan', String(R.rows.length), 'Sejak 1 Agu 2026'], ['Disetujui', String(cnt(0)), Math.round((cnt(0) / R.rows.length) * 100) + '% dari keputusan', 'success'], ['Ditolak', String(cnt(1)), 'Dikembalikan ke PPK'], ['Rata-rata waktu', avg.toLocaleString('id-ID', { maximumFractionDigits: 1 }) + ' hari', late + ' melewati SLA ' + R.sla + ' hari', late ? 'warning' : '']]
+      : role === 'KPR'
+        ? [['Rekomendasi dikirim', String(R.rows.length), 'Sejak 1 Agu 2026'], ['Sesuai / dikoreksi', String(cnt(0) + cnt(1)), 'Diteruskan ke Setpres', 'success'], ['Tidak direkomendasikan', String(cnt(2)), 'Keputusan akhir di Setpres'], ['Rata-rata waktu', avg.toLocaleString('id-ID', { maximumFractionDigits: 1 }) + ' hari', late + ' melewati SLA ' + R.sla + ' hari', late ? 'warning' : '']]
+        : [['Reviu dikirim', String(R.rows.length), '7 sekolah'], ['Sesuai', String(cnt(0)), 'Tanpa catatan perbaikan', 'success'], ['Perlu perbaikan / tidak sesuai', String(cnt(1) + cnt(2)), 'Dikembalikan ke sekolah'], ['Rata-rata waktu', avg.toLocaleString('id-ID', { maximumFractionDigits: 1 }) + ' hari', late + ' melewati batas ' + R.sla + ' hari', late ? 'warning' : '']];
+    return {
+      theme: this.props.theme ?? 'light', roleCode: role, R: { ...R, ...uinfo(R.user) },
+      menu: R.menu.map(([label, icon, href]) => ({ label, icon, href: href || '#' + role, sty: !href ? 'background-color:var(--primary-subtle);color:var(--primary);font-weight:600;--hv-bg:var(--primary-subtle);' : 'color:var(--text-primary);font-weight:500;--hv-bg:var(--surface-muted);' })),
+      kpi: kpi.map(([label, value, note, tone]) => ({ label, value, note, tone: tone || undefined })),
+      exportCsv: () => {},
+      q: s.q, onQ: (e) => this.setState({ q: e.target.value }), per: s.per, onPer: (e) => this.setState({ per: e.target.value }), perOpts: PER,
+      chips: [['Semua', 'all'], ...R.decs.map((d) => [d[0], d[0]])].map(([label]) => ({ label, n: String(label === 'Semua' ? base.length : base.filter((r) => R.decs[r[4]][0] === label).length), pick: () => this.setState({ dec: label }), sty: s.dec === label ? 'background-color:var(--primary-subtle);color:var(--primary);border-color:var(--primary);font-weight:600;' : 'background-color:var(--surface);color:var(--text-primary);' })),
+      rows: rows.map((r) => ({
+        when: r[0], nama: r[1], kab: r[2], a: typeof r[3] === 'number' ? rp(r[3]) : r[3], dec: R.decs[r[4]][0], tone: R.decs[r[4]][1],
+        b: typeof r[5] === 'string' ? r[5] : role === 'KPL' ? '★'.repeat(r[5]) + '☆'.repeat(5 - r[5]) : r[5] ? rp(r[5]) : '—',
+        sla: r[6] + ' hari' + (r[6] > R.sla ? ' · lewat SLA' : ''), slaSty: r[6] > R.sla ? 'color:var(--danger-text);font-weight:600;' : '',
+        note: r[7], open: () => { (window.revitGo || location.assign.bind(location))('Revit-Detail-Proposal.dc.html#role=' + role + '&status=' + R.status); }
+      })),
+      empty: rows.length === 0, reset: () => this.setState({ q: '', per: 'Semua periode', dec: 'Semua' }),
+      footer: 'Menampilkan ' + rows.length + ' dari ' + R.rows.length + ' keputusan · data contoh'
+    };
+  }
+}
+</script>
+</body>
+</html>

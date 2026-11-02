@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1a3a8f"/><text x="50" y="62" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Prototipe per peran</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5}button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}img,svg,video,canvas{display:block;max-width:100%}table{border-collapse:collapse;text-indent:0}ol,ul{list-style:none}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}[hidden]{display:none}</style>
+<script src="lc-icon.js"></script>
+<style>body{margin:0;background:var(--background);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" loading="lazy" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans)">
+  <header style="background-color:var(--surface);border-color:var(--border);border-bottom-width:1px">
+    <div style="gap:24px;max-width:1200px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px;padding-top:24px;padding-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap">
+      <x-import component-from-global-scope="RevitDesignSystem_e94b7b.BrandLockup" emblem-src="assets/logo-setneg-ri.svg" size="{{ 48 }}" portal="Prototipe UI · 8 peran" hint-size="240px,48px"></x-import>
+      <div class="caption" style="color:var(--text-secondary);text-align:right">Design Brief Revit v2.0 · Revit Design System · 4 Okt 2026</div>
+    </div>
+  </header>
+  <main style="gap:40px;max-width:1200px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px;padding-top:40px;padding-bottom:40px;display:flex;flex-direction:column">
+    <section style="gap:12px;display:flex;flex-direction:column;max-width:760px">
+      <h1 class="display">Prototipe Revit per peran</h1>
+      <p class="body-lg" style="color:var(--text-secondary)">Pilih peran untuk mencoba alurnya. Kode L-xx di setiap layar mengacu ke Design Brief.</p>
+    </section>
+
+    <section style="gap:16px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:baseline;justify-content:space-between"><h2 class="h2">Fitur umum</h2><span class="caption" style="color:var(--text-secondary)">Semua peran</span></div>
+      <a style="border-width:1px;border-radius:var(--radius-md);padding:20px;gap:20px;background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);display:flex;align-items:center" style-hover="text-decoration-line:none;border-color:var(--primary)" href="Revit-Masuk.dc.html">
+        <span style="width:48px;height:48px;border-radius:var(--radius-md);background-color:var(--primary-subtle);color:var(--primary);display:grid;place-items:center;flex:none"><lc-icon name="log-in" size="24"></lc-icon></span>
+        <div style="flex:1 1 0%;min-width:0"><div class="h3" style="color:var(--text-primary)">Masuk · L01</div><div class="body" style="color:var(--text-secondary)">Eksternal (email + kata sandi + kode autentikasi) dan internal (captcha + VPN). Lupa kata sandi, salah, terkunci. Ketik 000000 untuk melihat kode salah.</div></div>
+        <span class="caption" style="color:var(--text-secondary);white-space:nowrap">Desktop · Ponsel</span>
+      </a>
+      
+      
+      <a style="border-width:1px;border-radius:var(--radius-md);padding:20px;gap:20px;background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);display:flex;align-items:center" style-hover="text-decoration-line:none;border-color:var(--primary)" href="Revit-Detail-Proposal.dc.html">
+        <span style="width:48px;height:48px;border-radius:var(--radius-md);background-color:var(--primary-subtle);color:var(--primary);display:grid;place-items:center;flex:none"><lc-icon name="file-search" size="24"></lc-icon></span>
+        <div style="flex:1 1 0%;min-width:0"><div class="h3" style="color:var(--text-primary)">Detail proposal · L20</div><div class="body" style="color:var(--text-secondary)">Satu halaman untuk semua peran. Tab Ringkasan, Dokumen, RAB, Penilaian, Kontrak, Progres, Riwayat tampil sesuai status dan peran.</div></div>
+        <span class="caption" style="color:var(--text-secondary);white-space:nowrap">Semua peran</span>
+      </a>
+    </section>
+
+    <section style="gap:16px;display:flex;flex-direction:column">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px"><h2 class="h2">Per peran</h2><span class="caption" style="color:var(--text-secondary)">8 peran · 64 layar</span></div>
+      <div style="gap:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));align-items:start">
+        <sc-for list="{{ roles }}" as="r" hint-placeholder-count="8">
+          <div style="display:flex;flex-direction:column;gap:16px;padding:20px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+            <div style="gap:16px;display:flex;align-items:flex-start">
+              <span style="width:48px;height:48px;border-radius:var(--radius-md);background-color:var(--primary-subtle);color:var(--primary);display:grid;place-items:center;flex:none"><lc-icon name="{{ r.icon }}" size="24"></lc-icon></span>
+              <div style="flex:1 1 0%;min-width:0"><div class="caption tabular" style="color:var(--text-secondary)">{{ r.code }} · {{ r.portal }}</div><div class="h3">{{ r.name }}</div><div class="caption" style="color:var(--text-secondary)">{{ r.persona }}</div></div>
+              <a href="{{ r.href }}" class="body" style="flex:none;font-weight:600;white-space:nowrap">Buka ›</a>
+            </div>
+            <ul style="display:flex;flex-direction:column;margin:0 -8px">
+              <sc-for list="{{ r.screens }}" as="sc" hint-placeholder-count="6">
+                <li><a href="{{ sc.href }}" class="body" style="display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:var(--radius-md);color:var(--text-primary);text-decoration:none" style-hover="background-color:var(--surface-muted);text-decoration-line:none"><span class="caption tabular" style="color:var(--text-secondary);width:72px;flex:none;padding-top:2px">{{ sc.id }}</span><span style="flex:1;min-width:0">{{ sc.label }}</span><span style="flex:none;display:inline-flex;color:var(--text-secondary);padding-top:2px"><lc-icon name="chevron-right" size="14"></lc-icon></span></a></li>
+              </sc-for>
+            </ul>
+            <div class="caption" style="color:var(--text-secondary);margin-top:auto;padding-top:12px;border-top:1px solid var(--border)">{{ r.devices }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const enc = (n) => encodeURIComponent(n) + '.dc.html';
+const R = (code, name, portal, persona, icon, file, devices, screens) => ({ code, name, portal, persona, icon, href: enc(file), devices, screens: screens.map(([id, label, fl]) => ({ id, label, href: fl ? (fl.includes('#') ? enc(fl.split('#')[0]) + '#' + fl.split('#')[1] : enc(fl)) : enc(file) })) });
+const ROLES = [
+  R('SKL', 'Panitia Sekolah', 'Portal Sekolah', 'Drs. Bambang Suryadi · SD Negeri Sukamaju 01', 'school', 'Revit-SKL-Sekolah', 'Desktop · Ponsel 360 · offline · 4 status proposal', [['L02–L03', 'Aktivasi akun + authenticator', 'Revit-Aktivasi'], ['L04', 'Beranda sekolah'], ['L05', 'Profil sekolah', 'Revit-SKL-Data-Sekolah#profil'], ['L06', 'Susunan panitia', 'Revit-SKL-Data-Sekolah#panitia'], ['L07', 'Rekening BNI', 'Revit-SKL-Data-Sekolah#rekening'], ['L08–L12', 'Wizard proposal 5 langkah'], ['L37', 'Konfirmasi hasil OCR', 'Revit-SKL-Konfirmasi-OCR'], ['L13', 'Status proposal'], ['L14', 'Mode revisi'], ['L15', 'Lapor realisasi', 'Revit-SKL-Data-Sekolah#realisasi'], ['L16', 'Unduh PKS & kuitansi'], ['L17', 'Pusat notifikasi'], ['L38', 'Beranda pelaksanaan', 'Revit-SKL-Pelaksanaan#beranda'], ['L40', 'Laporan mingguan', 'Revit-SKL-Pelaksanaan#laporan'], ['L41', 'Riwayat laporan & reviu', 'Revit-SKL-Pelaksanaan#riwayat'], ['L42', 'LPJ akhir (di halaman Pelaksanaan)', 'Revit-SKL-Pelaksanaan#lpj'], ['L43–L44', 'Perpanjangan & status addendum', 'Revit-SKL-Perpanjangan']]),
+  R('ADM', 'Setpres Kelengkapan Administrasi', 'Portal Setpres', 'Rina Kartikasari', 'inbox', 'Revit-ADM-Kelengkapan', 'Desktop · antrian normal, memuat, kosong', [['L21', 'Antrian verifikasi'], ['L22', 'Detail verifikasi split view'], ['L23', 'Modal penugasan konsultan'], ['L18–L19', 'Daftar & peta sekolah'], ['L20', 'Detail proposal', 'Revit-Detail-Proposal#role=ADM&status=S02'], ['—', 'Riwayat keputusan', 'Revit-Riwayat-Keputusan#ADM']]),
+  R('KPR', 'Konsultan Perencanaan', 'Portal Konsultan', 'Ir. Dedi Hermawan · Agrinas', 'clipboard-check', 'Revit-KPR-Konsultan-Perencanaan', 'Desktop · Ponsel 360 · offline', [['L24', 'Tugas saya + peta'], ['L25', 'Form survei lapangan'], ['L26', 'Rekomendasi RAB'], ['L27', 'Konfirmasi rekomendasi'], ['L20', 'Detail proposal', 'Revit-Detail-Proposal#role=KPR&status=S04'], ['—', 'Riwayat rekomendasi', 'Revit-Riwayat-Keputusan#KPR'], ['—', 'Daftar sekolah', 'Revit-Daftar-Sekolah#KPR-daftar']]),
+  R('APV', 'Approver Proposal & Dana (Kabag)', 'Portal Setpres', 'Dr. Hendra Wijaya · Kepala Bagian', 'check-check', 'Revit-APV-Approver', 'Desktop · Tablet 768', [['L34', 'Dashboard approver'], ['L35', 'Persetujuan proposal (setelah rekomendasi konsultan)'], ['L36', 'Ringkasan keputusan · PKS belum tersedia'], ['L36b', 'Rilis memo pencairan dana', 'Revit-APV-Approver#memo'], ['—', 'Riwayat keputusan', 'Revit-Riwayat-Keputusan#APV'], ['—', 'Daftar & peta sekolah', 'Revit-Daftar-Sekolah#APV-daftar']]),
+  R('PPK', 'PPK & Bendahara', 'Portal Setpres', 'Agus Prasetyo, S.E. (PPK) · Wulan Sari, S.E. (Bendahara)', 'wallet', 'Revit-PPK-Bendahara', 'Desktop · pagu cukup / tidak cukup · 3 jenis error CSV', [['L28', 'Dashboard pagu'], ['L29', 'Kelola pagu'], ['L30', 'Antrian persiapan PKS (disetujui Kabag)'], ['L31', 'Form & pratinjau PKS A4'], ['L32', 'Form & pratinjau kuitansi'], ['L33', 'PPK · Persetujuan pencairan (memo Kabag)', 'Revit-PPK-Bendahara#cair'], ['L33b', 'Bendahara · Eksekusi: kuitansi, bank, laporan', 'Revit-PPK-Bendahara#eksekusi'], ['L49–L52', 'Penyaluran CSV BNI', 'Revit-PPK-Penyaluran-Addendum#csv'], ['L53–L54', 'Antrian & keputusan addendum', 'Revit-PPK-Penyaluran-Addendum#addendum'], ['—', 'Daftar & peta sekolah', 'Revit-Daftar-Sekolah#PPK-daftar']]),
+  R('KPL', 'Konsultan Pelaksanaan', 'Portal Konsultan', 'Siti Nurhaliza, S.T. · 22 sekolah', 'eye', 'Revit-KPL-Konsultan-Pelaksanaan', 'Desktop', [['L45', 'Sekolah diawasi + progres'], ['L46', 'Detail pengawasan, jadwal, galeri', 'Revit-KPL-Detail-Pengawasan'], ['L47', 'Review laporan mingguan'], ['L48', 'Kunjungan, sanksi, penyelesaian', 'Revit-KPL-Detail-Pengawasan'], ['—', 'Riwayat reviu', 'Revit-Riwayat-Keputusan#KPL'], ['—', 'Peta sekolah', 'Revit-Daftar-Sekolah#KPL-peta']]),
+  R('SA', 'Super Admin', 'Portal Setpres', 'Yudi Firmansyah', 'shield-check', 'Revit-SA-Super-Admin', 'Desktop', [['L55', 'Daftar pengguna'], ['L56', 'Undang pengguna'], ['L57', 'Kode registrasi'], ['L58', 'Antrian pendaftaran'], ['L59', 'Hak akses per peran'], ['L60', 'Parameter & pengingat'], ['L61', 'Log audit']]),
+  R('PIM', 'Menteri / Presiden', 'Dashboard Pimpinan', 'Hanya baca, tanpa tombol transaksi', 'landmark', 'Revit-PIM-Pimpinan', 'Desktop · Tablet 768', [['L62', 'Dashboard nasional + peta bertingkat'], ['L63', 'Drill-down wilayah'], ['L64', 'Detail sekolah read-only'], ['—', 'Daftar sekolah', 'Revit-Daftar-Sekolah#PIM-daftar']])
+];
+class Component extends DCLogic {
+  renderVals() { return { roles: ROLES }; }
+}
+</script>
+</body>
+</html>

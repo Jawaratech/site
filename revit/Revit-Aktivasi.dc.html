@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#F5F7FB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B5FEF"/><text x="50" y="64" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Aktivasi akun sekolah</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5;background:var(--background);color:var(--text-primary);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}button,input{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}img{display:block;max-width:100%}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" loading="lazy" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div data-theme="{{ theme }}" style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans);{{ shell.outer }}">
+<div style="display:flex;flex-direction:column;{{ shell.frame }}">
+  <header style="height:64px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 24px;background-color:var(--surface);border-bottom:1px solid var(--border)">
+    <x-import component-from-global-scope="RevitDesignSystem_e94b7b.BrandLockup" emblem-src="assets/logo-setneg-ri.svg" size="{{ 36 }}" portal="{{ shell.portal }}" hint-size="200px,36px"></x-import>
+    <a href="Revit-Masuk.dc.html" class="body" style="font-weight:600;white-space:nowrap">Sudah punya akun? Masuk</a>
+  </header>
+
+  <main style="flex:1;display:flex;justify-content:center;{{ shell.main }}">
+    <div style="width:100%;max-width:480px;display:flex;flex-direction:column;gap:24px">
+      <sc-if value="{{ showStepper }}" hint-placeholder-val="{{ true }}">
+        <x-import component-from-global-scope="RevitDesignSystem_e94b7b.WizardStepper" steps="{{ steps }}" compact="{{ shell.mobile }}" hint-size="100%,64px"></x-import>
+      </sc-if>
+
+      <!-- Langkah 1: Verifikasi sekolah -->
+      <sc-if value="{{ st.cek }}" hint-placeholder-val="{{ true }}">
+        <section data-screen-label="L02 Aktivasi akun" style="display:flex;flex-direction:column;gap:20px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Langkah 1 dari 3</div>
+            <h1 class="h2" style="margin-top:4px">Aktifkan akun sekolah</h1>
+            <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">Masukkan NPSN dan kode registrasi dari surat undangan Setpres.</p>
+          </div>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="NPSN" input-mode="numeric" max-length="{{ 8 }}" value="{{ npsn }}" on-change="{{ onNpsn }}" helper="8 angka, tertera di data Dapodik sekolah." error="{{ npsnErr }}" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Kode registrasi" max-length="{{ 10 }}" value="{{ kode }}" on-change="{{ onKode }}" helper="10 karakter huruf dan angka, mis. RV7K2M9Q4T." error="{{ kodeErr }}" hint-size="100%,96px"></x-import>
+          <sc-if value="{{ err.show }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="display:flex;gap:12px;padding:12px 16px;border-radius:var(--radius-md);background-color:var(--danger-subtle);color:var(--danger-text)">
+              <span style="flex:none;margin-top:2px"><lc-icon name="circle-alert" size="20"></lc-icon></span>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <div class="body" style="font-weight:600">{{ err.title }}</div>
+                <div class="body">{{ err.body }}</div>
+                <div class="body" style="color:var(--text-primary)">Layanan Setpres: <b class="tabular">(021) 3845 627</b> · revit@setpres.contoh.id · Senin–Jumat, 08.00–16.00 WIB</div>
+              </div>
+            </div>
+          </sc-if>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="touch" full-width="{{ true }}" disabled="{{ cekDisabled }}" disabled-reason="{{ cekReason }}" on-click="{{ periksa }}" hint-size="100%,44px">Periksa</x-import>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ st.cocok }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L02 Konfirmasi sekolah" style="display:flex;flex-direction:column;gap:20px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Langkah 1 dari 3</div>
+            <h1 class="h2" style="margin-top:4px">Apakah ini sekolah Anda?</h1>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:16px;border:1px solid var(--border);border-radius:var(--radius-md);background-color:var(--surface-muted)">
+            <div style="display:flex;align-items:center;gap:8px" class="caption"><span style="color:var(--text-secondary);display:inline-flex"><lc-icon name="database" size="14"></lc-icon></span><span style="color:var(--text-secondary)">Dari data Kemendikdasmen</span></div>
+            <sc-for list="{{ sekolah }}" as="r" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px">
+                <span class="body" style="color:var(--text-secondary)">{{ r.k }}</span>
+                <span class="body-lg" style="font-weight:600">{{ r.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="touch" on-click="{{ go.akun }}" hint-size="170px,44px">Ya, lanjutkan</x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" size="touch" on-click="{{ go.bukan }}" hint-size="200px,44px">Bukan, hubungi Setpres</x-import>
+          </div>
+          <sc-if value="{{ bukan }}" hint-placeholder-val="{{ false }}">
+            <div class="body" style="padding:12px 16px;border-radius:var(--radius-md);background-color:var(--primary-subtle)">Hubungi Layanan Setpres di <b class="tabular">(021) 3845 627</b> atau revit@setpres.contoh.id. Sebutkan NPSN <b class="tabular">99990101</b> dan kode registrasi Anda.</div>
+          </sc-if>
+          <button class="body" onClick="{{ go.cek }}" style="align-self:flex-start;color:var(--primary);font-weight:600;cursor:pointer">Ubah NPSN atau kode</button>
+        </section>
+      </sc-if>
+
+      <!-- Langkah 2: Buat akun -->
+      <sc-if value="{{ st.akun }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L03 Buat akun" style="display:flex;flex-direction:column;gap:20px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Langkah 2 dari 3 · SD Negeri Sukamaju 01</div>
+            <h1 class="h2" style="margin-top:4px">Buat akun</h1>
+            <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">Akun ini dipakai Ketua Panitia untuk mengurus proposal.</p>
+          </div>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Email" type="email" value="{{ email }}" on-change="{{ onEmail }}" helper="Dipakai untuk masuk dan menerima pemberitahuan status proposal. Kami kirim tautan verifikasi ke email ini." error="{{ emailErr }}" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Nomor HP" type="tel" input-mode="tel" value="{{ hp }}" on-change="{{ onHp }}" helper="Diawali 08, 10–13 angka." error="{{ hpErr }}" hint-size="100%,96px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Kata sandi" type="password" value="{{ pw }}" on-change="{{ onPw }}" hint-size="100%,72px"></x-import>
+          <ul aria-label="Aturan kata sandi" style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ rules }}" as="r" hint-placeholder-count="4">
+              <li class="body" style="display:flex;align-items:center;gap:8px;{{ r.sty }}"><span style="width:20px;height:20px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);font-size:12px;font-weight:700;{{ r.dot }}">{{ r.mark }}</span>{{ r.label }}</li>
+            </sc-for>
+          </ul>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Ulangi kata sandi" type="password" value="{{ pw2 }}" on-change="{{ onPw2 }}" error="{{ pw2Err }}" hint-size="100%,72px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="touch" full-width="{{ true }}" disabled="{{ akunDisabled }}" disabled-reason="{{ akunReason }}" on-click="{{ go.email }}" hint-size="100%,44px">Buat akun</x-import>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ st.email }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L03 Cek email" style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)">
+          <span style="width:48px;height:48px;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)"><lc-icon name="mail" size="24"></lc-icon></span>
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Langkah 2 dari 3</div>
+            <h1 class="h2" style="margin-top:4px">Cek email Anda</h1>
+            <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">Kami mengirim tautan verifikasi ke <b style="color:var(--text-primary)">{{ email }}</b>. Buka email itu dan klik tautannya. Tautan berlaku 24 jam.</p>
+          </div>
+          <p class="body" style="color:var(--text-secondary)">Tidak ada email? Periksa folder Spam atau Promosi.</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" disabled="{{ resendDisabled }}" on-click="{{ resend }}" hint-size="200px,40px">{{ resendLabel }}</x-import>
+            <button class="body" onClick="{{ go.akun }}" style="color:var(--primary);font-weight:600;cursor:pointer">Ubah email</button>
+          </div>
+          <div style="width:100%;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px">
+            <div class="caption" style="color:var(--text-secondary)">Prototipe: simulasikan klik tautan di email</div>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ go.totp }}" hint-size="190px,40px">Email terverifikasi</x-import>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- Langkah 3: Amankan akun -->
+      <sc-if value="{{ st.totp }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L03 Daftar TOTP" style="display:flex;flex-direction:column;gap:20px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Langkah 3 dari 3</div>
+            <h1 class="h2" style="margin-top:4px">Amankan akun Anda</h1>
+            <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">Setiap kali masuk, Anda memasukkan kode 6 angka dari aplikasi authenticator di ponsel.</p>
+          </div>
+          <ol style="display:flex;flex-direction:column;gap:16px">
+            <li style="display:flex;gap:12px">
+              <span class="h3" style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">1</span>
+              <div style="display:flex;flex-direction:column;gap:4px"><div class="h3">Unduh aplikasi authenticator</div><div class="body" style="color:var(--text-secondary)">Mis. Google Authenticator atau Microsoft Authenticator dari Play Store atau App Store.</div></div>
+            </li>
+            <li style="display:flex;gap:12px">
+              <span class="h3" style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">2</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;flex-direction:column;gap:4px"><div class="h3">Pindai kode QR</div><div class="body" style="color:var(--text-secondary)">Di aplikasi, pilih Tambah akun lalu Pindai kode QR.</div></div>
+                <div style="width:200px;height:200px;display:grid;place-items:center;text-align:center;padding:16px;border:1px dashed var(--border-strong);border-radius:var(--radius-md);background-color:var(--surface-muted)"><span class="caption" style="color:var(--text-secondary)">Kode QR TOTP<br>(dibuat server)</span></div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div class="body" style="color:var(--text-secondary)">Tidak bisa memindai? Masukkan kode ini secara manual:</div>
+                  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+                    <code class="body-lg tabular" style="font-family:ui-monospace,monospace;font-weight:600;letter-spacing:0.08em;padding:6px 10px;border-radius:var(--radius-md);background-color:var(--surface-muted);border:1px solid var(--border)">JBSW Y3DP EHPK 3PXP</code>
+                    <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="ghost" on-click="{{ copyKey }}" hint-size="90px,40px">{{ copyKeyLabel }}</x-import>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px">
+              <span class="h3" style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">3</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px">
+                <div class="h3">Masukkan 6 angka dari aplikasi</div>
+                <x-import component-from-global-scope="RevitDesignSystem_e94b7b.OtpInput" title="Kode autentikasi" backup-label=" " error="{{ otpErr }}" on-complete="{{ onOtp }}" hint-size="100%,110px"></x-import>
+                <div class="caption" style="color:var(--text-secondary)">Prototipe: ketik 000000 untuk melihat kode salah.</div>
+              </div>
+            </li>
+          </ol>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ st.cadangan }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L03 Kode cadangan" style="display:flex;flex-direction:column;gap:20px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Langkah 3 dari 3</div>
+            <h1 class="h2" style="margin-top:4px">Simpan kode cadangan</h1>
+            <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">Pakai salah satu kode ini bila ponsel Anda hilang. Setiap kode hanya bisa dipakai sekali.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:16px;border:1px solid var(--border);border-radius:var(--radius-md);background-color:var(--surface-muted)">
+            <sc-for list="{{ backup }}" as="c" hint-placeholder-count="8">
+              <code class="body-lg tabular" style="font-family:ui-monospace,monospace;font-weight:600;letter-spacing:0.06em;text-align:center;padding:6px 0">{{ c }}</code>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ download }}" hint-size="120px,40px">{{ downloadLabel }}</x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ copyAll }}" hint-size="100px,40px">{{ copyAllLabel }}</x-import>
+          </div>
+          <label class="body-lg" style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;min-height:44px">
+            <input type="checkbox" checked="{{ saved }}" onChange="{{ onSaved }}" style="width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--primary)">
+            <span>Saya sudah menyimpan kode cadangan di tempat yang aman.</span>
+          </label>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="touch" full-width="{{ true }}" disabled="{{ notSaved }}" disabled-reason="{{ savedReason }}" on-click="{{ go.sukses }}" hint-size="100%,44px">Selesai</x-import>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ st.sukses }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L03 Akun aktif" style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;padding:32px 24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)">
+          <span style="width:56px;height:56px;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--success-subtle);color:var(--success-text);font-size:28px;font-weight:700">✓</span>
+          <h1 class="h1">Akun sekolah aktif</h1>
+          <p class="body-lg" style="color:var(--text-secondary)">SD Negeri Sukamaju 01 sudah terdaftar di Revit. Langkah berikutnya: lengkapi profil sekolah, susunan panitia, dan rekening BNI sebelum membuat proposal.</p>
+          <a href="Revit-SKL-Sekolah.dc.html" style="text-decoration:none"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="touch" hint-size="210px,44px">Mulai lengkapi profil</x-import></a>
+        </section>
+      </sc-if>
+
+      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap" class="caption">
+        <a href="index.dc.html" style="color:var(--text-secondary)">Semua peran</a>
+        <span style="color:var(--text-secondary)">Butuh bantuan? (021) 3845 627</span>
+      </div>
+    </div>
+  </main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;layar&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;cek&quot;,&quot;cocok&quot;,&quot;akun&quot;,&quot;email&quot;,&quot;totp&quot;,&quot;cadangan&quot;,&quot;sukses&quot;],&quot;default&quot;:&quot;cek&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Aktivasi&quot;},&quot;error&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tidak ada&quot;,&quot;kode-salah&quot;,&quot;kode-dipakai&quot;,&quot;npsn-terdaftar&quot;],&quot;default&quot;:&quot;tidak ada&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Aktivasi&quot;},&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;desktop&quot;,&quot;ponsel&quot;],&quot;default&quot;:&quot;desktop&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;}}">
+const BACKUP = ['4KQ7-9MZT', 'P2XR-H8WA', 'V6NC-3JLE', 'T9BD-QF5S', 'R3WY-7KPM', 'M8HE-2ZUC', 'G5LA-X4VN', 'D7SJ-6RQB'];
+const STEPS = ['Verifikasi sekolah', 'Buat akun', 'Amankan akun'];
+const ERRORS = {
+  'kode-salah': ['Kode registrasi tidak cocok', 'Kode tidak sesuai dengan NPSN 99990101. Periksa kembali huruf dan angka pada surat undangan.'],
+  'kode-dipakai': ['Kode registrasi sudah dipakai', 'Kode ini sudah dipakai untuk mengaktifkan akun pada 28 Sep 2026. Bila bukan Anda, segera hubungi Setpres.'],
+  'npsn-terdaftar': ['NPSN sudah punya akun', 'SD Negeri Sukamaju 01 sudah memiliki akun aktif. Masuk dengan email panitia atau minta Setpres mengatur ulang akun.']
+};
+const ORDER = ['cek', 'cocok', 'akun', 'email', 'totp', 'cadangan', 'sukses'];
+
+class Component extends DCLogic {
+  state = { step: null, npsn: '99990101', kode: 'RV7K2M9Q4T', tried: false, bukan: false, email: 'panitia.sukamaju01@contoh.id', hp: '081234567890', pw: '', pw2: '', secs: 60, otpErr: undefined, saved: false, flash: '' };
+  componentDidMount() { this.iv = setInterval(() => { if (this.cur() === 'email' && this.state.secs > 0) this.setState((s) => ({ secs: s.secs - 1 })); }, 1000); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.ft); }
+  componentDidUpdate(p) { if (p.layar !== this.props.layar && this.state.step) this.setState({ step: null }); }
+  cur() { return this.state.step || this.props.layar || 'cek'; }
+  flash(k) { clearTimeout(this.ft); this.setState({ flash: k }); this.ft = setTimeout(() => this.setState({ flash: '' }), 1600); }
+  renderVals() {
+    const s = this.state, step = this.cur();
+    const mobile = (this.props.device ?? 'desktop') === 'ponsel';
+    const errKey = this.props.error ?? 'tidak ada';
+    const go = (k, extra) => () => this.setState({ step: k, ...(extra || {}) });
+    const idx = step === 'cek' || step === 'cocok' ? 0 : step === 'akun' || step === 'email' ? 1 : 2;
+    const npsnOk = /^\d{8}$/.test(s.npsn), kodeOk = /^[A-Z0-9]{10}$/.test(s.kode);
+    const e = s.tried && ERRORS[errKey];
+    const pw = s.pw;
+    const rules = [['Minimal 10 karakter', pw.length >= 10], ['Huruf besar dan huruf kecil', /[a-z]/.test(pw) && /[A-Z]/.test(pw)], ['Minimal 1 angka', /\d/.test(pw)], ['Minimal 1 simbol, mis. # atau !', /[^A-Za-z0-9]/.test(pw)]];
+    const pwOk = rules.every((r) => r[1]);
+    const emailTaken = ['admin@revit.setneg.go.id', 'sdn.margahayu03@contoh.sch.id'].includes(s.email.toLowerCase()), emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.email) && !emailTaken, hpOk = /^08\d{8,11}$/.test(s.hp);
+    const matchOk = s.pw2 && s.pw2 === pw;
+    const akunReason = !emailOk ? (emailTaken ? 'Email sudah dipakai akun lain.' : 'Email belum valid.') : !hpOk ? 'Nomor HP belum valid.' : !pwOk ? 'Kata sandi belum memenuhi semua aturan.' : !matchOk ? 'Ulangi kata sandi yang sama.' : undefined;
+    return {
+      theme: this.props.theme ?? 'light',
+      shell: mobile
+        ? { mobile: true, portal: '', outer: 'padding:32px 0;display:flex;justify-content:center;background-color:var(--surface-muted);', frame: 'width:360px;height:780px;overflow-y:auto;border:8px solid var(--text-primary);border-radius:28px;background-color:var(--background);', main: 'padding:16px;' }
+        : { mobile: false, portal: 'Portal Sekolah', outer: '', frame: 'min-height:100vh;', main: 'padding:40px 32px;' },
+      cardW: '480px', showStepper: step !== 'sukses',
+      steps: STEPS.map((label, i) => ({ label, state: i < idx ? 'done' : i === idx ? 'active' : 'todo' })),
+      st: Object.fromEntries(ORDER.map((k) => [k, k === step])),
+      go: { cek: go('cek', { tried: false, bukan: false }), akun: go('akun'), bukan: () => this.setState({ bukan: true }), email: go('email', { secs: 60 }), totp: go('totp', { otpErr: undefined }), sukses: go('sukses') },
+      npsn: s.npsn, onNpsn: (ev) => this.setState({ npsn: ev.target.value.replace(/\D/g, '').slice(0, 8), tried: false }),
+      kode: s.kode, onKode: (ev) => this.setState({ kode: ev.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10), tried: false }),
+      npsnErr: s.npsn && !npsnOk ? 'NPSN harus 8 angka.' : undefined,
+      kodeErr: s.kode && !kodeOk ? 'Kode registrasi harus 10 karakter huruf dan angka.' : undefined,
+      cekDisabled: !npsnOk || !kodeOk, cekReason: !npsnOk || !kodeOk ? 'Isi NPSN dan kode registrasi dengan benar.' : undefined,
+      err: e ? { show: true, title: e[0], body: e[1] } : { show: false, title: '', body: '' },
+      periksa: () => { if (ERRORS[errKey]) this.setState({ tried: true }); else this.setState({ step: 'cocok', tried: false, bukan: false }); },
+      bukan: s.bukan,
+      sekolah: [['Nama', 'SD Negeri Sukamaju 01'], ['NPSN', '99990101'], ['Jenjang', 'SD · Negeri'], ['Alamat', 'Jl. Raya Sukamaju No. 12'], ['Kab/Kota', 'Kab. Bogor, Jawa Barat']].map(([k, v]) => ({ k, v })),
+      email: s.email, onEmail: (ev) => this.setState({ email: ev.target.value.trim() }), emailErr: !s.email ? undefined : emailTaken ? 'Email ini sudah dipakai akun lain. Pakai email lain.' : !emailOk ? 'Format email belum benar, mis. nama@sekolah.sch.id.' : undefined,
+      hp: s.hp, onHp: (ev) => this.setState({ hp: ev.target.value.replace(/\D/g, '').slice(0, 13) }), hpErr: s.hp && !hpOk ? 'Nomor HP diawali 08 dan berisi 10–13 angka.' : undefined,
+      pw: s.pw, onPw: (ev) => this.setState({ pw: ev.target.value }), pw2: s.pw2, onPw2: (ev) => this.setState({ pw2: ev.target.value }),
+      pw2Err: s.pw2 && !matchOk ? 'Kata sandi tidak sama.' : undefined,
+      rules: rules.map(([label, ok]) => ({ label, mark: ok ? '✓' : '', sty: ok ? 'color:var(--success-text);' : 'color:var(--text-secondary);', dot: ok ? 'background-color:var(--success-subtle);color:var(--success-text);' : 'border:1.5px solid var(--border-strong);' })),
+      akunDisabled: !!akunReason, akunReason,
+      resendDisabled: s.secs > 0, resendLabel: s.secs > 0 ? 'Kirim ulang dalam ' + s.secs + ' detik' : 'Kirim ulang email',
+      resend: () => { this.setState({ secs: 60 }); this.flash('resend'); },
+      copyKeyLabel: s.flash === 'key' ? 'Tersalin' : 'Salin', copyKey: () => { navigator.clipboard && navigator.clipboard.writeText('JBSWY3DPEHPK3PXP').catch(() => {}); this.flash('key'); },
+      otpErr: s.otpErr,
+      onOtp: (code) => { if (code === '000000') this.setState({ otpErr: 'Kode tidak sesuai. Pastikan jam di ponsel Anda tepat, lalu coba kode terbaru.' }); else this.setState({ step: 'cadangan', otpErr: undefined }); },
+      backup: BACKUP,
+      downloadLabel: s.flash === 'dl' ? 'Terunduh' : 'Unduh', copyAllLabel: s.flash === 'all' ? 'Tersalin' : 'Salin',
+      download: () => {
+        const b = new Blob(['Kode cadangan Revit · SD Negeri Sukamaju 01\n\n' + BACKUP.join('\n') + '\n\nSetiap kode hanya bisa dipakai sekali.\n'], { type: 'text/plain' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'kode-cadangan-revit.txt'; a.click(); URL.revokeObjectURL(a.href); this.flash('dl');
+      },
+      copyAll: () => { navigator.clipboard && navigator.clipboard.writeText(BACKUP.join('\n')).catch(() => {}); this.flash('all'); },
+      saved: s.saved, onSaved: (ev) => this.setState({ saved: ev.target.checked }), notSaved: !s.saved, savedReason: s.saved ? undefined : 'Centang dulu bahwa kode cadangan sudah disimpan.'
+    };
+  }
+}
+</script>
+</body>
+</html>
