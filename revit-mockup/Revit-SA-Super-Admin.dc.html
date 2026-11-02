@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#F5F7FB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B5FEF"/><text x="50" y="64" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Super Admin</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5}button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}img,svg,video,canvas{display:block;max-width:100%}table{border-collapse:collapse;text-indent:0}ol,ul{list-style:none}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}[hidden]{display:none}</style>
+<script src="lc-icon.js"></script>
+<style>body{margin:0;background:var(--background);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}textarea,input{font:inherit;color:inherit}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans);display:flex;flex-direction:column" data-theme="{{ theme }}">
+  <dc-import name="RevitHeader" style="display:block;width:100%;min-width:0;flex:none" role="SA" compact="{{ false }}" hint-size="100%,64px"></dc-import>
+  <div style="flex:1 1 0%;display:flex">
+    <aside style="width:248px;flex:none;background-color:var(--surface);border-color:var(--border);border-right-width:1px">
+      <nav style="padding:12px;gap:2px;display:flex;flex-direction:column">
+        <sc-for list="{{ menu }}" as="m" hint-placeholder-count="6">
+          <button class="body" style="gap:12px;border-radius:var(--radius-md);width:100%;display:flex;align-items:center;padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;text-align:left;cursor:pointer;{{ m.cls }}" style-hover="background-color:var(--hv-bg, transparent)" onClick="{{ m.go }}"><lc-icon name="{{ m.icon }}" size="20"></lc-icon><span style="flex:1 1 0%">{{ m.label }}</span><sc-if value="{{ m.hasCount }}" hint-placeholder-val="{{ false }}"><span class="caption tabular" style="border-radius:var(--radius-full);font-weight:600;padding-left:8px;padding-right:8px;background-color:var(--warning-subtle);color:var(--warning-text)">{{ m.count }}</span></sc-if></button>
+        </sc-for>
+      </nav>
+      
+    </aside>
+    <main style="padding:32px;gap:24px;flex:1 1 0%;min-width:0;display:flex;flex-direction:column">
+
+      <!-- L55 -->
+      <sc-if value="{{ scr.users }}" hint-placeholder-val="{{ true }}">
+        <section style="gap:24px;display:flex;flex-direction:column" data-screen-label="L55 Daftar pengguna">
+          <div style="gap:16px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap">
+            <div><div class="caption" style="color:var(--text-secondary)">Pengguna</div><h1 class="h1" style="margin-top:4px">Pengguna</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">20.418 akun aktif di 8 peran</p></div>
+            <div style="gap:8px;display:flex">
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" hint-size="120px,40px">Ekspor CSV</x-import>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ inv.open }}" hint-size="160px,40px">Undang pengguna</x-import>
+            </div>
+          </div>
+          <div style="gap:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));{{ cq.c0 }}">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Akun aktif" value="20.418" note="Login dalam 90 hari terakhir" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Undangan tertunda" value="{{ invCount }}" note="Belum mengaktifkan akun" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Antrian pendaftaran" value="14" tone="warning" note="Pendaftar tanpa kode registrasi" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Nonaktif" value="211" note="Dinonaktifkan Super Admin" hint-size="100%,104px"></x-import>
+          </div>
+          <div style="border-width:1px;border-radius:var(--radius-md);background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);overflow:hidden">
+            <div style="padding:16px;gap:12px;display:flex;flex-wrap:wrap;align-items:center;border-color:var(--border);border-bottom-width:1px">
+              <div style="gap:8px;border-width:1px;border-radius:var(--radius-md);height:40px;flex:1 1 0%;min-width:220px;padding-left:12px;padding-right:12px;display:flex;align-items:center;border-color:var(--border-strong)"><span style="color:var(--text-secondary)"><lc-icon name="search" size="16"></lc-icon></span><input class="body" style="flex:1 1 0%;min-width:0;outline:none;background-color:transparent" value="{{ u.search }}" onChange="{{ u.onSearch }}" placeholder="Cari nama atau email"></div>
+              <div style="gap:8px;display:flex;flex-wrap:wrap"><sc-for list="{{ u.chips }}" as="c" hint-placeholder-count="9"><button class="caption" style="border-radius:var(--radius-full);border-width:1px;height:32px;padding-left:12px;padding-right:12px;cursor:pointer;white-space:nowrap;{{ c.cls }}" style-hover="background-color:var(--hv-bg, transparent)" onClick="{{ c.pick }}">{{ c.label }} <span class="tabular" style="font-weight:400">{{ c.n }}</span></button></sc-for></div>
+            </div>
+            <table class="body" style="width:100%">
+              <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Nama</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Peran</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Instansi</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Status</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Login terakhir</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"></th></tr></thead>
+              <tbody>
+                <sc-for list="{{ u.rows }}" as="r" hint-placeholder-count="8">
+                  <tr style="border-color:var(--border);border-top-width:1px" style-hover="background-color:var(--surface-muted)">
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><div style="font-weight:600">{{ r.nama }}</div><div class="caption" style="color:var(--text-secondary);font-weight:400">{{ r.email }}</div></td>
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><div style="gap:4px;display:flex"><sc-for list="{{ r.roles }}" as="rc" hint-placeholder-count="1"><span class="caption" style="border-radius:var(--radius-full);border-width:1px;padding-left:8px;padding-right:8px;padding-top:2px;padding-bottom:2px;background-color:var(--surface-muted);border-color:var(--border)">{{ rc }}</span></sc-for></div></td>
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px">{{ r.inst }}</td>
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ r.tone }}" hint-size="90px,24px">{{ r.status }}</x-import></td>
+                    <td class="tabular" style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;color:var(--text-secondary)">{{ r.login }}</td>
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;text-align:right"><a class="body" style="font-weight:600" href="#">Ubah</a></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <sc-if value="{{ u.empty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:40px;gap:12px;text-align:center;display:flex;flex-direction:column;align-items:center"><div class="body" style="color:var(--text-secondary)">Tidak ada pengguna yang cocok dengan filter ini.</div><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ u.reset }}" hint-size="120px,40px">Reset filter</x-import></div>
+            </sc-if>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- L57 -->
+      <sc-if value="{{ scr.kode }}" hint-placeholder-val="{{ false }}">
+        <section style="gap:24px;display:flex;flex-direction:column" data-screen-label="L57 Kode registrasi">
+          <div style="gap:16px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap">
+            <div><div class="caption" style="color:var(--text-secondary)">Kode registrasi</div><h1 class="h1" style="margin-top:4px">Kode registrasi</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Kode 10 karakter untuk aktivasi akun sekolah · berlaku 90 hari</p></div>
+            <div style="gap:8px;display:flex">
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" hint-size="120px,40px">Impor NPSN</x-import>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" hint-size="120px,40px">Ekspor CSV</x-import>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ k.generate }}" hint-size="170px,40px">Generate massal</x-import>
+            </div>
+          </div>
+          <div style="gap:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));{{ cq.c1 }}">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Kode diterbitkan" value="{{ k.total }}" note="Sejak 1 Jan 2026" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Sudah dipakai" value="19.982" tone="success" note="Akun sekolah aktif" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Belum dipakai" value="{{ k.unused }}" note="Menunggu aktivasi" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Kedaluwarsa" value="312" tone="warning" note="Perlu diterbitkan ulang" hint-size="100%,104px"></x-import>
+          </div>
+          <div style="border-width:1px;border-radius:var(--radius-md);background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);overflow:hidden">
+            <table class="body" style="width:100%">
+              <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">NPSN</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Sekolah</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Kode</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Diterbitkan</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Status</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"></th></tr></thead>
+              <tbody>
+                <sc-for list="{{ k.rows }}" as="r" hint-placeholder-count="7">
+                  <tr style="border-color:var(--border);border-top-width:1px" style-hover="background-color:var(--surface-muted)">
+                    <td class="tabular" style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;color:var(--text-secondary)">{{ r.npsn }}</td><td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">{{ r.nama }}</td>
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><code class="caption" style="border-radius:4px;border-width:1px;padding-left:8px;padding-right:8px;padding-top:2px;padding-bottom:2px;background-color:var(--surface-muted);border-color:var(--border);letter-spacing:0.05em">{{ r.kode }}</code></td>
+                    <td class="tabular" style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px">{{ r.tgl }}</td>
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ r.tone }}" hint-size="110px,24px">{{ r.status }}</x-import></td>
+                    <td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;text-align:right"><sc-if value="{{ r.canReissue }}" hint-placeholder-val="{{ false }}"><button class="body" style="font-weight:600;color:var(--primary);cursor:pointer" onClick="{{ r.reissue }}">Terbitkan ulang</button></sc-if></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- L59 -->
+      <sc-if value="{{ scr.akses }}" hint-placeholder-val="{{ false }}">
+        <section style="gap:24px;display:flex;flex-direction:column" data-screen-label="L59 Hak akses per peran">
+          <div style="gap:16px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap">
+            <div><div class="caption" style="color:var(--text-secondary)">Hak akses</div><h1 class="h1" style="margin-top:4px">Hak akses per peran</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Perubahan berlaku setelah dikonfirmasi dan tercatat di log audit.</p></div>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" disabled="{{ ak.noChange }}" disabled-reason="{{ ak.reason }}" on-click="{{ ak.save }}" hint-size="180px,40px">{{ ak.saveLabel }}</x-import>
+          </div>
+          <div style="border-width:1px;border-radius:var(--radius-md);background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);overflow-x:auto">
+            <table class="body" style="width:100%">
+              <thead class="caption" style="background-color:var(--surface-muted);color:var(--text-secondary)"><tr><th style="padding-left:16px;padding-right:16px;padding-top:10px;padding-bottom:10px;font-weight:600;text-align:left">Kapabilitas</th><sc-for list="{{ ak.roles }}" as="rl" hint-placeholder-count="8"><th style="padding-left:8px;padding-right:8px;padding-top:10px;padding-bottom:10px;font-weight:600;text-align:center;width:72px">{{ rl }}</th></sc-for></tr></thead>
+              <tbody>
+                <sc-for list="{{ ak.rows }}" as="r" hint-placeholder-count="9">
+                  <tr style="border-color:var(--border);border-top-width:1px">
+                    <td style="padding-left:16px;padding-right:16px;padding-top:10px;padding-bottom:10px"><div style="font-weight:500">{{ r.label }}</div><div class="caption" style="color:var(--text-secondary)">{{ r.desc }}</div></td>
+                    <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="8">
+                      <td style="padding-left:8px;padding-right:8px;padding-top:10px;padding-bottom:10px;text-align:center"><button style="border-radius:var(--radius-full);position:relative;display:inline-block;width:36px;height:20px;cursor:pointer;vertical-align:middle;{{ c.track }}" style-hover="background-color:var(--hv-bg, transparent)" onClick="{{ c.toggle }}" title="{{ c.title }}"><span style="width:16px;height:16px;border-radius:var(--radius-full);position:absolute;top:2px;background-color:#ffffff;box-shadow:var(--shadow-card);{{ c.knob }}"></span></button></td>
+                    </sc-for>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <div class="caption" style="color:var(--text-secondary)">Bingkai kuning = belum disimpan.</div>
+        </section>
+      </sc-if>
+
+      <!-- L58 Antrian pendaftaran -->
+      <sc-if value="{{ scr.daftar }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L58 Antrian pendaftaran" style="display:flex;flex-direction:column;gap:24px">
+          <div><div class="caption" style="color:var(--text-secondary)">Antrian pendaftaran</div><h1 class="h1" style="margin-top:4px">Antrian pendaftaran</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Sekolah yang mendaftar tanpa kode registrasi · cocokkan dengan data migrasi Kemendikdasmen</p></div>
+          <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+            <div style="flex:1 1 360px;min-width:0;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card);overflow:hidden">
+              <sc-for list="{{ reg.rows }}" as="r" hint-placeholder-count="6">
+                <button onClick="{{ r.pick }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--border);text-align:left;cursor:pointer;{{ r.sty }}" style-first-child="border-top-width:0" style-hover="background-color:var(--hv-bg, transparent)">
+                  <span style="min-width:0;display:flex;flex-direction:column"><span class="body" style="font-weight:600">{{ r.nama }}</span><span class="caption tabular" style="color:var(--text-secondary)">NPSN {{ r.npsn }} · {{ r.kab }} · {{ r.tgl }}</span></span>
+                  <x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ r.tone }}" hint-size="100px,24px">{{ r.st }}</x-import>
+                </button>
+              </sc-for>
+            </div>
+            <div style="flex:2 1 520px;min-width:0;display:flex;flex-direction:column;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><h2 class="h2">{{ reg.cur.nama }}</h2><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ reg.matchTone }}" hint-size="150px,24px">{{ reg.matchLabel }}</x-import></div>
+              <div style="overflow-x:auto">
+                <table class="body" style="width:100%;min-width:520px">
+                  <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding:10px 12px;font-weight:600">Data</th><th style="padding:10px 12px;font-weight:600">Isian pendaftar</th><th style="padding:10px 12px;font-weight:600">Data migrasi</th><th style="padding:10px 12px;width:40px"></th></tr></thead>
+                  <tbody>
+                    <sc-for list="{{ reg.cmp }}" as="c" hint-placeholder-count="6">
+                      <tr style="border-top:1px solid var(--border);{{ c.rowSty }}"><td style="padding:10px 12px;color:var(--text-secondary)">{{ c.k }}</td><td style="padding:10px 12px;font-weight:600">{{ c.a }}</td><td style="padding:10px 12px">{{ c.b }}</td><td style="padding:10px 12px;text-align:center;{{ c.markSty }}">{{ c.mark }}</td></tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:var(--radius-md)"><span style="width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:var(--radius-md);background-color:var(--surface-muted);color:var(--text-secondary)"><lc-icon name="file-text" size="20"></lc-icon></span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><span class="body" style="font-weight:600">Surat keterangan kepala sekolah</span><span class="caption" style="color:var(--text-secondary)">PDF · 640 KB</span></span><a href="#" class="body" style="font-weight:600">Lihat</a></div>
+              <sc-if value="{{ reg.pending }}" hint-placeholder-val="{{ true }}">
+                <div role="radiogroup" style="display:flex;padding:4px;gap:4px;border:1px solid var(--border);border-radius:var(--radius-md);background-color:var(--surface-muted);align-self:flex-start">
+                  <sc-for list="{{ reg.modes }}" as="m" hint-placeholder-count="2"><button role="radio" aria-checked="{{ m.on }}" onClick="{{ m.pick }}" class="body" style="height:36px;padding:0 20px;border-radius:var(--radius-md);font-weight:600;cursor:pointer;{{ m.sty }}">{{ m.label }}</button></sc-for>
+                </div>
+                <sc-if value="{{ reg.isTolak }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    <span class="body" style="font-weight:600">Alasan penolakan</span>
+                    <dc-import name="RevitEditorTeks" value="{{ reg.alasan }}" on-change="{{ reg.onAlasan }}" rows="3" label="Alasan penolakan" placeholder="Mis. NPSN terdaftar atas nama sekolah lain. Hubungi dinas pendidikan untuk pembaruan data." hint-size="100%,140px"></dc-import>
+                    <span class="caption" style="{{ reg.alMsgSty }}">{{ reg.alMsg }}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ reg.isSetuju }}" hint-placeholder-val="{{ true }}">
+                  <div class="body" style="padding:12px 16px;border-radius:var(--radius-md);background-color:var(--primary-subtle)">Kode registrasi dibuat otomatis dan dikirim ke {{ reg.cur.email }}. Berlaku 14 hari.</div>
+                </sc-if>
+                <div style="display:flex;justify-content:flex-end"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="{{ reg.btnVariant }}" disabled="{{ reg.disabled }}" disabled-reason="{{ reg.reason }}" on-click="{{ reg.submit }}" hint-size="200px,40px">{{ reg.btnLabel }}</x-import></div>
+              </sc-if>
+              <sc-if value="{{ reg.done }}" hint-placeholder-val="{{ false }}">
+                <div class="body" style="padding:12px 16px;border-radius:var(--radius-md);{{ reg.doneSty }}">{{ reg.doneMsg }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- L60 Parameter & reminder -->
+      <sc-if value="{{ scr.param }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L60 Parameter dan reminder" style="display:flex;flex-direction:column;gap:24px;max-width:960px">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+            <div><div class="caption" style="color:var(--text-secondary)">Parameter sistem</div><h1 class="h1" style="margin-top:4px">Parameter dan pengingat</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Perubahan berlaku untuk proposal yang masuk setelah disimpan dan tercatat di log audit.</p></div>
+            <sc-if value="{{ par.dirty }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="warning" hint-size="150px,24px">{{ par.dirtyLabel }}</x-import></sc-if>
+          </div>
+          <sc-for list="{{ par.groups }}" as="g" hint-placeholder-count="4">
+            <div style="display:flex;flex-direction:column;padding:8px 24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <div style="padding:12px 0 8px"><h2 class="h3">{{ g.title }}</h2><p class="caption" style="color:var(--text-secondary);margin-top:2px">{{ g.desc }}</p></div>
+              <sc-for list="{{ g.items }}" as="p" hint-placeholder-count="4">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--border)">
+                  <div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column"><span class="body" style="font-weight:600">{{ p.label }}</span><span class="caption" style="{{ p.noteSty }}">{{ p.note }}</span></div>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <input aria-label="{{ p.label }}" inputMode="numeric" value="{{ p.v }}" onChange="{{ p.onChange }}" class="body tabular" style="width:{{ p.w }};height:40px;padding:0 10px;text-align:right;border:1px solid var(--border-strong);border-radius:var(--radius-md);background-color:var(--surface);{{ p.inSty }}" style-focus="outline:2px solid var(--primary);outline-offset:1px">
+                    <span class="body" style="min-width:72px;color:var(--text-secondary)">{{ p.unit }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;position:sticky;bottom:0;padding:16px 0;background-color:var(--background)">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="ghost" disabled="{{ par.clean }}" on-click="{{ par.reset }}" hint-size="140px,40px">Batalkan perubahan</x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" disabled="{{ par.saveDisabled }}" disabled-reason="{{ par.reason }}" on-click="{{ par.ask }}" hint-size="170px,40px">Simpan perubahan</x-import>
+          </div>
+          <sc-if value="{{ par.confirm }}" hint-placeholder-val="{{ false }}">
+            <div style="position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background-color:rgba(26,43,76,0.4)">
+              <div role="dialog" aria-label="Konfirmasi perubahan parameter" style="width:100%;max-width:520px;display:flex;flex-direction:column;gap:16px;padding:24px;background-color:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-overlay)">
+                <h2 class="h2">Simpan {{ par.nChanged }} perubahan?</h2>
+                <ul style="display:flex;flex-direction:column;gap:8px">
+                  <sc-for list="{{ par.changes }}" as="c" hint-placeholder-count="2"><li class="body" style="display:flex;justify-content:space-between;gap:12px;padding:8px 12px;border-radius:var(--radius-md);background-color:var(--surface-muted)"><span>{{ c.label }}</span><span class="tabular"><span style="color:var(--text-secondary);text-decoration-line:line-through">{{ c.from }}</span> → <b>{{ c.to }}</b></span></li></sc-for>
+                </ul>
+                <div style="display:flex;gap:12px;justify-content:flex-end">
+                  <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ par.cancel }}" hint-size="80px,40px">Batal</x-import>
+                  <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ par.save }}" hint-size="100px,40px">Simpan</x-import>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </section>
+      </sc-if>
+
+      <!-- L61 -->
+      <sc-if value="{{ scr.audit }}" hint-placeholder-val="{{ false }}">
+        <section style="gap:24px;display:flex;flex-direction:column" data-screen-label="L61 Log audit">
+          <div style="gap:16px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap">
+            <div><div class="caption" style="color:var(--text-secondary)">Log audit</div><h1 class="h1" style="margin-top:4px">Log audit</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Semua perubahan data dan keputusan · disimpan 5 tahun</p></div>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" hint-size="120px,40px">Ekspor CSV</x-import>
+          </div>
+          <div style="border-width:1px;border-radius:var(--radius-md);background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);overflow:hidden">
+            <div style="padding:16px;gap:8px;display:flex;flex-wrap:wrap;border-color:var(--border);border-bottom-width:1px"><sc-for list="{{ au.chips }}" as="c" hint-placeholder-count="5"><button class="caption" style="border-radius:var(--radius-full);border-width:1px;height:32px;padding-left:12px;padding-right:12px;cursor:pointer;white-space:nowrap;{{ c.cls }}" style-hover="background-color:var(--hv-bg, transparent)" onClick="{{ c.pick }}">{{ c.label }}</button></sc-for></div>
+            <table class="body" style="width:100%">
+              <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Waktu</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Pengguna</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Aksi</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Objek</th><th style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-weight:600">Sebelum → sesudah</th></tr></thead>
+              <tbody>
+                <sc-for list="{{ au.rows }}" as="r" hint-placeholder-count="8">
+                  <tr style="border-color:var(--border);vertical-align:top;border-top-width:1px"><td class="tabular" style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;color:var(--text-secondary);white-space:nowrap">{{ r.t }}</td><td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><div style="font-weight:500">{{ r.who }}</div><div class="caption" style="color:var(--text-secondary)">{{ r.role }}</div></td><td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="neutral" hint-size="100px,24px">{{ r.aksi }}</x-import></td><td style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px">{{ r.obj }}</td><td class="tabular" style="padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px"><span style="color:var(--text-secondary)">{{ r.before }}</span> → <b>{{ r.after }}</b></td></tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ scr.other }}" hint-placeholder-val="{{ false }}">
+        <section style="border-width:1px;border-radius:var(--radius-md);padding:40px;gap:12px;background-color:var(--surface);border-color:var(--border);box-shadow:var(--shadow-card);display:flex;flex-direction:column;align-items:center;text-align:center;max-width:720px"><span style="width:56px;height:56px;border-radius:var(--radius-full);background-color:var(--surface-muted);display:grid;place-items:center;color:var(--text-secondary)"><lc-icon name="{{ otherIcon }}" size="28"></lc-icon></span><div class="h3">{{ otherLabel }}</div><p class="body" style="color:var(--text-secondary)">Layar ini belum termasuk prototipe batch ini.</p></section>
+      </sc-if>
+    </main>
+  </div>
+
+  <!-- L56 -->
+  <sc-if value="{{ inv.isOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="inset:0;position:fixed;z-index:50;display:flex;justify-content:flex-end;background-color:rgba(26,43,76,0.4)">
+      <div style="width:480px;height:100%;background-color:var(--surface);box-shadow:var(--shadow-overlay);display:flex;flex-direction:column" data-screen-label="L56 Undang pengguna">
+        <div style="padding:24px;border-color:var(--border);display:flex;align-items:flex-start;justify-content:space-between;border-bottom-width:1px"><div><h2 class="h2">Undang pengguna</h2></div><button style="width:40px;height:40px;border-radius:var(--radius-md);display:grid;place-items:center;color:var(--text-secondary);cursor:pointer" style-hover="background-color:var(--surface-muted)" onClick="{{ inv.close }}"><lc-icon name="x" size="20"></lc-icon></button></div>
+        <div style="padding:24px;gap:16px;display:flex;flex-direction:column;overflow-y:auto;flex:1 1 0%">
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Nama lengkap" size="md" value="{{ inv.nama }}" on-change="{{ inv.onNama }}" hint-size="100%,72px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Email dinas" size="md" value="{{ inv.email }}" on-change="{{ inv.onEmail }}" error="{{ inv.emailErr }}" helper="Undangan dan tautan aktivasi dikirim ke email ini." hint-size="100%,72px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Instansi" size="md" value="Agrinas" hint-size="100%,72px"></x-import>
+          <div style="gap:8px;display:flex;flex-direction:column"><span class="body" style="font-weight:600">Peran</span><span class="caption" style="color:var(--text-secondary)">Boleh lebih dari satu.</span>
+            <div style="gap:8px;display:flex;flex-wrap:wrap"><sc-for list="{{ inv.roles }}" as="c" hint-placeholder-count="8"><button class="caption" style="border-radius:var(--radius-full);border-width:1px;height:32px;padding-left:12px;padding-right:12px;cursor:pointer;white-space:nowrap;{{ c.cls }}" style-hover="background-color:var(--hv-bg, transparent)" onClick="{{ c.toggle }}">{{ c.label }}</button></sc-for></div>
+          </div>
+          <sc-if value="{{ inv.isKons }}" hint-placeholder-val="{{ false }}">
+            <div style="gap:6px;display:flex;flex-direction:column"><span class="body" style="font-weight:600">Wilayah kerja</span><div class="body" style="border-width:1px;border-radius:var(--radius-md);height:40px;padding-left:12px;padding-right:12px;display:flex;align-items:center;justify-content:space-between;border-color:var(--border-strong)">Jawa Barat<lc-icon name="chevron-down" size="16"></lc-icon></div><span class="caption" style="color:var(--text-secondary)">Wajib untuk peran konsultan.</span></div>
+          </sc-if>
+        </div>
+        <div style="padding:24px;gap:8px;border-color:var(--border);display:flex;justify-content:flex-end;border-top-width:1px">
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="ghost" on-click="{{ inv.close }}" hint-size="80px,40px">Batal</x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" disabled="{{ inv.disabled }}" disabled-reason="{{ inv.reason }}" on-click="{{ inv.send }}" hint-size="150px,40px">Kirim undangan</x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ ak.confirm }}" hint-placeholder-val="{{ false }}">
+    <div style="inset:0;padding:16px;position:fixed;z-index:50;display:grid;place-items:center;background-color:rgba(26,43,76,0.4)">
+      <div style="border-radius:var(--radius-lg);padding:24px;gap:16px;width:100%;max-width:480px;background-color:var(--surface);box-shadow:var(--shadow-overlay);display:flex;flex-direction:column">
+        <h2 class="h2">Simpan perubahan hak akses?</h2>
+        <p class="body" style="color:var(--text-secondary)">{{ ak.summary }}</p>
+        <div style="gap:8px;display:flex;justify-content:flex-end">
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="ghost" on-click="{{ ak.cancel }}" hint-size="80px,40px">Batal</x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ ak.ok }}" hint-size="150px,40px">Simpan</x-import>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ toast.show }}" hint-placeholder-val="{{ false }}">
+    <div class="body" style="border-radius:var(--radius-md);gap:8px;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:50;padding-left:16px;padding-right:16px;padding-top:12px;padding-bottom:12px;background-color:var(--text-primary);color:var(--surface);box-shadow:var(--shadow-overlay);display:flex;align-items:center"><lc-icon name="circle-check" size="18"></lc-icon>{{ toast.msg }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;}}">
+const fmt = (n) => Math.round(n).toLocaleString('id-ID');
+const ROLES = ['SKL', 'ADM', 'KPR', 'PPK', 'APV', 'KPL', 'SA', 'PIM'];
+const COUNTS = { SKL: 19982, ADM: 48, KPR: 186, PPK: 12, APV: 6, KPL: 172, SA: 4, PIM: 8 };
+const USERS = [
+  ['Rina Kartikasari', 'rina.k@setpres.contoh.id', ['ADM'], 'Setpres', 'Aktif', '4 Okt 2026, 08.02'],
+  ['Agus Prasetyo, S.E.', 'agus.p@setpres.contoh.id', ['PPK', 'ADM'], 'Setpres', 'Aktif', '4 Okt 2026, 07.48'],
+  ['Dr. Hendra Wijaya', 'hendra.w@setpres.contoh.id', ['APV'], 'Setpres', 'Aktif', '3 Okt 2026, 16.20'],
+  ['Ir. Dedi Hermawan', 'dedi.h@agrinas.contoh.id', ['KPR'], 'Agrinas', 'Aktif', '4 Okt 2026, 06.55'],
+  ['Siti Nurhaliza, S.T.', 'siti.n@agrinas.contoh.id', ['KPL'], 'Agrinas', 'Aktif', '3 Okt 2026, 19.10'],
+  ['Drs. Bambang Suryadi', 'panitia.sukamaju01@contoh.id', ['SKL'], 'SD Negeri Sukamaju 01', 'Aktif', '2 Okt 2026, 10.42'],
+  ['Fajar Ramadhan', 'fajar.r@agrinas.contoh.id', ['KPR'], 'Agrinas', 'Undangan terkirim', '—'],
+  ['Lestari Wulandari', 'lestari.w@setpres.contoh.id', ['ADM'], 'Setpres', 'Nonaktif', '12 Agu 2026, 09.30']
+];
+const CODES = [['99990112', 'SD Negeri Pontianak Kota 15', 'PTK-7Q2M9X', '2 Sep 2026', 'belum'], ['99990101', 'SD Negeri Sukamaju 01', 'BGR-4K8P2L', '12 Agu 2026', 'pakai'], ['99990141', 'SD Negeri Sungai Raya 8', 'KBR-9T3W6N', '1 Jun 2026', 'exp'], ['99990142', 'SD Negeri Siantan Hulu 2', 'PTK-2H7R4C', '1 Jun 2026', 'exp'], ['99990143', 'SD Negeri Tegal Sari 4', 'MDN-6V1Y8B', '2 Sep 2026', 'belum'], ['99990144', 'SD Negeri Kampung Baru 1', 'MKS-3J5D7F', '20 Jul 2026', 'pakai'], ['99990145', 'SD Negeri Oebobo 6', 'KPG-8L2Q5Z', '20 Jul 2026', 'belum']];
+const CST = { belum: ['Belum dipakai', 'primary'], pakai: ['Dipakai', 'success'], exp: ['Kedaluwarsa', 'warning'] };
+const CAPS = [
+  ['Ajukan proposal', 'Membuat dan mengajukan proposal sekolah', ['SKL']],
+  ['Verifikasi administrasi', 'Checklist dan keputusan S02', ['ADM']],
+  ['Tugaskan konsultan', 'Memilih konsultan perencanaan', ['ADM', 'SA']],
+  ['Nilai RAB', 'Menetapkan nilai final', ['KPR']],
+  ['Siapkan PKS', 'Form PKS, kuitansi, kelola pagu', ['PPK']],
+  ['Setujui dana', 'Keputusan akhir S07', ['APV']],
+  ['Review laporan mingguan', 'Pengawasan pelaksanaan', ['KPL']],
+  ['Lihat NIK lengkap', 'Tombol Tampilkan pada data pribadi', ['ADM', 'PPK']],
+  ['Lihat dashboard nasional', 'Hanya baca', ['APV', 'SA', 'PIM']]
+];
+const AUDIT = [
+  ['4 Okt 2026, 08.14', 'Agus Prasetyo, S.E.', 'PPK', 'Ubah', 'keuangan', 'PKS-0422/SETPRES/X/2026 · tanggal PKS', '—', '5 Okt 2026'],
+  ['4 Okt 2026, 08.02', 'Rina Kartikasari', 'ADM', 'Keputusan', 'proposal', 'SD Negeri Margahayu 03 · status', 'S02', 'S03'],
+  ['3 Okt 2026, 16.22', 'Dr. Hendra Wijaya', 'APV', 'Tolak', 'proposal', 'SD Negeri Rungkut 2 · PKS', 'S07', 'S06'],
+  ['3 Okt 2026, 11.05', 'Yudi Firmansyah', 'SA', 'Ubah', 'akses', 'Parameter SLA verifikasi', '3 hari', '3 hari kerja'],
+  ['2 Okt 2026, 15.40', 'Ir. Dedi Hermawan', 'KPR', 'Nilai', 'proposal', 'SD Negeri Cibinong 02 · nilai final', 'Rp 658.277.000', 'Rp 632.117.000'],
+  ['2 Jul 2026, 09.12', 'Agus Prasetyo, S.E.', 'PPK', 'Ubah', 'keuangan', 'Pagu TA 2026', 'Rp 12,5 T', 'Rp 13,2 T'],
+  ['1 Jun 2026, 10.00', 'Yudi Firmansyah', 'SA', 'Buat', 'akses', 'Kode registrasi · 1.200 kode', '—', 'Diterbitkan']
+];
+const MENU = [['users', 'Pengguna', 'users'], ['kode', 'Kode registrasi', 'key-round'], ['daftar', 'Antrian pendaftaran', 'user-plus', 14], ['akses', 'Hak akses', 'shield-check'], ['param', 'Parameter sistem', 'settings'], ['audit', 'Log audit', 'scroll-text']];
+
+const __CQ = {"c0":[["v",1280,"grid-template-columns:repeat(4,minmax(0,1fr))"]],"c1":[["v",1280,"grid-template-columns:repeat(4,minmax(0,1fr))"]]};
+const REG = [
+  ['sr8', 'SD Negeri Sungai Raya 8', '99990301', 'Kab. Kubu Raya', '3 Okt 2026', 'kepsek.sdnsr8@contoh.sch.id', [['Nama sekolah', 'SD Negeri Sungai Raya 8', 'SD Negeri Sungai Raya 8'], ['NPSN', '99990301', '99990301'], ['Alamat', 'Jl. Adisucipto Km 12', 'Jl. Adisucipto Km. 12'], ['Kab/kota', 'Kab. Kubu Raya', 'Kab. Kubu Raya'], ['Kepala sekolah', 'Rusdiansyah, S.Pd.', 'Rusdiansyah, S.Pd.'], ['Email', 'kepsek.sdnsr8@contoh.sch.id', '—']]],
+  ['mtw', 'SD Negeri Mattoangin 2', '99990302', 'Kota Makassar', '3 Okt 2026', 'sdn.mattoangin2@contoh.sch.id', [['Nama sekolah', 'SD Negeri Mattoangin 2', 'SD Negeri Mattoanging 2'], ['NPSN', '99990302', '99990302'], ['Alamat', 'Jl. Kumala No. 4', 'Jl. Kumala No. 4'], ['Kab/kota', 'Kota Makassar', 'Kota Makassar'], ['Kepala sekolah', 'Hj. Nurhayati', 'Dra. Hj. Nurhayati'], ['Email', 'sdn.mattoangin2@contoh.sch.id', '—']]],
+  ['ksb', 'SD Swasta Kasih Bunda', '99990303', 'Kota Medan', '2 Okt 2026', 'admin@kasihbunda.contoh.sch.id', [['Nama sekolah', 'SD Swasta Kasih Bunda', 'SD Negeri 064 Medan Tuntungan'], ['NPSN', '99990303', '99990303'], ['Alamat', 'Jl. Bunga Rampai 7', 'Jl. Bunga Cempaka 21'], ['Kab/kota', 'Kota Medan', 'Kota Medan'], ['Kepala sekolah', 'Maria Simanjuntak', 'Drs. Tigor Siregar'], ['Email', 'admin@kasihbunda.contoh.sch.id', '—']]],
+  ['tlk', 'SD Negeri Teluk Dalam 3', '99990304', 'Kab. Nias Selatan', '1 Okt 2026', 'sdntelukdalam3@contoh.sch.id', [['Nama sekolah', 'SD Negeri Teluk Dalam 3', 'SD Negeri Teluk Dalam 3'], ['NPSN', '99990304', '99990304'], ['Alamat', 'Desa Hilisatoro', 'Desa Hilisataro'], ['Kab/kota', 'Kab. Nias Selatan', 'Kab. Nias Selatan'], ['Kepala sekolah', 'Faatulo Laia', 'Faatulo Laia, S.Pd.'], ['Email', 'sdntelukdalam3@contoh.sch.id', '—']]],
+  ['wmn', 'SD Inpres Wamena 5', '99990305', 'Kab. Jayawijaya', '30 Sep 2026', 'sdinpreswamena5@contoh.sch.id', [['Nama sekolah', 'SD Inpres Wamena 5', 'SD Inpres Wamena 5'], ['NPSN', '99990305', '99990305'], ['Alamat', 'Jl. Trikora', 'Jl. Trikora'], ['Kab/kota', 'Kab. Jayawijaya', 'Kab. Jayawijaya'], ['Kepala sekolah', 'Yance Wenda', 'Yance Wenda, S.Pd.'], ['Email', 'sdinpreswamena5@contoh.sch.id', '—']]]
+];
+const PARAM = [
+  ['SLA per tahap', 'Batas waktu kerja sebelum proposal ditandai lewat SLA.', [['sla_adm', 'Verifikasi administrasi', 3, 'hari kerja', 1, 10], ['sla_kpr', 'Survei dan penilaian RAB', 10, 'hari kerja', 3, 30], ['sla_apv', 'Persetujuan Kabag', 2, 'hari kerja', 1, 10], ['sla_ppk', 'Persiapan PKS', 5, 'hari kerja', 1, 15]]],
+  ['Pengingat', 'Notifikasi otomatis ke pengguna terkait sebelum tenggat.', [['h_sla', 'Pengingat SLA ke petugas', 1, 'hari sebelum', 0, 5], ['h_lapor', 'Pengingat laporan mingguan ke sekolah', 2, 'hari sebelum', 0, 6], ['h_proyek', 'Pengingat tenggat proyek', 30, 'hari sebelum', 7, 90], ['h_add', 'Batas pengajuan perpanjangan', 14, 'hari sebelum', 7, 30]]],
+  ['Anggaran', 'Batas nilai RAB yang boleh diajukan sekolah.', [['plafon', 'Plafon RAB per sekolah', 750000000, 'rupiah', 100000000, 2000000000]]],
+  ['Pengawasan', 'Ambang warna deviasi dan sanksi.', [['dev_kuning', 'Deviasi kuning mulai', 5, '% di bawah rencana', 1, 20], ['dev_merah', 'Deviasi merah mulai', 10, '% di bawah rencana', 2, 40], ['n_sp', 'Surat peringatan setelah tidak lapor', 2, 'minggu', 1, 6]]]
+];
+const PDEF = Object.fromEntries(PARAM.flatMap((g) => g[2].map((p) => [p[0], String(p[2])])));
+class Component extends DCLogic {
+  state = { regOpen: 'sr8', regDecided: {}, regMode: 'setuju', regAlasan: '', pv: { ...PDEF }, pSaved: { ...PDEF }, pConfirm: false, screen: 'users', role: 'Semua', search: '', inv: false, invNama: 'Fitri Handayani, S.T.', invEmail: 'fitri.h@agrinas', invRoles: { KPR: true }, invited: 0, extraCodes: 0, reissued: {}, perm: Object.fromEntries(CAPS.map((c, i) => [i, Object.fromEntries(ROLES.map((r) => [r, c[2].includes(r)]))])), draft: {}, confirm: false, auditF: 'Semua', toast: null };
+  componentWillUnmount() { clearTimeout(this._t); }
+  toast(msg) { clearTimeout(this._t); this.setState({ toast: msg }); this._t = setTimeout(() => this.setState({ toast: null }), 2800); }
+  __rv() {
+    const s = this.state;
+    const go = (id) => () => this.setState({ screen: id });
+    const on = 'background-color:var(--primary-subtle);color:var(--primary);border-color:var(--primary);font-weight:600;--hv-bg:var(--primary-subtle);', off = 'background-color:var(--surface);color:var(--text-primary);border-color:var(--border-strong);--hv-bg:var(--surface-muted);';
+    const total = Object.values(COUNTS).reduce((a, b) => a + b, 0);
+    const term = s.search.trim().toLowerCase();
+    const rows = USERS.filter((x) => (s.role === 'Semua' || x[2].includes(s.role)) && (!term || x[0].toLowerCase().includes(term) || x[1].includes(term)));
+    const u = {
+      search: s.search, onSearch: (e) => this.setState({ search: e.target.value }),
+      chips: [['Semua', total], ...Object.entries(COUNTS)].map(([label, n]) => ({ label, n: fmt(n), cls: s.role === label ? on : off, pick: () => this.setState({ role: label }) })),
+      rows: rows.map(([nama, email, roles, inst, status, login]) => ({ nama, email, roles, inst, status, login, tone: status === 'Aktif' ? 'success' : status === 'Nonaktif' ? 'neutral' : 'primary' })),
+      empty: rows.length === 0, reset: () => this.setState({ role: 'Semua', search: '' })
+    };
+    const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(s.invEmail);
+    const anyRole = Object.values(s.invRoles).some(Boolean);
+    const inv = {
+      isOpen: s.inv, open: () => this.setState({ inv: true }), close: () => this.setState({ inv: false }),
+      nama: s.invNama, onNama: (e) => this.setState({ invNama: e.target.value }),
+      email: s.invEmail, onEmail: (e) => this.setState({ invEmail: e.target.value }),
+      emailErr: emailOk ? undefined : 'Email harus lengkap, mis. nama@agrinas.co.id.',
+      roles: ROLES.map((r) => ({ label: r, cls: s.invRoles[r] ? on : off, toggle: () => this.setState((st) => ({ invRoles: { ...st.invRoles, [r]: !st.invRoles[r] } })) })),
+      isKons: !!(s.invRoles.KPR || s.invRoles.KPL),
+      disabled: !emailOk || !anyRole || !s.invNama.trim(), reason: !emailOk ? 'Periksa format email.' : !anyRole ? 'Pilih minimal 1 peran.' : undefined,
+      send: () => { this.setState((st) => ({ inv: false, invited: st.invited + 1 })); this.toast('Undangan dikirim ke ' + s.invEmail + '.'); }
+    };
+    const k = {
+      total: fmt(21494 + s.extraCodes), unused: fmt(1200 + s.extraCodes),
+      generate: () => { this.setState((st) => ({ extraCodes: st.extraCodes + 500 })); this.toast('500 kode baru diterbitkan untuk NPSN yang diimpor.'); },
+      rows: CODES.map(([npsn, nama, kode, tgl, st]) => { const re = s.reissued[npsn]; const stt = re ? 'belum' : st; return { npsn, nama, kode: re ? kode.slice(0, 4) + 'R' + kode.slice(5) : kode, tgl: re ? '4 Okt 2026' : tgl, status: CST[stt][0], tone: CST[stt][1], canReissue: stt === 'exp', reissue: () => { this.setState((x) => ({ reissued: { ...x.reissued, [npsn]: true } })); this.toast('Kode baru diterbitkan untuk ' + nama + '.'); } }; })
+    };
+    const changes = Object.keys(s.draft).length;
+    const ak = {
+      roles: ROLES,
+      rows: CAPS.map(([label, desc], i) => ({ label, desc, cells: ROLES.map((r) => {
+        const key = i + ':' + r; const val = key in s.draft ? s.draft[key] : s.perm[i][r]; const changed = key in s.draft;
+        return { title: r + ' · ' + label, track: (val ? 'background-color:var(--primary);--hv-bg:var(--primary);' : 'background-color:var(--border-strong);--hv-bg:var(--border-strong);') + (changed ? 'box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--warning);--hv-bg:initial;' : ''), knob: val ? 'left:18px;--hv-bg:initial;' : 'left:2px;--hv-bg:initial;',
+          toggle: () => this.setState((st) => { const d = { ...st.draft }; const orig = st.perm[i][r]; const cur = key in d ? d[key] : orig; if (!cur === orig) delete d[key]; else d[key] = !cur; return { draft: d }; }) };
+      }) })),
+      noChange: changes === 0, reason: changes === 0 ? 'Belum ada perubahan.' : undefined, saveLabel: changes ? 'Simpan ' + changes + ' perubahan' : 'Simpan perubahan',
+      save: () => this.setState({ confirm: true }), confirm: s.confirm, cancel: () => this.setState({ confirm: false }),
+      summary: changes + ' perubahan hak akses akan berlaku untuk semua pengguna dengan peran terkait dan tercatat di log audit.',
+      ok: () => { this.setState((st) => { const p = JSON.parse(JSON.stringify(st.perm)); Object.entries(st.draft).forEach(([kk, v]) => { const [i, r] = kk.split(':'); p[i][r] = v; }); return { perm: p, draft: {}, confirm: false }; }); this.toast('Hak akses diperbarui.'); }
+    };
+    const AF = [['Semua', null], ['Proposal', 'proposal'], ['Keuangan', 'keuangan'], ['Akses & sistem', 'akses']];
+    const af = AF.find((a) => a[0] === s.auditF)[1];
+    const au = {
+      chips: AF.map(([label]) => ({ label, cls: s.auditF === label ? on : off, pick: () => this.setState({ auditF: label }) })),
+      rows: AUDIT.filter((a) => !af || a[4] === af).map(([t, who, role, aksi, , obj, before, after]) => ({ t, who, role, aksi, obj, before, after }))
+    };
+    const rCur = REG.find((r) => r[0] === s.regOpen) || REG[0];
+    const norm = (x) => x.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const cmp = rCur[6].map(([k, a, b]) => { const eq = b === '—' ? null : norm(a) === norm(b); const near = eq === false && (norm(a).includes(norm(b).slice(0, 6)) || norm(b).includes(norm(a).slice(0, 6))); return { k, a, b, mark: eq === null ? '—' : eq ? '✓' : near ? '≈' : '✕', markSty: eq === null ? 'color:var(--text-secondary);' : eq ? 'color:var(--success-text);font-weight:700;' : near ? 'color:var(--warning-text);font-weight:700;' : 'color:var(--danger-text);font-weight:700;', rowSty: eq === false && !near ? 'background-color:var(--danger-subtle);' : near ? 'background-color:var(--warning-subtle);' : '' }; });
+    const nBad = cmp.filter((c) => c.mark === '✕').length, nNear = cmp.filter((c) => c.mark === '≈').length;
+    const rDec = s.regDecided[rCur[0]];
+    const alLen = s.regAlasan.replace(/\s+/g, ' ').trim().length;
+    const rTolak = s.regMode === 'tolak';
+    const reg = {
+      rows: REG.map((r) => { const d = s.regDecided[r[0]]; return { nama: r[1], npsn: r[2], kab: r[3], tgl: r[4], st: d ? (d === 'setuju' ? 'Disetujui' : 'Ditolak') : 'Menunggu', tone: d ? (d === 'setuju' ? 'success' : 'danger') : 'primary', pick: () => this.setState({ regOpen: r[0], regMode: 'setuju', regAlasan: '' }), sty: r[0] === rCur[0] ? 'background-color:var(--primary-subtle);--hv-bg:var(--primary-subtle);' : '--hv-bg:var(--surface-muted);' }; }),
+      cur: { nama: rCur[1], email: rCur[5] }, cmp,
+      matchTone: nBad ? 'danger' : nNear ? 'warning' : 'success', matchLabel: nBad ? nBad + ' data tidak cocok' : nNear ? nNear + ' data hampir cocok' : 'Semua data cocok',
+      pending: !rDec, done: !!rDec,
+      doneMsg: rDec === 'setuju' ? 'Disetujui. Kode registrasi dikirim ke ' + rCur[5] + '.' : rDec ? 'Ditolak. Alasan dikirim ke ' + rCur[5] + '.' : '', doneSty: rDec === 'setuju' ? 'background-color:var(--success-subtle);color:var(--success-text);' : 'background-color:var(--danger-subtle);color:var(--danger-text);',
+      modes: [['setuju', 'Setujui'], ['tolak', 'Tolak']].map(([id, label]) => ({ label, on: s.regMode === id, pick: () => this.setState({ regMode: id }), sty: s.regMode === id ? 'background-color:var(--surface);color:var(--text-primary);box-shadow:var(--shadow-card);' : 'color:var(--text-secondary);' })),
+      isTolak: rTolak, isSetuju: !rTolak, alasan: s.regAlasan, onAlasan: (e) => this.setState({ regAlasan: e.target.value }),
+      alMsg: alLen && alLen < 20 ? 'Minimal 20 karakter. Saat ini ' + alLen + '.' : 'Wajib, minimal 20 karakter. Dikirim ke email pendaftar.', alMsgSty: alLen && alLen < 20 ? 'color:var(--danger-text);' : 'color:var(--text-secondary);',
+      btnVariant: rTolak ? 'danger' : 'primary', btnLabel: rTolak ? 'Tolak pendaftaran' : 'Setujui dan kirim kode',
+      disabled: rTolak ? alLen < 20 : nBad > 0, reason: rTolak ? (alLen < 20 ? 'Tulis alasan penolakan.' : undefined) : nBad > 0 ? 'Data tidak cocok dengan migrasi. Tolak atau minta klarifikasi.' : undefined,
+      submit: () => { this.setState((st) => ({ regDecided: { ...st.regDecided, [rCur[0]]: st.regMode } })); this.toast(rTolak ? 'Pendaftaran ' + rCur[1] + ' ditolak.' : 'Kode registrasi dikirim ke ' + rCur[1] + '.'); }
+    };
+    const fmtP = (id, v) => (id === 'plafon' ? 'Rp ' + Number(v || 0).toLocaleString('id-ID') : v);
+    const pAll = PARAM.flatMap((g) => g[2]);
+    const pErr = {};
+    pAll.forEach(([id, , , , mn, mx]) => { const v = Number(s.pv[id]); if (s.pv[id] === '' || isNaN(v) || v < mn || v > mx) pErr[id] = 'Isi ' + (id === 'plafon' ? 'Rp ' + mn.toLocaleString('id-ID') + ' – Rp ' + mx.toLocaleString('id-ID') : mn + '–' + mx) + '.'; });
+    if (!pErr.dev_merah && !pErr.dev_kuning && Number(s.pv.dev_merah) <= Number(s.pv.dev_kuning)) pErr.dev_merah = 'Harus lebih besar dari ambang kuning (' + s.pv.dev_kuning + '%).';
+    const pChanged = pAll.filter(([id]) => s.pv[id] !== s.pSaved[id]);
+    const nErr = Object.keys(pErr).length;
+    const par = {
+      groups: PARAM.map(([title, desc, items]) => ({ title, desc, items: items.map(([id, label, , unit, mn, mx]) => ({ label, unit, v: id === 'plafon' && s.pv[id] ? Number(s.pv[id]).toLocaleString('id-ID') : s.pv[id], w: id === 'plafon' ? '180px' : '88px', onChange: (e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 10); this.setState((st) => ({ pv: { ...st.pv, [id]: v } })); }, note: pErr[id] || (s.pv[id] !== s.pSaved[id] ? 'Sebelumnya ' + fmtP(id, s.pSaved[id]) + ' ' + (id === 'plafon' ? '' : unit) : 'Rentang ' + (id === 'plafon' ? 'Rp 100 jt – Rp 2 M' : mn + '–' + mx)), noteSty: pErr[id] ? 'color:var(--danger-text);' : s.pv[id] !== s.pSaved[id] ? 'color:var(--warning-text);font-weight:600;' : 'color:var(--text-secondary);', inSty: pErr[id] ? 'border-color:var(--danger);border-width:2px;' : s.pv[id] !== s.pSaved[id] ? 'border-color:var(--warning);border-width:2px;' : '' })) })),
+      dirty: pChanged.length > 0, clean: pChanged.length === 0, dirtyLabel: pChanged.length + ' belum disimpan', nChanged: String(pChanged.length),
+      saveDisabled: pChanged.length === 0 || nErr > 0, reason: nErr ? 'Perbaiki ' + nErr + ' isian bertanda merah.' : pChanged.length === 0 ? 'Belum ada perubahan.' : undefined,
+      reset: () => this.setState((st) => ({ pv: { ...st.pSaved } })), ask: () => this.setState({ pConfirm: true }), cancel: () => this.setState({ pConfirm: false }), confirm: s.pConfirm,
+      changes: pChanged.map(([id, label, , unit]) => ({ label, from: fmtP(id, s.pSaved[id]) + (id === 'plafon' ? '' : ' ' + unit), to: fmtP(id, s.pv[id]) + (id === 'plafon' ? '' : ' ' + unit) })),
+      save: () => { this.setState((st) => ({ pSaved: { ...st.pv }, pConfirm: false })); this.toast(pChanged.length + ' parameter tersimpan dan tercatat di log audit.'); }
+    };
+    const screen = s.screen;
+    const menu = MENU.map(([id, label, icon, c]) => ({ label, icon, go: go(id), hasCount: !!c, count: String(c || ''), cls: screen === id ? 'background-color:var(--primary-subtle);color:var(--primary);font-weight:600;--hv-bg:var(--primary-subtle);' : 'color:var(--text-primary);font-weight:500;--hv-bg:var(--surface-muted);' }));
+    const otherM = MENU.find((m) => m[0] === screen);
+    return {
+      theme: this.props.theme ?? 'light', menu,
+      scr: { users: screen === 'users', kode: screen === 'kode', akses: screen === 'akses', audit: screen === 'audit', daftar: screen === 'daftar', param: screen === 'param', other: !['users', 'kode', 'akses', 'audit', 'daftar', 'param'].includes(screen) }, reg, par,
+      otherLabel: otherM ? otherM[1] : '', otherIcon: otherM ? otherM[2] : 'file',
+      invCount: String(36 + s.invited), u, inv, k, ak, au, toast: { show: !!s.toast, msg: s.toast || '' }
+    };
+  }
+  renderVals() {
+    const v = this.__rv(), st = this.state || {};
+    if (!this.__cqInit) { this.__cqInit = 1; window.addEventListener('resize', () => this.setState({ __vw: window.innerWidth })); }
+    const vw = st.__vw ?? window.innerWidth, cw = st.__cw ?? 1000, cq = {};
+    for (const k in __CQ) cq[k] = __CQ[k].filter((e) => (e[0] === 'c' ? cw : vw) >= e[1]).map((e) => e[2] + ';').join('');
+    if (!this.__cqRef) this.__cqRef = (el) => { if (this.__ro) this.__ro.disconnect(); if (!el) return; this.__ro = new ResizeObserver((en) => { const w = Math.round(en[0].contentRect.width); if (w !== (this.state || {}).__cw) this.setState({ __cw: w }); }); this.__ro.observe(el); };
+    return { ...v, cq, cqRef: this.__cqRef };
+  }
+}
+</script>
+</body>
+</html>

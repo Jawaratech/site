@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+</helmet>
+<div style="position:relative;display:flex">
+  <button onClick="{{ toggle }}" aria-haspopup="menu" aria-expanded="{{ open }}" title="Menu akun" style="display:flex;align-items:center;gap:10px;min-height:44px;padding:4px 8px 4px 4px;border-radius:var(--radius-md);text-align:left;cursor:pointer;background-color:transparent;font-family:var(--font-sans);color:var(--text-primary);{{ trigSty }}" style-hover="background-color:var(--surface-muted)">
+    <span class="caption" style="width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary);font-weight:700">{{ initials }}</span>
+    <sc-if value="{{ showText }}" hint-placeholder-val="{{ true }}">
+      <span style="display:flex;flex-direction:column;line-height:1.25;min-width:0">
+        <span class="body" style="font-weight:600;white-space:nowrap">{{ userName }}</span>
+        <span class="caption" style="color:var(--text-secondary);white-space:nowrap">{{ org }}</span>
+      </span>
+    </sc-if>
+    <span style="display:inline-flex;color:var(--text-secondary)"><lc-icon name="chevron-down" size="16"></lc-icon></span>
+  </button>
+
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ close }}" style="position:fixed;inset:0;z-index:70"></div>
+    <div role="menu" aria-label="Menu akun" style="position:absolute;top:calc(100% + 8px);right:0;z-index:71;width:280px;display:flex;flex-direction:column;padding:8px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-overlay);font-family:var(--font-sans);color:var(--text-primary)">
+      <div style="display:flex;align-items:center;gap:12px;padding:8px 8px 12px;margin-bottom:4px;border-bottom:1px solid var(--border)">
+        <span class="caption" style="width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary);font-weight:700">{{ initials }}</span>
+        <span style="min-width:0;display:flex;flex-direction:column"><span class="body" style="font-weight:600">{{ userName }}</span><span class="caption" style="color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ email }}</span></span>
+      </div>
+      <sc-for list="{{ items }}" as="it" hint-placeholder-count="3">
+        <button role="menuitem" onClick="{{ it.run }}" class="body" style="display:flex;align-items:center;gap:12px;min-height:44px;padding:0 10px;border-radius:var(--radius-md);text-align:left;cursor:pointer;{{ it.sty }}" style-hover="background-color:var(--surface-muted)"><lc-icon name="{{ it.icon }}" size="18"></lc-icon>{{ it.label }}</button>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ modal.show }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeModal }}" style="position:fixed;inset:0;z-index:80;background-color:rgba(26,43,76,0.4)"></div>
+    <div role="dialog" aria-label="{{ modal.title }}" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:81;width:calc(100vw - 32px);max-width:480px;max-height:calc(100vh - 32px);overflow-y:auto;display:flex;flex-direction:column;gap:16px;padding:24px;background-color:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-overlay);font-family:var(--font-sans);color:var(--text-primary);text-align:left">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+        <h2 class="h2">{{ modal.title }}</h2>
+        <button onClick="{{ closeModal }}" title="Tutup" style="width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:var(--radius-md);cursor:pointer;color:var(--text-secondary)" style-hover="background-color:var(--surface-muted)"><lc-icon name="x" size="18"></lc-icon></button>
+      </div>
+
+      <sc-if value="{{ modal.profil }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:16px">
+          <span class="h2" style="width:64px;height:64px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">{{ initials }}</span>
+          <div style="display:flex;flex-direction:column"><span class="h3">{{ userName }}</span><span class="body" style="color:var(--text-secondary)">{{ org }}</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;border-top:1px solid var(--border)">
+          <sc-for list="{{ profil }}" as="p" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:130px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--border)"><span class="body" style="color:var(--text-secondary)">{{ p.k }}</span><span class="body" style="font-weight:600;overflow-wrap:anywhere">{{ p.v }}</span></div>
+          </sc-for>
+        </div>
+        <p class="caption" style="color:var(--text-secondary)">{{ profilNote }}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end">
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ toSandi }}" hint-size="150px,40px">Ganti kata sandi</x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ closeModal }}" hint-size="80px,40px">Tutup</x-import>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ modal.sandi }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ pw.done }}" hint-placeholder-val="{{ false }}">
+          <div class="body-lg" style="display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:var(--radius-md);background-color:var(--success-subtle);color:var(--success-text)"><span style="flex:none;margin-top:2px"><lc-icon name="circle-check" size="20"></lc-icon></span><span>Kata sandi berhasil diganti. Perangkat lain akan keluar otomatis.</span></div>
+          <div style="display:flex;justify-content:flex-end"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ closeModal }}" hint-size="80px,40px">Tutup</x-import></div>
+        </sc-if>
+        <sc-if value="{{ pw.form }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Kata sandi saat ini" type="password" value="{{ pw.cur }}" on-change="{{ pw.onCur }}" error="{{ pw.curErr }}" hint-size="100%,72px"></x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Kata sandi baru" type="password" value="{{ pw.nw }}" on-change="{{ pw.onNw }}" hint-size="100%,72px"></x-import>
+          <ul aria-label="Aturan kata sandi" style="display:flex;flex-direction:column;gap:6px;list-style:none;margin:0;padding:0">
+            <sc-for list="{{ pw.rules }}" as="r" hint-placeholder-count="5">
+              <li class="body" style="display:flex;align-items:center;gap:8px;{{ r.sty }}"><span style="width:20px;height:20px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);font-size:12px;font-weight:700;{{ r.dot }}">{{ r.mark }}</span>{{ r.label }}</li>
+            </sc-for>
+          </ul>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Ulangi kata sandi baru" type="password" value="{{ pw.nw2 }}" on-change="{{ pw.onNw2 }}" error="{{ pw.nw2Err }}" hint-size="100%,72px"></x-import>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ closeModal }}" hint-size="80px,40px">Batal</x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" disabled="{{ pw.disabled }}" disabled-reason="{{ pw.reason }}" on-click="{{ pw.save }}" hint-size="170px,40px">Simpan kata sandi</x-import>
+          </div>
+        </sc-if>
+      </sc-if>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:80},&quot;initials&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;DH&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ir. Dedi Hermawan&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;org&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Konsultan Perencanaan · Agrinas&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;email&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;dedi.h@agrinas.contoh.id&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;phone&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;0812-1100-2233&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;roleLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;instansi&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;demoPassword&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Revit#2026&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  state = { open: false, modal: null, cur: '', nw: '', nw2: '', tried: false, done: false };
+  componentDidMount() { this.onKey = (e) => { if (e.key === 'Escape' && (this.state.open || this.state.modal)) this.setState({ open: false, modal: null }); }; document.addEventListener('keydown', this.onKey); }
+  componentWillUnmount() { document.removeEventListener('keydown', this.onKey); }
+  renderVals() {
+    const p = this.props, s = this.state;
+    const name = p.userName || 'Pengguna';
+    const internal = /Setpres|Pimpinan|Approver|PPK|Bendahara|Super Admin/i.test((p.org || '') + ' ' + (p.roleLabel || ''));
+    const nw = s.nw;
+    const rules = [['Minimal 10 karakter', nw.length >= 10], ['Huruf besar dan huruf kecil', /[a-z]/.test(nw) && /[A-Z]/.test(nw)], ['Minimal 1 angka', /\d/.test(nw)], ['Minimal 1 simbol, mis. # atau !', /[^A-Za-z0-9]/.test(nw)], ['Berbeda dari kata sandi saat ini', !!nw && nw !== s.cur]];
+    const ok = rules.every((r) => r[1]);
+    const match = !!s.nw2 && s.nw2 === nw;
+    const curErr = s.tried && s.cur !== (p.demoPassword || 'Revit#2026') ? 'Kata sandi saat ini tidak sesuai.' : undefined;
+    const reason = !s.cur ? 'Isi kata sandi saat ini.' : !ok ? 'Kata sandi baru belum memenuhi semua aturan.' : !match ? 'Ulangi kata sandi baru yang sama.' : undefined;
+    const openModal = (m) => () => this.setState({ open: false, modal: m, cur: '', nw: '', nw2: '', tried: false, done: false });
+    return {
+      initials: p.initials || name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase(),
+      userName: name, org: p.org || '', email: p.email || '—',
+      showText: !p.compact,
+      trigSty: s.open ? 'background-color:var(--surface-muted);' : '',
+      open: s.open,
+      toggle: () => this.setState((st) => ({ open: !st.open })),
+      close: () => this.setState({ open: false }),
+      items: [['user-round', 'Lihat profil', openModal('profil')], ['key-round', 'Ganti kata sandi', openModal('sandi')], ['log-out', 'Keluar', () => { (window.revitGo || location.assign.bind(location))('Revit-Masuk.dc.html'); }]].map(([icon, label, run]) => ({ icon, label, run, sty: label === 'Keluar' ? 'color:var(--danger-text);margin-top:4px;border-top:1px solid var(--border);border-top-left-radius:0;border-top-right-radius:0;' : 'color:var(--text-primary);' })),
+      modal: { show: !!s.modal, profil: s.modal === 'profil', sandi: s.modal === 'sandi', title: s.modal === 'profil' ? 'Profil saya' : 'Ganti kata sandi' },
+      closeModal: () => this.setState({ modal: null }),
+      toSandi: openModal('sandi'),
+      profil: [['Nama', name], ['Email', p.email || '—'], ['Nomor HP', p.phone || '—'], ['Peran', p.roleLabel || p.org || '—'], ['Instansi', p.instansi || (p.org || '').split(' · ').pop() || '—'], ['Login terakhir', p.lastLogin || '5 Okt 2026, 08.02 WIB']].map(([k, v]) => ({ k, v })),
+      profilNote: internal ? 'Untuk mengubah nama, email, atau peran, hubungi Super Admin.' : 'Untuk mengubah nama atau email, hubungi Layanan Setpres di (021) 3845 627.',
+      pw: {
+        done: s.done, form: !s.done, cur: s.cur, nw: s.nw, nw2: s.nw2, curErr,
+        onCur: (e) => this.setState({ cur: e.target.value, tried: false }), onNw: (e) => this.setState({ nw: e.target.value }), onNw2: (e) => this.setState({ nw2: e.target.value }),
+        nw2Err: s.nw2 && !match ? 'Kata sandi tidak sama.' : undefined,
+        rules: rules.map(([label, v]) => ({ label, mark: v ? '✓' : '', sty: v ? 'color:var(--success-text);' : 'color:var(--text-secondary);', dot: v ? 'background-color:var(--success-subtle);color:var(--success-text);' : 'border:1.5px solid var(--border-strong);' })),
+        disabled: !!reason, reason,
+        save: () => { if (s.cur !== (p.demoPassword || 'Revit#2026')) { this.setState({ tried: true }); return; } this.setState({ done: true }); }
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

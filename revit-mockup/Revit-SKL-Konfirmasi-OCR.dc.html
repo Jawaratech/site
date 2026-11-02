@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#F5F7FB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B5FEF"/><text x="50" y="64" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Konfirmasi hasil OCR</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5;background:var(--background);color:var(--text-primary);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}button,input{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div data-theme="{{ theme }}" style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans);display:flex;flex-direction:column">
+  <dc-import name="RevitHeader" style="display:block;width:100%;min-width:0;flex:none" role="SKL" compact="{{ false }}" hint-size="100%,64px"></dc-import>
+  <main data-screen-label="L37 Konfirmasi hasil OCR" style="flex:1;width:100%;max-width:1280px;margin:0 auto;padding:24px 32px 48px;display:flex;flex-direction:column;gap:20px">
+    <div>
+      <div class="caption" style="color:var(--text-secondary)">Proposal saya › Informasi &amp; SK Panitia › Konfirmasi hasil baca</div>
+      <h1 class="h1" style="margin-top:4px">Periksa hasil baca SK Panitia</h1>
+      <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">Sistem membaca isi SK secara otomatis. Periksa isian berlatar kuning, ubah bila tidak sesuai dokumen.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:24px">
+      <div style="flex:3 1 420px;min-width:0;display:flex;flex-direction:column;gap:8px;position:sticky;top:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <span class="body" style="font-weight:600">sk-panitia-sdn-sukamaju-01.pdf</span>
+          <div style="display:flex;align-items:center;gap:4px">
+            <button onClick="{{ zoomOut }}" title="Perkecil" style="width:36px;height:36px;display:grid;place-items:center;border-radius:var(--radius-md);cursor:pointer" style-hover="background-color:var(--surface-muted)"><lc-icon name="zoom-out" size="18"></lc-icon></button>
+            <span class="caption tabular" style="min-width:44px;text-align:center;color:var(--text-secondary)">{{ zoomLabel }}</span>
+            <button onClick="{{ zoomIn }}" title="Perbesar" style="width:36px;height:36px;display:grid;place-items:center;border-radius:var(--radius-md);cursor:pointer" style-hover="background-color:var(--surface-muted)"><lc-icon name="zoom-in" size="18"></lc-icon></button>
+          </div>
+        </div>
+        <div style="height:720px;overflow:auto;padding:24px;border-radius:var(--radius-md);background-color:var(--neutral-subtle)">
+          <div style="margin:0 auto;aspect-ratio:210/297;background-color:#ffffff;color:#1a2b4c;box-shadow:var(--shadow-card);padding:8% 9%;display:flex;flex-direction:column;gap:10px;font-size:11px;line-height:1.6;{{ pageSty }}">
+            <div style="text-align:center;font-weight:700">PEMERINTAH KABUPATEN BOGOR<br>SD NEGERI SUKAMAJU 01</div>
+            <div style="text-align:center;font-size:9px;color:#5a6270;padding-bottom:8px;border-bottom:2px solid #1a2b4c">Jl. Raya Sukamaju No. 12, Cibinong, Kab. Bogor 16914</div>
+            <div style="text-align:center;font-weight:700;margin-top:8px">SURAT KEPUTUSAN KEPALA SEKOLAH</div>
+            <div style="text-align:center"><span style="{{ hl.nomor }}">Nomor: 421/045/SDN-SKM/IX/2026</span></div>
+            <div style="text-align:center;font-weight:700">TENTANG PEMBENTUKAN PANITIA REVITALISASI SEKOLAH</div>
+            <div>Menetapkan susunan panitia sebagai berikut:</div>
+            <div style="display:grid;grid-template-columns:110px 1fr;gap:2px 8px">
+              <span>Ketua</span><span style="{{ hl.ketua }}">: Drs. Bambang Suryadi</span>
+              <span>Sekretaris</span><span>: Siti Rahmawati, S.Pd.</span>
+              <span>Bendahara</span><span>: Ahmad Fauzi</span>
+              <span>Anggota</span><span style="{{ hl.anggota }}">: 4 orang (terlampir)</span>
+            </div>
+            <div style="margin-top:auto;align-self:flex-end;text-align:center;display:flex;flex-direction:column;gap:4px">
+              <span style="{{ hl.tanggal }}">Cibinong, 14 September 2026</span>
+              <span>Kepala Sekolah,</span>
+              <span style="height:40px"></span>
+              <span style="font-weight:700;text-decoration:underline;{{ hl.kepsek }}">Hj. Euis Kurniasih, S.Pd., M.M.</span>
+              <span style="{{ hl.nip }}">NIP 19700512 199403 2 004</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:2 1 340px;min-width:0;display:flex;flex-direction:column;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap"><h2 class="h2">Isian dari dokumen</h2><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ sumTone }}" hint-size="130px,24px">{{ sumLabel }}</x-import></div>
+        <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
+          <div onFocus="{{ f.focus }}" onMouseEnter="{{ f.focus }}" style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:var(--radius-md);{{ f.boxSty }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <label class="body" style="font-weight:600">{{ f.label }}</label>
+              <span class="caption" style="display:flex;align-items:center;gap:4px;{{ f.tagSty }}"><lc-icon name="{{ f.tagIcon }}" size="14"></lc-icon>{{ f.tag }}</span>
+            </div>
+            <input aria-label="{{ f.label }}" value="{{ f.v }}" onChange="{{ f.onChange }}" class="body-lg" style="height:44px;padding:0 12px;border:1px solid var(--border-strong);border-radius:var(--radius-md);background-color:var(--surface)" style-focus="outline:2px solid var(--primary);outline-offset:1px">
+            <sc-if value="{{ f.hasHint }}" hint-placeholder-val="{{ false }}"><span class="caption" style="color:var(--warning-text)">{{ f.hint }}</span></sc-if>
+            <sc-if value="{{ f.canConfirm }}" hint-placeholder-val="{{ false }}"><button onClick="{{ f.confirm }}" class="body" style="align-self:flex-start;display:flex;align-items:center;gap:6px;min-height:36px;color:var(--primary);font-weight:600;cursor:pointer"><lc-icon name="check" size="16"></lc-icon>Sudah sesuai dokumen</button></sc-if>
+          </div>
+        </sc-for>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end;padding-top:16px;border-top:1px solid var(--border)">
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="ghost" on-click="{{ manual }}" hint-size="120px,40px">Isi manual</x-import>
+          <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" disabled="{{ disabled }}" disabled-reason="{{ reason }}" on-click="{{ pakai }}" hint-size="150px,40px">Pakai hasil ini</x-import>
+        </div>
+        <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+          <div class="body" style="display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:var(--radius-md);background-color:var(--success-subtle);color:var(--success-text)"><lc-icon name="circle-check" size="18"></lc-icon>Isian tersimpan ke langkah Informasi &amp; SK Panitia.</div>
+        </sc-if>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;}}">
+const FIELDS = [
+  ['nomor', 'Nomor SK', '421/045/SDN-SKM/IX/2026', 98],
+  ['tanggal', 'Tanggal SK', '14 September 2026', 96],
+  ['ketua', 'Ketua panitia', 'Drs. Bambang Suryadi', 94],
+  ['anggota', 'Jumlah anggota', '4', 71, 'Lampiran anggota tidak terbaca. Pastikan sama dengan daftar di menu Panitia (6 anggota).'],
+  ['kepsek', 'Kepala sekolah', 'Hj. Euis Kurniasih, S.Pd., M.M.', 88],
+  ['nip', 'NIP kepala sekolah', '19700512 199403 2 004', 64, 'Beberapa angka kabur. Cocokkan dengan dokumen di kiri.']
+];
+class Component extends DCLogic {
+  state = { vals: Object.fromEntries(FIELDS.map((f) => [f[0], f[2]])), checked: {}, focus: null, zoom: 100, done: false };
+  renderVals() {
+    const s = this.state, th = 90;
+    const low = FIELDS.filter((f) => f[3] < th);
+    const unchecked = low.filter((f) => !s.checked[f[0]]).length;
+    const hl = Object.fromEntries(FIELDS.map((f) => [f[0], s.focus === f[0] ? 'background-color:#fdf1dc;outline:2px solid #c77a00;outline-offset:1px;border-radius:2px;' : f[3] < th && !s.checked[f[0]] ? 'background-color:#fdf1dc;border-radius:2px;' : '']));
+    return {
+      theme: this.props.theme ?? 'light',
+      zoomLabel: s.zoom + '%', pageSty: 'width:' + (s.zoom * 4.4) + 'px;max-width:none;',
+      zoomIn: () => this.setState((st) => ({ zoom: Math.min(160, st.zoom + 20) })), zoomOut: () => this.setState((st) => ({ zoom: Math.max(60, st.zoom - 20) })),
+      hl,
+      fields: FIELDS.map(([id, label, , conf, hint]) => {
+        const lowC = conf < th, ok = !!s.checked[id];
+        return {
+          label, v: s.vals[id], hasHint: lowC && !ok && !!hint, hint: hint || '',
+          canConfirm: lowC && !ok, confirm: () => this.setState((st) => ({ checked: { ...st.checked, [id]: true }, done: false })),
+          onChange: (e) => { const v = e.target.value; this.setState((st) => ({ vals: { ...st.vals, [id]: v }, checked: { ...st.checked, [id]: true }, done: false })); },
+          focus: () => { if (this.state.focus !== id) this.setState({ focus: id }); },
+          boxSty: lowC && !ok ? 'background-color:var(--warning-subtle);' : 'background-color:transparent;',
+          tag: lowC ? (ok ? 'Sudah diperiksa' : 'Periksa kembali') : 'Terbaca ' + conf + '%', tagIcon: lowC ? (ok ? 'check' : 'triangle-alert') : 'scan-text',
+          tagSty: lowC ? (ok ? 'color:var(--success-text);' : 'color:var(--warning-text);font-weight:600;') : 'color:var(--text-secondary);'
+        };
+      }),
+      sumTone: unchecked ? 'warning' : 'success', sumLabel: unchecked ? unchecked + ' perlu diperiksa' : 'Semua diperiksa',
+      disabled: unchecked > 0, reason: unchecked ? 'Periksa atau ubah ' + unchecked + ' isian berlatar kuning.' : undefined,
+      pakai: () => this.setState({ done: true }), manual: () => this.setState({ vals: Object.fromEntries(FIELDS.map((f) => [f[0], ''])), checked: Object.fromEntries(FIELDS.map((f) => [f[0], true])), done: false }),
+      done: s.done
+    };
+  }
+}
+</script>
+</body>
+</html>
