@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#F5F7FB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B5FEF"/><text x="50" y="64" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Perpanjangan waktu</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5;background:var(--background);color:var(--text-primary);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}button,input{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}ol,ul{list-style:none}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div data-theme="{{ theme }}" style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans);{{ shell.outer }}">
+<div style="display:flex;flex-direction:column;{{ shell.frame }}">
+  <dc-import name="RevitHeader" style="display:block;width:100%;min-width:0;flex:none" role="SKL" compact="{{ shell.mobile }}" hint-size="100%,64px"></dc-import>
+  <div style="flex:1;display:flex;min-height:0">
+    <sc-if value="{{ shell.desktop }}" hint-placeholder-val="{{ true }}">
+      <aside style="width:248px;flex:none;display:flex;flex-direction:column;background-color:var(--surface);border-right:1px solid var(--border)">
+        <nav style="padding:12px;display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ menu }}" as="m" hint-placeholder-count="6">
+            <a href="{{ m.href }}" onClick="{{ m.go }}" class="body" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);text-decoration:none;{{ m.sty }}" style-hover="background-color:var(--hv-bg, transparent);text-decoration-line:none"><lc-icon name="{{ m.icon }}" size="20"></lc-icon><span style="flex:1">{{ m.label }}</span></a>
+          </sc-for>
+        </nav>
+        <div class="caption" style="margin-top:auto;padding:20px;border-top:1px solid var(--border);color:var(--text-secondary)">Revit · Tahun anggaran 2026</div>
+      </aside>
+    </sc-if>
+    <main style="flex:1;min-width:0;display:flex;flex-direction:column;gap:24px;{{ shell.main }}">
+
+      <!-- L43 Pengajuan perpanjangan -->
+      <sc-if value="{{ scr.form }}" hint-placeholder-val="{{ true }}">
+        <section data-screen-label="L43 Pengajuan perpanjangan" style="display:flex;flex-direction:column;gap:24px;max-width:720px">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Perpanjangan</div>
+            <h1 class="h1" style="margin-top:4px">Ajukan perpanjangan waktu</h1>
+            <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">Tenggat saat ini 28 Des 2026. Ajukan paling lambat 14 hari sebelum tenggat. Perpanjangan maksimal 60 hari.</p>
+          </div>
+          <ol style="display:flex;flex-direction:column;gap:16px">
+            <li style="display:flex;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <span class="h3" style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">1</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+                <div><h2 class="h3">Alasan perpanjangan</h2><p class="body" style="color:var(--text-secondary);margin-top:4px">Pilih alasan utama, lalu jelaskan.</p></div>
+                <div role="radiogroup" style="display:flex;flex-direction:column;gap:8px">
+                  <sc-for list="{{ f.alasan }}" as="a" hint-placeholder-count="5">
+                    <button role="radio" aria-checked="{{ a.on }}" onClick="{{ a.pick }}" class="body-lg" style="display:flex;align-items:center;gap:12px;min-height:48px;padding:10px 14px;border-radius:var(--radius-md);border:1px solid var(--border-strong);text-align:left;cursor:pointer;{{ a.sty }}">
+                      <span style="width:20px;height:20px;flex:none;border-radius:var(--radius-full);display:grid;place-items:center;{{ a.dot }}"><span style="width:8px;height:8px;border-radius:var(--radius-full);{{ a.inner }}"></span></span>{{ a.label }}
+                    </button>
+                  </sc-for>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span class="body" style="font-weight:600">Uraian</span>
+                  <dc-import name="RevitEditorTeks" value="{{ f.uraian }}" on-change="{{ f.onUraian }}" rows="4" text-size="lg" size="{{ btnSize }}" frame-style="{{ f.uraianFrame }}" label="Uraian alasan perpanjangan" placeholder="Mis. Hujan deras 18 hari sepanjang November sehingga pengecoran dan pemasangan atap tertunda." hint-size="100%,170px"></dc-import>
+                  <span class="caption" style="{{ f.uraianMsgSty }}">{{ f.uraianMsg }}</span>
+                </div>
+              </div>
+            </li>
+            <li style="display:flex;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <span class="h3" style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">2</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px">
+                <h2 class="h3">Tanggal selesai yang diusulkan</h2>
+                <div style="max-width:280px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Tanggal selesai baru" type="date" value="{{ f.tgl }}" on-change="{{ f.onTgl }}" error="{{ f.tglErr }}" hint-size="100%,72px"></x-import></div>
+                <div class="body" style="{{ f.tambahSty }}">{{ f.tambah }}</div>
+              </div>
+            </li>
+            <li style="display:flex;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <span class="h3" style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">3</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px">
+                <div><h2 class="h3">Surat permohonan</h2><p class="body" style="color:var(--text-secondary);margin-top:4px">Unduh template yang sudah terisi data sekolah dan alasan di atas. Cetak, tandatangani kepala sekolah dan ketua panitia, beri stempel, lalu unggah.</p></div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+                  <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" size="{{ btnSize }}" on-click="{{ f.dl }}" hint-size="200px,40px">Unduh template surat</x-import>
+                  <span class="caption" style="color:var(--text-secondary)">PDF · 1 halaman</span>
+                </div>
+                <button onClick="{{ f.pickSurat }}" style="display:flex;align-items:center;gap:12px;padding:12px;min-height:72px;border:1px dashed var(--border-strong);border-radius:var(--radius-md);background-color:var(--surface);text-align:left;cursor:pointer;{{ f.suratSty }}" style-hover="border-color:var(--primary)">
+                  <span style="width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:var(--radius-md);{{ f.suratThumb }}"><lc-icon name="{{ f.suratIcon }}" size="22"></lc-icon></span>
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column"><span class="body" style="font-weight:600">{{ f.suratTitle }}</span><span class="caption" style="color:var(--text-secondary)">{{ f.suratSub }}</span></span>
+                  <span class="body" style="color:var(--primary);font-weight:600">{{ f.suratAction }}</span>
+                </button>
+              </div>
+            </li>
+            <li style="display:flex;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <span class="h3" style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)">4</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><h2 class="h3">Foto bukti</h2><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ f.fotoTone }}" hint-size="120px,24px">{{ f.fotoCount }}</x-import></div>
+                <p class="body" style="color:var(--text-secondary)">Foto kondisi yang menyebabkan keterlambatan, misalnya lokasi tergenang atau material belum tiba.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
+                  <sc-for list="{{ f.fotos }}" as="p" hint-placeholder-count="1">
+                    <div style="position:relative;aspect-ratio:4/3;border-radius:var(--radius-md);overflow:hidden;background-color:var(--surface-muted);border:1px solid var(--border)"><span class="caption" style="position:absolute;inset:0;display:grid;place-items:center;color:var(--text-secondary)">{{ p.label }}</span><button onClick="{{ p.remove }}" title="Hapus foto" style="position:absolute;top:6px;right:6px;width:32px;height:32px;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--surface);cursor:pointer;box-shadow:var(--shadow-card)"><lc-icon name="x" size="16"></lc-icon></button></div>
+                  </sc-for>
+                  <button onClick="{{ f.addFoto }}" style="aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:1px dashed var(--border-strong);border-radius:var(--radius-md);color:var(--primary);background-color:var(--surface);cursor:pointer" style-hover="border-color:var(--primary);background-color:var(--primary-subtle)"><lc-icon name="camera" size="22"></lc-icon><span class="body" style="font-weight:600">Tambah foto</span></button>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <div style="display:flex;justify-content:flex-end"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="{{ btnSize }}" disabled="{{ f.disabled }}" disabled-reason="{{ f.reason }}" on-click="{{ f.send }}" hint-size="190px,40px">Ajukan perpanjangan</x-import></div>
+        </section>
+      </sc-if>
+
+      <!-- L44 Status addendum -->
+      <sc-if value="{{ scr.status }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L44 Status addendum" style="display:flex;flex-direction:column;gap:24px;max-width:720px">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+            <div>
+              <div class="caption" style="color:var(--text-secondary)">Perpanjangan › Status</div>
+              <h1 class="h1" style="margin-top:4px">Status perpanjangan</h1>
+              <p class="body-lg" style="color:var(--text-secondary);margin-top:4px">ADD-2026-0071 · diajukan {{ st.tglAju }}</p>
+            </div>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ st.tone }}" hint-size="150px,24px">{{ st.badge }}</x-import>
+          </div>
+          <sc-if value="{{ st.ok }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <div style="display:flex;gap:12px;align-items:center"><span style="width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--success-subtle);color:var(--success-text);font-size:20px;font-weight:700">✓</span><h2 class="h2">Perpanjangan disetujui</h2></div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
+                <div style="display:flex;flex-direction:column;gap:2px"><span class="body" style="color:var(--text-secondary)">Tenggat lama</span><span class="h3 tabular" style="text-decoration-line:line-through;color:var(--text-secondary)">28 Des 2026</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span class="body" style="color:var(--text-secondary)">Tenggat baru</span><span class="h3 tabular">{{ st.tglBaru }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span class="body" style="color:var(--text-secondary)">Tambahan</span><span class="h3 tabular">{{ st.tambah }}</span></div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--border)">
+                <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" size="{{ btnSize }}" on-click="{{ st.dl }}" hint-size="210px,40px">Unduh SK perpanjangan</x-import>
+                <span class="caption" style="color:var(--text-secondary)">SK-ADD-0071/SETPRES/X/2026 · PDF</span>
+              </div>
+              <p class="body" style="color:var(--text-secondary)">Target progres mingguan sudah disesuaikan dengan tanggal selesai baru.</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ st.no }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.ReviewerNote" title="Perpanjangan tidak disetujui" count="{{ 1 }}" author="Agus Prasetyo, S.E." role="PPK · Setpres" date="12 Okt 2026" link-label="Ajukan ulang dengan bukti tambahan" hint-size="100%,140px">Foto bukti belum menunjukkan kendala di lokasi. Lampirkan data curah hujan BMKG atau surat keterangan dari pemasok material, lalu ajukan ulang.</x-import>
+            <div style="display:flex;justify-content:flex-start"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" size="{{ btnSize }}" on-click="{{ st.ulang }}" hint-size="150px,40px">Ajukan ulang</x-import></div>
+          </sc-if>
+          <div style="padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+            <h2 class="h3" style="margin-bottom:16px">Riwayat pengajuan</h2>
+            <ol style="display:flex;flex-direction:column">
+              <sc-for list="{{ st.tl }}" as="t" hint-placeholder-count="4">
+                <li style="display:flex;gap:16px;padding-bottom:20px" style-last-child="padding-bottom:0">
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:none;width:16px">
+                    <span style="width:14px;height:14px;margin-top:4px;border-radius:var(--radius-full);border:2px solid var(--border-strong);{{ t.dot }}"></span>
+                    <span style="flex:1;width:2px;margin-top:4px;{{ t.line }}"></span>
+                  </div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <span class="body-lg" style="font-weight:600;{{ t.lblSty }}">{{ t.label }}</span>
+                    <span class="body" style="color:var(--text-secondary)">{{ t.who }}</span>
+                    <span class="caption tabular" style="color:var(--text-secondary)">{{ t.when }}</span>
+                  </div>
+                </li>
+              </sc-for>
+            </ol>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ toast.show }}" hint-placeholder-val="{{ false }}">
+        <div role="status" class="body" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius-md);background-color:var(--brand-navy);color:#ffffff;box-shadow:var(--shadow-overlay)"><lc-icon name="circle-check" size="18"></lc-icon>{{ toast.msg }}</div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;layar&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;form&quot;,&quot;status&quot;],&quot;default&quot;:&quot;form&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layar&quot;},&quot;keputusan&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;diproses&quot;,&quot;disetujui&quot;,&quot;ditolak&quot;],&quot;default&quot;:&quot;diproses&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layar&quot;},&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;desktop&quot;,&quot;ponsel&quot;],&quot;default&quot;:&quot;desktop&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;}}">
+const ALASAN = ['Cuaca ekstrem', 'Keterlambatan material', 'Bencana alam', 'Perubahan desain atas arahan konsultan', 'Lainnya'];
+const BLN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+const OLD = new Date(2026, 11, 28);
+const dS = (d) => d.getDate() + ' ' + BLN[d.getMonth()] + ' ' + d.getFullYear();
+const MENU = [['', 'Beranda', 'house', 'Revit-SKL-Sekolah.dc.html'], ['', 'Proposal saya', 'file-text', 'Revit-SKL-Sekolah.dc.html'], ['', 'Pelaksanaan', 'hammer', 'Revit-SKL-Pelaksanaan.dc.html'], ['form', 'Ajukan perpanjangan', 'calendar-plus'], ['status', 'Status perpanjangan', 'calendar-clock'], ['', 'Dokumen saya', 'folder', 'Revit-SKL-Sekolah.dc.html']];
+
+class Component extends DCLogic {
+  state = { screen: null, alasan: 'Cuaca ekstrem', uraian: '', tgl: '2027-01-15', surat: false, fotos: 1, sent: false, toast: '' };
+  componentDidUpdate(p) { if (p.layar !== this.props.layar && this.state.screen) this.setState({ screen: null }); }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  toast(msg) { clearTimeout(this.tt); this.setState({ toast: msg }); this.tt = setTimeout(() => this.setState({ toast: '' }), 2600); }
+  renderVals() {
+    const s = this.state;
+    const mobile = (this.props.device ?? 'desktop') === 'ponsel';
+    const screen = s.screen || this.props.layar || 'form';
+    const go = (id) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen: id }); };
+    const d = new Date(s.tgl + 'T00:00:00'), valid = !isNaN(d.getTime());
+    const days = valid ? Math.round((d - OLD) / 864e5) : 0;
+    const tglErr = !valid ? 'Pilih tanggal.' : days <= 0 ? 'Tanggal harus setelah tenggat saat ini, 28 Des 2026.' : days > 60 ? 'Perpanjangan maksimal 60 hari, paling lambat 26 Feb 2027.' : undefined;
+    const uLen = s.uraian.replace(/\s+/g, ' ').trim().length;
+    const reason = uLen < 50 ? 'Isi uraian minimal 50 karakter.' : tglErr ? 'Perbaiki tanggal selesai.' : !s.surat ? 'Unggah surat permohonan bertanda tangan.' : s.fotos < 2 ? 'Tambahkan minimal 2 foto bukti.' : undefined;
+    const f = {
+      alasan: ALASAN.map((label) => { const on = s.alasan === label; return { label, on, pick: () => this.setState({ alasan: label }), sty: on ? 'border-color:var(--primary);background-color:var(--primary-subtle);' : 'background-color:var(--surface);', dot: on ? 'border:2px solid var(--primary);' : 'border:2px solid var(--border-strong);', inner: on ? 'background-color:var(--primary);' : '' }; }),
+      uraian: s.uraian, onUraian: (e) => this.setState({ uraian: e.target.value }),
+      uraianMsg: uLen && uLen < 50 ? 'Minimal 50 karakter. Saat ini ' + uLen + '.' : 'Minimal 50 karakter. Sebutkan tanggal dan dampaknya ke pekerjaan.',
+      uraianMsgSty: uLen && uLen < 50 ? 'color:var(--danger-text);' : 'color:var(--text-secondary);',
+      uraianFrame: uLen && uLen < 50 ? 'border-color:var(--danger);border-width:2px;' : '',
+      tgl: s.tgl, onTgl: (e) => this.setState({ tgl: e.target.value }), tglErr,
+      tambah: tglErr ? 'Tenggat saat ini 28 Des 2026.' : 'Tambahan ' + days + ' hari · tenggat baru ' + dS(d) + '.', tambahSty: tglErr ? 'color:var(--text-secondary);' : 'color:var(--text-primary);font-weight:600;',
+      dl: () => this.toast('Template surat diunduh.'),
+      pickSurat: () => this.setState((st) => ({ surat: !st.surat })),
+      suratTitle: s.surat ? 'surat-perpanjangan-sdn-sukamaju-01.pdf' : 'Unggah surat bertanda tangan', suratSub: s.surat ? 'PDF · 1,1 MB · diunggah 5 Okt 2026' : 'PDF, maks. 10 MB', suratAction: s.surat ? 'Ganti' : 'Unggah',
+      suratIcon: s.surat ? 'file-check' : 'file-up', suratThumb: s.surat ? 'background-color:var(--success-subtle);color:var(--success-text);' : 'background-color:var(--surface-muted);color:var(--text-secondary);', suratSty: s.surat ? 'border-style:solid;border-color:var(--border);' : '',
+      fotos: Array.from({ length: s.fotos }, (_, i) => ({ label: 'Bukti ' + (i + 1), remove: () => this.setState((st) => ({ fotos: Math.max(0, st.fotos - 1) })) })),
+      addFoto: () => this.setState((st) => ({ fotos: st.fotos + 1 })), fotoTone: s.fotos >= 2 ? 'success' : 'warning', fotoCount: s.fotos + ' dari min. 2 foto',
+      disabled: !!reason, reason,
+      send: () => { this.setState({ sent: true, screen: 'status' }); this.toast('Pengajuan perpanjangan terkirim.'); }
+    };
+    const kep = s.sent ? 'diproses' : (this.props.keputusan ?? 'diproses');
+    const newD = valid && !tglErr ? d : new Date(2027, 0, 15);
+    const nd = Math.round((newD - OLD) / 864e5);
+    const tlRaw = [['Pengajuan dikirim', 'Drs. Bambang Suryadi · Ketua Panitia', '5 Okt 2026, 10.42', 'done'], ['Diperiksa Konsultan Pelaksanaan', 'Ir. Wahyu Pratama · rekomendasi: setujui', kep === 'diproses' ? 'Sedang diperiksa · sisa 2 hari kerja' : '7 Okt 2026, 14.10', kep === 'diproses' ? 'active' : 'done'], ['Keputusan PPK', 'Agus Prasetyo, S.E. · Setpres', kep === 'diproses' ? 'Menunggu' : '12 Okt 2026, 09.30', kep === 'diproses' ? 'todo' : kep === 'ditolak' ? 'bad' : 'done'], ['SK perpanjangan terbit', 'Dibuat otomatis setelah disetujui', kep === 'disetujui' ? '12 Okt 2026, 09.31' : '—', kep === 'disetujui' ? 'done' : 'todo']];
+    const tl = (kep === 'ditolak' ? tlRaw.slice(0, 3) : tlRaw).map(([label, who, when, k], i, arr) => ({
+      label: k === 'bad' ? 'Tidak disetujui PPK' : label, who, when,
+      dot: k === 'done' ? 'background-color:var(--success);border-color:var(--success);' : k === 'active' ? 'background-color:var(--primary);border-color:var(--primary);' : k === 'bad' ? 'background-color:var(--danger);border-color:var(--danger);' : 'background-color:var(--surface);',
+      line: i === arr.length - 1 ? 'background-color:transparent;' : k === 'done' ? 'background-color:var(--success);' : 'background-color:var(--border);',
+      lblSty: k === 'todo' ? 'color:var(--text-secondary);' : k === 'bad' ? 'color:var(--danger-text);' : ''
+    }));
+    const st = {
+      tone: { diproses: 'primary', disetujui: 'success', ditolak: 'danger' }[kep], badge: { diproses: 'Sedang diperiksa', disetujui: 'Disetujui', ditolak: 'Tidak disetujui' }[kep],
+      ok: kep === 'disetujui', no: kep === 'ditolak', tglAju: '5 Okt 2026', tglBaru: dS(newD), tambah: nd + ' hari', tl,
+      dl: () => this.toast('SK perpanjangan diunduh.'), ulang: () => this.setState({ screen: 'form', sent: false })
+    };
+    const sel = 'background-color:var(--primary-subtle);color:var(--primary);font-weight:600;--hv-bg:var(--primary-subtle);', unsel = 'color:var(--text-primary);font-weight:500;--hv-bg:var(--surface-muted);';
+    return {
+      theme: this.props.theme ?? 'light',
+      shell: mobile
+        ? { desktop: false, mobile: true, portal: '', logo: 32, outer: 'padding:32px 0;display:flex;justify-content:center;background-color:var(--surface-muted);', frame: 'width:360px;height:780px;overflow-y:auto;border:8px solid var(--text-primary);border-radius:28px;background-color:var(--background);', head: 'height:56px;padding:0 16px;', main: 'padding:16px;' }
+        : { desktop: true, mobile: false, portal: 'Portal Sekolah', logo: 36, outer: '', frame: 'min-height:100vh;', head: 'height:64px;padding:0 32px 0 20px;', main: 'padding:32px;' },
+      btnSize: mobile ? 'touch' : 'md',
+      menu: MENU.map(([id, label, icon, href]) => ({ label, icon, href: href || '#' + id, go: href ? () => {} : go(id), sty: id && screen === id ? sel : unsel })),
+      scr: { form: screen === 'form', status: screen === 'status' }, f, st, toast: { show: !!s.toast, msg: s.toast }
+    };
+  }
+}
+</script>
+</body>
+</html>

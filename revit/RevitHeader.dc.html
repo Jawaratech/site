@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+</helmet>
+<header style="position:relative;z-index:30;flex:none;width:100%;min-width:0;display:flex;align-items:stretch;background-color:var(--surface);border-bottom:1px solid var(--border);font-family:var(--font-sans);color:var(--text-primary);{{ sz.bar }}">
+  <div style="flex:none;display:flex;align-items:center;{{ sz.brand }}">
+    <a href="{{ homeHref }}" onClick="{{ goHome }}" title="Kembali ke beranda" aria-label="Revit · kembali ke beranda" style="display:flex;align-items:center;border-radius:var(--radius-md);text-decoration:none;color:inherit" style-hover="text-decoration:none"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.BrandLockup" emblem-src="assets/logo-setneg-ri.svg" size="{{ sz.logo }}" portal="{{ sz.portal }}" hint-size="200px,36px"></x-import></a>
+  </div>
+  <div style="flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:12px;{{ sz.main }}">
+    <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1 1 auto;display:flex;align-items:center;gap:12px;min-width:0;overflow:hidden">
+        <a href="index.dc.html" class="caption" style="flex:none;display:flex;align-items:center;gap:6px;color:var(--text-secondary);white-space:nowrap"><lc-icon name="arrow-left" size="14"></lc-icon>Semua peran</a>
+        <span style="width:1px;height:20px;background-color:var(--border)"></span>
+        <span class="caption" style="display:flex;align-items:center;gap:8px;min-width:0;color:var(--text-secondary)"><span class="tabular" style="padding:2px 8px;border-radius:var(--radius-full);background-color:var(--surface-muted);color:var(--text-primary);font-weight:600">{{ U.code }}</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ U.roleName }}</span></span>
+      </div>
+    </sc-if>
+    <sc-if value="{{ compact }}" hint-placeholder-val="{{ false }}"><span></span></sc-if>
+    <div style="flex:none;display:flex;align-items:center;gap:8px">
+      <sc-if value="{{ hasSwitch }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ toggleRole }}" title="Ganti peran" aria-label="Ganti peran" aria-haspopup="menu" aria-expanded="{{ roleOpen }}" class="body" style="height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--border-strong);border-radius:var(--radius-md);background-color:var(--surface);font-weight:500;cursor:pointer;white-space:nowrap" style-hover="background-color:var(--surface-muted)"><span style="display:inline-flex;color:var(--text-secondary)"><lc-icon name="repeat-2" size="16"></lc-icon></span><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span>Ganti peran</span><span style="display:inline-flex;color:var(--text-secondary)"><lc-icon name="chevron-down" size="16"></lc-icon></span></sc-if></button>
+      </sc-if>
+      <button onClick="{{ toggleNotif }}" aria-haspopup="menu" aria-expanded="{{ notifOpen }}" title="Notifikasi" aria-label="{{ notifAria }}" style="position:relative;width:44px;height:44px;display:grid;place-items:center;border-radius:var(--radius-md);color:var(--text-secondary);cursor:pointer" style-hover="background-color:var(--surface-muted)">
+        <lc-icon name="bell" size="20"></lc-icon>
+        <sc-if value="{{ hasUnread }}" hint-placeholder-val="{{ true }}"><span class="tabular" style="position:absolute;top:6px;right:6px;min-width:18px;height:18px;padding:0 4px;border-radius:var(--radius-full);background-color:var(--danger);color:#ffffff;font-size:11px;line-height:18px;font-weight:600;text-align:center">{{ unread }}</span></sc-if>
+      </button>
+      <span style="width:1px;height:28px;background-color:var(--border)"></span>
+      <dc-import name="RevitUserMenu" initials="{{ U.ini }}" user-name="{{ U.user }}" org="{{ U.org }}" email="{{ U.email }}" phone="{{ U.phone }}" role-label="{{ U.roleLabel }}" instansi="{{ U.instansi }}" compact="{{ compact }}" hint-size="auto,44px"></dc-import>
+    </div>
+  </div>
+
+  <sc-if value="{{ anyOpen }}" hint-placeholder-val="{{ false }}"><div onClick="{{ closeAll }}" style="position:fixed;inset:0;z-index:40"></div></sc-if>
+  <sc-if value="{{ notifOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="menu" aria-label="Notifikasi" style="position:absolute;top:calc(100% - 4px);right:{{ sz.popRight }};z-index:41;width:min(400px, calc(100vw - 24px));background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-overlay);overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)"><span class="h3">Notifikasi</span><button onClick="{{ markAll }}" class="caption" style="color:var(--primary);font-weight:600;cursor:pointer">Tandai semua dibaca</button></div>
+      <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="3">
+        <div style="display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);{{ n.rowSty }}">
+          <span style="width:32px;height:32px;flex:none;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)"><lc-icon name="{{ n.icon }}" size="16"></lc-icon></span>
+          <div style="flex:1;min-width:0"><div class="body" style="{{ n.titleSty }}">{{ n.title }}</div><div class="caption" style="color:var(--text-secondary);margin-top:2px">{{ n.body }}</div></div>
+          <div class="caption" style="color:var(--text-secondary);white-space:nowrap">{{ n.time }}</div>
+        </div>
+      </sc-for>
+      <sc-if value="{{ noNotif }}" hint-placeholder-val="{{ false }}"><div class="body" style="padding:24px 16px;text-align:center;color:var(--text-secondary)">Belum ada notifikasi.</div></sc-if>
+      <div style="padding:12px 16px;text-align:center"><a href="{{ notifHref }}" onClick="{{ seeAll }}" class="body" style="font-weight:600">Lihat semua notifikasi</a></div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ roleOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="menu" aria-label="Ganti peran" style="position:absolute;top:calc(100% - 4px);right:{{ sz.roleRight }};z-index:41;width:min(340px, calc(100vw - 16px));max-height:calc(100vh - 80px);overflow-y:auto;padding:8px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-overlay)">
+      <div class="caption" style="padding:8px 12px 4px;color:var(--text-secondary)">Tampilkan sebagai</div>
+      <sc-for list="{{ roles }}" as="r" hint-placeholder-count="8">
+        <button role="menuitem" onClick="{{ r.go }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:var(--radius-md);text-align:left;cursor:pointer;{{ r.sty }}" style-hover="background-color:var(--hv-bg, transparent)">
+          <span class="caption tabular" style="width:40px;flex:none;font-weight:700">{{ r.code }}</span>
+          <span style="flex:1;min-width:0;display:flex;flex-direction:column"><span class="body" style="font-weight:500">{{ r.label }}</span><span class="caption" style="color:var(--text-secondary)">{{ r.sub }}</span></span>
+          <span class="body" style="font-weight:700">{{ r.mark }}</span>
+        </button>
+      </sc-for>
+    </div>
+  </sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:360},&quot;role&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;SKL&quot;,&quot;ADM&quot;,&quot;KPR&quot;,&quot;PPK&quot;,&quot;APV&quot;,&quot;KPL&quot;,&quot;SA&quot;,&quot;PIM&quot;],&quot;default&quot;:&quot;KPR&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;compact&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;notifHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onNotif&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;},&quot;roleOptions&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{ code: string; label: string; portal?: string; fase?: number; mark?: string; pick?: () =&gt; void }[]&quot;}}">
+const USERS = {
+  SKL: ['BS', 'Drs. Bambang Suryadi', 'Ketua Panitia · SD Negeri Sukamaju 01', 'panitia.sukamaju01@contoh.id', '0812-3456-7890', 'Ketua Panitia', 'SD Negeri Sukamaju 01', 'Portal Sekolah', 'Panitia Sekolah'],
+  ADM: ['RK', 'Rina Kartikasari', 'Verifikator · Setpres', 'rina.k@setpres.contoh.id', '0812-8810-4402', 'Setpres Kelengkapan Administrasi', 'Sekretariat Presiden', 'Portal Setpres', 'Setpres Kelengkapan Administrasi'],
+  KPR: ['DH', 'Ir. Dedi Hermawan', 'Agrinas · Jawa Barat', 'dedi.h@agrinas.contoh.id', '0812-1100-2233', 'Konsultan Perencanaan · Jawa Barat', 'Agrinas', 'Portal Konsultan', 'Konsultan Perencanaan'],
+  PPK: ['AP', 'Agus Prasetyo, S.E.', 'Pejabat Pembuat Komitmen', 'agus.p@setpres.contoh.id', '0812-7731-0094', 'PPK & Bendahara', 'Sekretariat Presiden', 'Portal Setpres', 'PPK & Bendahara'],
+  APV: ['HW', 'Dr. Hendra Wijaya', 'Kepala Bagian · Approver', 'hendra.w@setpres.contoh.id', '0811-9020-3318', 'Approver Proposal & Dana (Kabag)', 'Sekretariat Presiden', 'Portal Setpres', 'Approver (Kabag)'],
+  KPL: ['SN', 'Siti Nurhaliza, S.T.', 'Agrinas · 22 sekolah', 'siti.n@agrinas.contoh.id', '0813-4455-7810', 'Konsultan Pelaksanaan · Kota Kupang, Kota Makassar', 'Agrinas', 'Portal Konsultan', 'Konsultan Pelaksanaan'],
+  SA: ['YF', 'Yudi Firmansyah', 'Super Admin · Setpres', 'yudi.f@setpres.contoh.id', '0813-1209-5571', 'Super Admin', 'Sekretariat Presiden', 'Portal Setpres', 'Super Admin'],
+  PIM: ['PM', 'Pimpinan', 'Hanya baca', 'pimpinan@setneg.contoh.id', '—', 'Pimpinan · hanya baca', 'Kementerian Sekretariat Negara', 'Dashboard Pimpinan', 'Menteri / Presiden']
+};
+const NOTIFS = {
+  SKL: [['search', 'Proposal sedang diperiksa', 'Setpres mulai memeriksa dokumen Anda.', '1 jam lalu', 1], ['circle-check', 'Proposal berhasil diajukan', 'Nomor proposal PRO-2026-0010421.', '3 hari lalu', 0], ['landmark', 'Rekening BNI tersimpan', 'BNI ****4417 sudah tercatat.', '5 hari lalu', 0]],
+  ADM: [['inbox', 'Proposal baru masuk', 'SD Negeri Garut Kota 1 · Kab. Garut', '12 menit lalu', 1], ['refresh-cw', 'Pengajuan ulang', 'SD Negeri Margahayu 03 memperbaiki SK Panitia', '1 jam lalu', 1], ['clock', 'Lewat SLA', '37 proposal melewati batas 3 hari kerja', '3 jam lalu', 0]],
+  KPR: [['clipboard-check', 'Tugas baru', 'SD Negeri Cimahi Utara 3 · tenggat 16 Okt 2026', '40 menit lalu', 1], ['clock', 'Tenggat terlewat', 'SD Negeri Leuwiliang 04 · lewat 2 hari', 'Kemarin', 0]],
+  PPK: [['file-pen-line', 'Proposal siap PKS', 'SD Negeri Banyumanik 04 · Rp 598.750.000', '25 menit lalu', 1], ['x-circle', 'PKS ditolak Approver', 'SD Negeri Rungkut 2 · nomor PKS tidak sesuai', '2 jam lalu', 1], ['calendar-clock', 'Pengajuan addendum', 'SD Inpres Kayu Putih · +45 hari', 'Kemarin', 0]],
+  APV: [['check-check', 'Menunggu persetujuan', 'SD Negeri Wonokromo 1 · Rp 702.300.000', '30 menit lalu', 1], ['clock', 'Lewat SLA', '5 proposal menunggu lebih dari 2 hari kerja', '4 jam lalu', 0]],
+  KPL: [['file-check', 'Laporan mingguan masuk', 'SD Negeri Panakkukang 1 · minggu ke-8', '1 jam lalu', 1], ['triangle-alert', 'Deviasi merah', 'SD Inpres Kayu Putih · −12% dari rencana', '3 jam lalu', 1], ['clock', 'Tidak lapor 2 minggu', 'SD Negeri Alak 2', 'Kemarin', 0]],
+  SA: [['user-plus', 'Pendaftaran tanpa kode', 'SD Negeri Sungai Raya 8 · Kab. Kubu Raya', '2 jam lalu', 1], ['key-round', 'Kode registrasi diterbitkan', '1.200 kode untuk Jawa Tengah', 'Kemarin', 0]],
+  PIM: [['chart-line', 'Data harian diperbarui', 'Dashboard nasional per 5 Okt 2026, 06.00 WIB', '2 jam lalu', 0]]
+};
+const FILES = { SKL: 'Revit-SKL-Sekolah.dc.html', ADM: 'Revit-ADM-Kelengkapan.dc.html', KPR: 'Revit-KPR-Konsultan-Perencanaan.dc.html', PPK: 'Revit-PPK-Bendahara.dc.html', APV: 'Revit-APV-Approver.dc.html', KPL: 'Revit-KPL-Konsultan-Pelaksanaan.dc.html', SA: 'Revit-SA-Super-Admin.dc.html', PIM: 'Revit-PIM-Pimpinan.dc.html' };
+
+class Component extends DCLogic {
+  state = { open: null, read: false };
+  componentDidMount() { this.onKey = (e) => { if (e.key === 'Escape' && this.state.open) this.setState({ open: null }); }; document.addEventListener('keydown', this.onKey); }
+  componentWillUnmount() { document.removeEventListener('keydown', this.onKey); }
+  renderVals() {
+    const p = this.props, s = this.state;
+    const code = USERS[p.role] ? p.role : 'SKL';
+    const u = USERS[code];
+    const compact = !!p.compact;
+    const raw = NOTIFS[code] || [];
+    const unreadN = s.read ? 0 : raw.filter((n) => n[4]).length;
+    const opts = Array.isArray(p.roleOptions) ? p.roleOptions : Object.keys(USERS).map((c) => ({ code: c, label: USERS[c][8], portal: USERS[c][7], mark: c === code ? '✓' : '' }));
+    const close = () => this.setState({ open: null });
+    return {
+      U: { code, ini: u[0], user: u[1], org: u[2], email: u[3], phone: u[4], roleLabel: u[5], instansi: u[6], roleName: u[8] },
+      compact, wide: !compact,
+      sz: compact
+        ? { bar: 'height:56px;', brand: 'padding:0 0 0 16px;', main: 'padding:0 8px 0 12px;', logo: 32, portal: '', popRight: '8px', roleRight: '8px' }
+        : { bar: 'height:64px;', brand: 'width:248px;padding:0 20px;border-right:1px solid var(--border);', main: 'padding:0 24px 0 24px;', logo: 36, portal: u[7], popRight: '24px', roleRight: '200px' },
+      hasUnread: unreadN > 0, unread: String(unreadN), notifAria: unreadN ? 'Notifikasi, ' + unreadN + ' belum dibaca' : 'Notifikasi',
+      notifs: raw.map(([icon, title, body, time, un]) => ({ icon, title, body, time, titleSty: un && !s.read ? 'font-weight:600;' : 'color:var(--text-secondary);', rowSty: un && !s.read ? 'background-color:var(--primary-subtle);' : '' })),
+      noNotif: raw.length === 0,
+      notifOpen: s.open === 'notif', roleOpen: s.open === 'role', anyOpen: !!s.open,
+      toggleNotif: () => this.setState((st) => ({ open: st.open === 'notif' ? null : 'notif' })),
+      toggleRole: () => this.setState((st) => ({ open: st.open === 'role' ? null : 'role' })),
+      closeAll: close, markAll: () => this.setState({ read: true }),
+      notifHref: p.notifHref || '#',
+      seeAll: (e) => { close(); if (p.onNotif) { if (e && e.preventDefault) e.preventDefault(); p.onNotif(); } },
+      homeHref: FILES[code] || 'index.dc.html',
+      goHome: (e) => { close(); if (p.onHome) { if (e && e.preventDefault) e.preventDefault(); p.onHome(); } },
+      hasSwitch: opts.length > 0,
+      roles: opts.map((r) => ({ code: r.code, label: r.label, sub: r.portal || '', mark: r.mark || '', sty: r.mark ? 'background-color:var(--primary-subtle);color:var(--primary);--hv-bg:var(--primary-subtle);' : 'color:var(--text-primary);--hv-bg:var(--surface-muted);', go: () => { close(); if (r.pick) r.pick(); else if (FILES[r.code]) (window.revitGo || location.assign.bind(location))(FILES[r.code]); } }))
+    };
+  }
+}
+</script>
+</body>
+</html>

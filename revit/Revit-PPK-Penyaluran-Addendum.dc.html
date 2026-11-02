@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail" data-bg-color="#F5F7FB"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0B5FEF"/><text x="50" y="64" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="700" fill="#ffffff">R</text></svg></template>
+<x-dc>
+<helmet>
+<script src="revit-preloader.js"></script>
+<title>Revit · Penyaluran CSV dan addendum</title>
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/base.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/semantic.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/text-styles.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/tokens/interaction.css">
+<link rel="stylesheet" href="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/styles.css">
+<script src="_ds/revit-design-system-e94b7b80-439b-43a6-87b9-ed1dab6e2148/_ds_bundle.js"></script>
+<script src="lc-icon.js"></script>
+<style>*,::before,::after{box-sizing:border-box;margin:0;padding:0;border:0 solid var(--border)}body{margin:0;line-height:1.5;background:var(--background);color:var(--text-primary);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}button,input{font:inherit;color:inherit;letter-spacing:inherit;background-color:transparent}table{border-collapse:collapse}ol,ul{list-style:none}a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}</style>
+</helmet>
+<img data-revit-logo="1" src="assets/logo-setneg-ri.svg" alt="" style="display:none">
+<img data-revit-geo="1" src="assets/maps/indonesia-provinsi-contoh.json" alt="" style="display:none">
+<div data-theme="{{ theme }}" style="min-height:100vh;background-color:var(--background);color:var(--text-primary);font-family:var(--font-sans);display:flex;flex-direction:column">
+  <dc-import name="RevitHeader" style="display:block;width:100%;min-width:0;flex:none" role="PPK" compact="{{ false }}" hint-size="100%,64px"></dc-import>
+  <div style="flex:1;display:flex;min-height:0">
+    <aside style="width:248px;flex:none;display:flex;flex-direction:column;background-color:var(--surface);border-right:1px solid var(--border)">
+      <nav style="padding:12px;display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ menu }}" as="m" hint-placeholder-count="8">
+          <a href="{{ m.href }}" onClick="{{ m.go }}" class="body" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);text-decoration:none;{{ m.sty }}" style-hover="background-color:var(--hv-bg, transparent);text-decoration-line:none"><lc-icon name="{{ m.icon }}" size="20"></lc-icon><span style="flex:1">{{ m.label }}</span><span class="caption tabular" style="{{ m.countSty }}">{{ m.count }}</span></a>
+        </sc-for>
+      </nav>
+      <div class="caption" style="margin-top:auto;padding:20px;border-top:1px solid var(--border);color:var(--text-secondary)">Revit · Tahun anggaran 2026</div>
+    </aside>
+    <main style="flex:1;min-width:0;padding:32px;display:flex;flex-direction:column;gap:24px">
+
+      <!-- L49 Unggah CSV -->
+      <sc-if value="{{ scr.unggah }}" hint-placeholder-val="{{ true }}">
+        <section data-screen-label="L49 Unggah CSV BNI" style="display:flex;flex-direction:column;gap:24px;max-width:960px">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+            <div>
+              <div class="caption" style="color:var(--text-secondary)">Penyaluran CSV</div>
+              <h1 class="h1" style="margin-top:4px">Unggah hasil transfer BNI</h1>
+              <p class="body" style="color:var(--text-secondary);margin-top:4px">Proposal yang sukses ditransfer berpindah dari S08 Menunggu Pencairan ke S09 Dana Tersalurkan.</p>
+            </div>
+            <button onClick="{{ go.riwayat }}" class="body" style="font-weight:600;color:var(--primary);cursor:pointer">Riwayat unggahan ›</button>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+            <div style="flex:999 1 480px;min-width:0;display:flex;flex-direction:column;gap:16px">
+              <button onClick="{{ csv.pick }}" onDragOver="{{ csv.over }}" onDragLeave="{{ csv.leave }}" onDrop="{{ csv.drop }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:240px;padding:32px;border:2px dashed var(--border-strong);border-radius:var(--radius-lg);background-color:var(--surface);cursor:pointer;text-align:center;{{ csv.zoneSty }}" style-hover="border-color:var(--primary)">
+                <span style="width:56px;height:56px;display:grid;place-items:center;border-radius:var(--radius-full);background-color:var(--primary-subtle);color:var(--primary)"><lc-icon name="file-spreadsheet" size="28"></lc-icon></span>
+                <span class="h3">Tarik file CSV ke sini atau pilih file</span>
+                <span class="body" style="color:var(--text-secondary)">CSV dari BNI Direct · maks. 10 MB atau 10.000 baris</span>
+              </button>
+              <sc-if value="{{ csv.err }}" hint-placeholder-val="{{ false }}">
+                <div role="alert" class="body" style="display:flex;gap:10px;padding:12px 16px;border-radius:var(--radius-md);background-color:var(--danger-subtle);color:var(--danger-text)"><span style="flex:none;margin-top:1px"><lc-icon name="circle-alert" size="18"></lc-icon></span><span>{{ csv.errMsg }}</span></div>
+              </sc-if>
+            </div>
+            <div style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:12px;padding:20px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+              <h2 class="h3">Kolom wajib</h2>
+              <ul style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ cols }}" as="c" hint-placeholder-count="6">
+                  <li style="display:flex;flex-direction:column"><code class="body tabular" style="font-family:ui-monospace,monospace;font-weight:600">{{ c.k }}</code><span class="caption" style="color:var(--text-secondary)">{{ c.v }}</span></li>
+                </sc-for>
+              </ul>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ csv.template }}" hint-size="170px,40px">Unduh template</x-import>
+              <span class="caption" style="color:var(--text-secondary)">Pemisah titik koma (;). Nominal tanpa titik ribuan.</span>
+            </div>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- L50 Pratinjau validasi -->
+      <sc-if value="{{ scr.validasi }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L50 Pratinjau validasi" style="display:flex;flex-direction:column;gap:24px;max-width:1120px">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Penyaluran CSV › Validasi</div>
+            <h1 class="h1" style="margin-top:4px">Pratinjau validasi</h1>
+            <p class="body" style="color:var(--text-secondary);margin-top:4px">transfer-bni-05okt2026.csv · 2,1 MB · 1.248 baris · diunggah 5 Okt 2026, 10.42</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Baris valid" value="1.236" tone="success" note="Rp 742,8 M siap diproses" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Baris error" value="12" tone="danger" note="Tidak akan diproses" hint-size="100%,104px"></x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Total baris" value="1.248" note="Dari 1 file" hint-size="100%,104px"></x-import>
+          </div>
+          <div style="background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card);overflow-x:auto">
+            <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px"><h2 class="h3">Baris error</h2><x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="ghost" on-click="{{ val.dlErr }}" hint-size="190px,40px">Unduh daftar error</x-import></div>
+            <table class="body" style="width:100%;min-width:720px">
+              <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding:10px 12px;font-weight:600;text-align:right;width:80px">Baris</th><th style="padding:10px 12px;font-weight:600">NPSN</th><th style="padding:10px 12px;font-weight:600">Sekolah</th><th style="padding:10px 12px;font-weight:600;text-align:right">Nominal</th><th style="padding:10px 12px;font-weight:600">Alasan</th></tr></thead>
+              <tbody>
+                <sc-for list="{{ val.errs }}" as="e" hint-placeholder-count="6">
+                  <tr style="border-top:1px solid var(--border)">
+                    <td class="tabular" style="padding:10px 12px;text-align:right;color:var(--text-secondary)">{{ e.row }}</td>
+                    <td class="tabular" style="padding:10px 12px">{{ e.npsn }}</td>
+                    <td style="padding:10px 12px">{{ e.nama }}</td>
+                    <td class="tabular" style="padding:10px 12px;text-align:right;white-space:nowrap">{{ e.nominal }}</td>
+                    <td style="padding:10px 12px;color:var(--danger-text)">{{ e.alasan }}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <div class="caption" style="padding:12px 20px;border-top:1px solid var(--border);color:var(--text-secondary)">Menampilkan 6 dari 12 error</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end">
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ go.unggah }}" hint-size="140px,40px">Ganti file</x-import>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ val.proses }}" hint-size="220px,40px">Proses 1.236 baris valid</x-import>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- L51 Hasil proses -->
+      <sc-if value="{{ scr.hasil }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L51 Hasil proses" style="display:flex;flex-direction:column;gap:24px;max-width:960px">
+          <div>
+            <div class="caption" style="color:var(--text-secondary)">Penyaluran CSV › Hasil</div>
+            <h1 class="h1" style="margin-top:4px">{{ res.title }}</h1>
+            <p class="body" style="color:var(--text-secondary);margin-top:4px">transfer-bni-05okt2026.csv · Anda boleh meninggalkan halaman ini, proses tetap berjalan.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><span class="body" style="font-weight:600">{{ res.stage }}</span><span class="h3 tabular">{{ res.pctLabel }}</span></div>
+            <div style="height:10px;border-radius:var(--radius-full);background-color:var(--surface-muted);overflow:hidden"><div style="height:100%;border-radius:var(--radius-full);transition:width 120ms ease;{{ res.bar }}"></div></div>
+            <span class="caption tabular" style="color:var(--text-secondary)">{{ res.count }}</span>
+          </div>
+          <sc-if value="{{ res.done }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Sukses → S09" value="1.229" tone="success" note="Rp 738,6 M tersalurkan" hint-size="100%,104px"></x-import>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Gagal · tetap S08" value="7" tone="danger" note="Rekening tidak aktif atau ditolak bank" hint-size="100%,104px"></x-import>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.PaguCard" label="Tidak diproses" value="12" note="Gagal validasi format" hint-size="100%,104px"></x-import>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end">
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="secondary" on-click="{{ res.dl }}" hint-size="190px,40px">Unduh laporan error</x-import>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ go.riwayat }}" hint-size="170px,40px">Lihat riwayat</x-import>
+            </div>
+          </sc-if>
+        </section>
+      </sc-if>
+
+      <!-- L52 Riwayat unggahan -->
+      <sc-if value="{{ scr.riwayat }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L52 Riwayat unggahan" style="display:flex;flex-direction:column;gap:24px;max-width:1120px">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+            <div><div class="caption" style="color:var(--text-secondary)">Penyaluran CSV › Riwayat</div><h1 class="h1" style="margin-top:4px">Riwayat unggahan</h1></div>
+            <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="primary" on-click="{{ go.unggah }}" hint-size="150px,40px">Unggah CSV</x-import>
+          </div>
+          <div style="background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card);overflow-x:auto">
+            <table class="body" style="width:100%;min-width:820px">
+              <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding:10px 12px;font-weight:600">File</th><th style="padding:10px 12px;font-weight:600">Pengunggah</th><th style="padding:10px 12px;font-weight:600">Waktu</th><th style="padding:10px 12px;font-weight:600;text-align:right">Diproses</th><th style="padding:10px 12px;font-weight:600;text-align:right">Gagal</th><th style="padding:10px 12px;font-weight:600;text-align:right">Nominal sukses</th><th style="padding:10px 12px"></th></tr></thead>
+              <tbody>
+                <sc-for list="{{ hist }}" as="h" hint-placeholder-count="5">
+                  <tr style="border-top:1px solid var(--border)" style-hover="background-color:var(--surface-muted)">
+                    <td style="padding:10px 12px"><div style="display:flex;align-items:center;gap:8px"><span style="color:var(--text-secondary);display:inline-flex"><lc-icon name="file-spreadsheet" size="18"></lc-icon></span><span style="font-weight:600">{{ h.file }}</span></div></td>
+                    <td style="padding:10px 12px">{{ h.who }}</td>
+                    <td class="tabular" style="padding:10px 12px;color:var(--text-secondary)">{{ h.when }}</td>
+                    <td class="tabular" style="padding:10px 12px;text-align:right">{{ h.ok }}</td>
+                    <td class="tabular" style="padding:10px 12px;text-align:right;{{ h.failSty }}">{{ h.fail }}</td>
+                    <td class="tabular" style="padding:10px 12px;text-align:right;white-space:nowrap">{{ h.nom }}</td>
+                    <td style="padding:10px 12px;text-align:right"><a href="#" class="body" style="font-weight:600">Laporan</a></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- L53 Antrian addendum -->
+      <sc-if value="{{ scr.antrian }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L53 Antrian addendum" style="display:flex;flex-direction:column;gap:24px;max-width:1120px">
+          <div><div class="caption" style="color:var(--text-secondary)">Addendum</div><h1 class="h1" style="margin-top:4px">Antrian addendum</h1><p class="body" style="color:var(--text-secondary);margin-top:4px">Pengajuan perpanjangan waktu · diurutkan dari sisa SLA terkecil · batas keputusan 3 hari kerja</p></div>
+          <div style="background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card);overflow-x:auto">
+            <table class="body" style="width:100%;min-width:860px">
+              <thead class="caption" style="background-color:var(--surface-muted);text-align:left;color:var(--text-secondary)"><tr><th style="padding:10px 12px;font-weight:600">Sekolah</th><th style="padding:10px 12px;font-weight:600">Alasan</th><th style="padding:10px 12px;font-weight:600">Tenggat lama → usulan</th><th style="padding:10px 12px;font-weight:600">Rekomendasi KPL</th><th style="padding:10px 12px;font-weight:600">Sisa SLA</th><th style="padding:10px 12px;font-weight:600">Status</th></tr></thead>
+              <tbody>
+                <sc-for list="{{ add.rows }}" as="r" hint-placeholder-count="7">
+                  <tr onClick="{{ r.open }}" style="border-top:1px solid var(--border);cursor:pointer" style-hover="background-color:var(--surface-muted)">
+                    <td style="padding:10px 12px"><div style="font-weight:600">{{ r.nama }}</div><div class="caption" style="color:var(--text-secondary)">{{ r.kab }} · progres {{ r.prog }}</div></td>
+                    <td style="padding:10px 12px">{{ r.alasan }}</td>
+                    <td class="tabular" style="padding:10px 12px;white-space:nowrap">{{ r.lama }} → <b>{{ r.baru }}</b><div class="caption" style="color:var(--text-secondary)">+{{ r.hari }} hari</div></td>
+                    <td style="padding:10px 12px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ r.rekTone }}" hint-size="90px,24px">{{ r.rek }}</x-import></td>
+                    <td style="padding:10px 12px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.SlaChip" days="{{ r.sla }}" hint-size="90px,24px"></x-import></td>
+                    <td style="padding:10px 12px"><x-import component-from-global-scope="RevitDesignSystem_e94b7b.StatusBadge" tone="{{ r.stTone }}" hint-size="100px,24px">{{ r.st }}</x-import></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- L54 Keputusan addendum -->
+      <sc-if value="{{ scr.keputusan }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="L54 Keputusan addendum" style="display:flex;flex-direction:column;gap:20px">
+          <div class="caption" style="display:flex;align-items:center;gap:8px;color:var(--text-secondary)"><button onClick="{{ go.antrian }}" style="color:var(--primary);cursor:pointer">Antrian addendum</button><span>›</span><span>{{ dec.nama }}</span></div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px"><h1 class="h1">{{ dec.nama }}</h1><x-import component-from-global-scope="RevitDesignSystem_e94b7b.SlaChip" days="{{ dec.sla }}" hint-size="90px,24px"></x-import></div>
+          <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+            <div style="flex:3 1 480px;min-width:0;display:flex;flex-direction:column;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:8px;padding:20px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><h2 class="h3">Surat permohonan</h2><a href="#" class="body" style="font-weight:600">Buka PDF</a></div>
+                <div style="height:340px;overflow:auto;padding:20px;border-radius:var(--radius-md);background-color:var(--neutral-subtle)">
+                  <div style="max-width:420px;margin:0 auto;aspect-ratio:210/297;background-color:#ffffff;color:#1a2b4c;box-shadow:var(--shadow-card);padding:32px;display:flex;flex-direction:column;gap:8px;font-size:10px;line-height:1.6">
+                    <div style="text-align:center;font-weight:700">{{ dec.nama }}</div>
+                    <div style="text-align:center;font-weight:700;margin-top:8px">PERMOHONAN PERPANJANGAN WAKTU PELAKSANAAN</div>
+                    <div>Dengan hormat, kami mengajukan perpanjangan waktu pelaksanaan revitalisasi sesuai PKS {{ dec.pks }} dari {{ dec.lama }} menjadi {{ dec.baru }} ({{ dec.hari }} hari).</div>
+                    <div>Alasan: {{ dec.uraian }}</div>
+                    <div style="margin-top:auto;align-self:flex-end;text-align:center">Kepala Sekolah,<div style="height:32px"></div><b>(ditandatangani)</b></div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;padding:20px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card)">
+                <h2 class="h3">Foto bukti</h2>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+                  <sc-for list="{{ dec.fotos }}" as="p" hint-placeholder-count="3"><div class="caption" style="aspect-ratio:4/3;display:grid;place-items:center;border-radius:var(--radius-md);background-color:var(--surface-muted);border:1px solid var(--border);color:var(--text-secondary)">{{ p }}</div></sc-for>
+                </div>
+              </div>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.ReviewerNote" title="Rekomendasi Konsultan Pelaksanaan" count="{{ 1 }}" author="{{ dec.kpl }}" role="Konsultan Pelaksanaan" date="{{ dec.kplTgl }}" link-label="Buka detail pengawasan" hint-size="100%,120px">{{ dec.kplNote }}</x-import>
+            </div>
+            <div style="flex:2 1 340px;min-width:0;display:flex;flex-direction:column;gap:16px;padding:24px;background-color:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);box-shadow:var(--shadow-card);position:sticky;top:24px">
+              <h2 class="h2">Keputusan</h2>
+              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+                <div style="display:flex;flex-direction:column;gap:2px"><span class="caption" style="color:var(--text-secondary)">Tenggat lama</span><span class="body tabular" style="font-weight:600">{{ dec.lama }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><span class="caption" style="color:var(--text-secondary)">Usulan sekolah</span><span class="body tabular" style="font-weight:600">{{ dec.baru }} · +{{ dec.hari }} hari</span></div>
+              </div>
+              <div role="radiogroup" style="display:flex;padding:4px;gap:4px;border:1px solid var(--border);border-radius:var(--radius-md);background-color:var(--surface-muted)">
+                <sc-for list="{{ dec.modes }}" as="m" hint-placeholder-count="2"><button role="radio" aria-checked="{{ m.on }}" onClick="{{ m.pick }}" class="body" style="flex:1;height:36px;border-radius:var(--radius-md);font-weight:600;cursor:pointer;{{ m.sty }}">{{ m.label }}</button></sc-for>
+              </div>
+              <sc-if value="{{ dec.isSetuju }}" hint-placeholder-val="{{ true }}">
+                <x-import component-from-global-scope="RevitDesignSystem_e94b7b.TextField" label="Tanggal selesai baru" size="md" type="date" value="{{ dec.tgl }}" on-change="{{ dec.onTgl }}" helper="Boleh berbeda dari usulan. Maks. 60 hari dari tenggat lama." error="{{ dec.tglErr }}" hint-size="100%,96px"></x-import>
+                <div class="body" style="display:flex;gap:10px;padding:12px 16px;border-radius:var(--radius-md);background-color:var(--primary-subtle)"><span style="flex:none;margin-top:1px;color:var(--primary)"><lc-icon name="file-text" size="18"></lc-icon></span><span>SK perpanjangan dibuat otomatis dan dikirim ke sekolah. Jadwal rencana sekolah dibuka untuk disesuaikan.</span></div>
+              </sc-if>
+              <sc-if value="{{ dec.isTolak }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span class="body" style="font-weight:600">Catatan untuk sekolah</span>
+                  <dc-import name="RevitEditorTeks" value="{{ dec.catatan }}" on-change="{{ dec.onCatatan }}" rows="4" frame-style="{{ dec.catFrame }}" label="Catatan penolakan" placeholder="Sebutkan apa yang kurang dan apa yang harus dilampirkan bila mengajukan ulang." hint-size="100%,160px"></dc-import>
+                  <span class="caption" style="{{ dec.catMsgSty }}">{{ dec.catMsg }}</span>
+                </div>
+              </sc-if>
+              <x-import component-from-global-scope="RevitDesignSystem_e94b7b.Button" variant="{{ dec.btnVariant }}" full-width="{{ true }}" disabled="{{ dec.disabled }}" disabled-reason="{{ dec.reason }}" on-click="{{ dec.submit }}" hint-size="100%,40px">{{ dec.btnLabel }}</x-import>
+            </div>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ toast.show }}" hint-placeholder-val="{{ false }}">
+        <div role="status" class="body" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--radius-md);background-color:var(--brand-navy);color:#ffffff;box-shadow:var(--shadow-overlay)"><lc-icon name="circle-check" size="18"></lc-icon>{{ toast.msg }}</div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;layar&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;unggah&quot;,&quot;validasi&quot;,&quot;hasil&quot;,&quot;riwayat&quot;,&quot;antrian&quot;,&quot;keputusan&quot;],&quot;default&quot;:&quot;unggah&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layar&quot;},&quot;fileError&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;tidak ada&quot;,&quot;terlalu besar&quot;,&quot;bukan csv&quot;,&quot;kolom kurang&quot;],&quot;default&quot;:&quot;tidak ada&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layar&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tampilan&quot;}}">
+const COLS = [['npsn', '8 angka'], ['no_rekening', '10 angka, rekening BNI sekolah'], ['nama_rekening', 'Sesuai buku tabungan'], ['nominal', 'Sama dengan nilai PKS'], ['tanggal_transfer', 'Format DD-MM-YYYY'], ['status_bank', 'SUKSES atau GAGAL']];
+const ERRS = [[14, '99990152', 'SD Negeri Tlogosari 2', 598750000, 'Nominal tidak sama dengan nilai PKS (Rp 589.750.000).'], [87, '9999017', '—', 612000000, 'NPSN harus 8 angka.'], [203, '99990188', 'SD Negeri Pasar Minggu 05', 645300000, 'Proposal berstatus S07, belum boleh dicairkan.'], [418, '99990221', 'SD Negeri Denpasar 11', 701250000, 'Nomor rekening tidak sama dengan data sekolah.'], [655, '99990105', 'SD Negeri Banyumanik 04', 598750000, 'Baris ganda: NPSN sudah ada di baris 612.'], [902, '99990240', 'SD Negeri Ambon 3', 633000000, 'Tanggal transfer kosong.']];
+const HIST = [['transfer-bni-05okt2026.csv', 'Agus Prasetyo, S.E.', '5 Okt 2026, 10.42', 1229, 7, 'Rp 738,6 M'], ['transfer-bni-28sep2026.csv', 'Agus Prasetyo, S.E.', '28 Sep 2026, 14.10', 1846, 3, 'Rp 1,11 T'], ['transfer-bni-21sep2026.csv', 'Dewi Anggraini', '21 Sep 2026, 09.55', 2104, 0, 'Rp 1,26 T'], ['transfer-bni-14sep2026.csv', 'Agus Prasetyo, S.E.', '14 Sep 2026, 16.30', 1512, 12, 'Rp 902,4 M'], ['transfer-bni-07sep2026.csv', 'Dewi Anggraini', '7 Sep 2026, 11.05', 988, 1, 'Rp 594,7 M']];
+const MENU = [['', 'Dashboard pagu', 'wallet'], ['', 'Persiapan PKS', 'file-pen-line', 48], ['cair', 'Persetujuan pencairan', 'stamp', 2], ['eksekusi', 'Eksekusi pencairan', 'banknote', 1], ['csv', 'Penyaluran CSV', 'upload'], ['addendum', 'Addendum', 'file-plus', 7], ['', 'Kelola pagu', 'sliders-horizontal'], ['', 'Daftar sekolah', 'list'], ['', 'Peta', 'map']];
+const rp = (n) => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+const BLN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+const dS = (d) => d.getDate() + ' ' + BLN[d.getMonth()] + ' ' + d.getFullYear();
+const iso = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+// id, nama, kab, progres, alasan, lama(Y,M,D), +hari, rekomendasi, sla, pks, uraian
+const ADD = [
+  ['kayu', 'SD Inpres Kayu Putih', 'Kota Kupang', '38%', 'Cuaca ekstrem', [2026, 11, 31], 45, 'Setujui', -1, 'PKS-0414/SETPRES/IX/2026', 'hujan deras 18 hari pada November sehingga pengecoran balok dan pemasangan atap tertunda.'],
+  ['sukamaju', 'SD Negeri Sukamaju 01', 'Kab. Bogor', '30%', 'Cuaca ekstrem', [2026, 11, 28], 18, 'Setujui', 1, 'PKS-0423/SETPRES/VIII/2026', 'hujan deras 18 hari sepanjang November sehingga pengecoran dan pemasangan atap tertunda.'],
+  ['alak', 'SD Negeri Alak 2', 'Kota Kupang', '22%', 'Keterlambatan material', [2026, 11, 20], 60, 'Tolak', 1, 'PKS-0409/SETPRES/IX/2026', 'besi beton dari pemasok di Surabaya terlambat 5 minggu karena jadwal kapal.'],
+  ['tamalate', 'SD Negeri Tamalate 4', 'Kota Makassar', '24%', 'Perubahan desain', [2027, 0, 10], 30, 'Setujui', 2, 'PKS-0411/SETPRES/IX/2026', 'konsultan meminta penambahan ring balok setelah ditemukan retak pada pondasi lama.'],
+  ['entrop', 'SD Negeri Entrop', 'Kota Jayapura', '61%', 'Bencana alam', [2026, 11, 15], 40, 'Setujui', 2, 'PKS-0388/SETPRES/VI/2026', 'banjir 3–9 Okt 2026 merendam lokasi dan gudang material.'],
+  ['panakkukang', 'SD Negeri Panakkukang 1', 'Kota Makassar', '66%', 'Keterlambatan material', [2026, 11, 24], 21, 'Setujui', 3, 'PKS-0412/SETPRES/IX/2026', 'keramik yang dipesan tidak sesuai spesifikasi dan harus diganti.'],
+  ['oesapa', 'SD Negeri Oesapa 3', 'Kota Kupang', '52%', 'Lainnya', [2026, 11, 22], 14, 'Tolak', 3, 'PKS-0413/SETPRES/IX/2026', 'pergantian kepala tukang di tengah pekerjaan.']
+];
+
+class Component extends DCLogic {
+  state = { screen: null, drag: false, prog: 0, toast: '', open: 'kayu', decided: {}, mode: 'setuju', tglBaru: '', catatan: '' };
+  componentDidMount() { const h = (location.hash || '').slice(1); if (h === 'addendum') this.setState({ screen: 'antrian' }); else if (h === 'csv') this.setState({ screen: 'unggah' }); }
+  componentDidUpdate(p) { if (p.layar !== this.props.layar && this.state.screen) this.setState({ screen: null }); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.tt); }
+  toast(m) { clearTimeout(this.tt); this.setState({ toast: m }); this.tt = setTimeout(() => this.setState({ toast: '' }), 2600); }
+  run() { clearInterval(this.iv); this.setState({ screen: 'hasil', prog: 0 }); this.iv = setInterval(() => { const p = Math.min(100, this.state.prog + 7); this.setState({ prog: p }); if (p >= 100) clearInterval(this.iv); }, 180); }
+  renderVals() {
+    const s = this.state;
+    const screen = s.screen || this.props.layar || 'unggah';
+    const go = (id) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen: id }); };
+    const errKind = this.props.fileError ?? 'tidak ada';
+    const activeMenu = ['unggah', 'validasi', 'hasil', 'riwayat'].includes(screen) ? 'csv' : 'addendum';
+    const pending = Object.keys(s.decided).length;
+    const prog = screen === 'hasil' && this.props.layar === 'hasil' && !s.screen ? 100 : s.prog;
+    const ok = Math.round(1236 * prog / 100);
+    return {
+      theme: this.props.theme ?? 'light',
+      menu: MENU.map(([id, label, icon, count]) => ({ label, icon, href: id === 'cair' || id === 'eksekusi' ? 'Revit-PPK-Bendahara.dc.html#' + id : id ? '#' + id : 'Revit-PPK-Bendahara.dc.html', go: id === 'cair' || id === 'eksekusi' ? () => {} : id ? go(id === 'csv' ? 'unggah' : 'antrian') : () => {}, sty: id === activeMenu ? 'background-color:var(--primary-subtle);color:var(--primary);font-weight:600;--hv-bg:var(--primary-subtle);' : 'color:var(--text-primary);font-weight:500;--hv-bg:var(--surface-muted);', count: id === 'addendum' ? String(Math.max(0, 7 - pending)) : count ? String(count) : '', countSty: 'color:var(--text-secondary);font-weight:600;' })),
+      scr: { unggah: screen === 'unggah', validasi: screen === 'validasi', hasil: screen === 'hasil', riwayat: screen === 'riwayat', antrian: screen === 'antrian', keputusan: screen === 'keputusan' },
+      go: { unggah: go('unggah'), riwayat: go('riwayat'), antrian: go('antrian') },
+      cols: COLS.map(([k, v]) => ({ k, v })),
+      csv: {
+        zoneSty: s.drag ? 'border-color:var(--primary);background-color:var(--primary-subtle);' : errKind !== 'tidak ada' ? 'border-color:var(--danger);' : '',
+        pick: () => { if (errKind === 'tidak ada') this.setState({ screen: 'validasi' }); },
+        over: (e) => { e.preventDefault(); if (!this.state.drag) this.setState({ drag: true }); }, leave: () => this.setState({ drag: false }),
+        drop: (e) => { e.preventDefault(); this.setState({ drag: false }); if (errKind === 'tidak ada') this.setState({ screen: 'validasi' }); },
+        err: errKind !== 'tidak ada', errMsg: errKind === 'terlalu besar' ? 'File 14,6 MB melebihi batas 10 MB. Pecah menjadi beberapa file.' : errKind === 'bukan csv' ? 'File harus berformat .csv. File yang dipilih: transfer-bni.xlsx.' : 'Kolom wajib tidak lengkap: nominal, status_bank. Pakai template terbaru.',
+        template: () => this.toast('Template CSV diunduh.')
+      },
+      val: { errs: ERRS.map(([row, npsn, nama, nom, alasan]) => ({ row: String(row), npsn, nama, nominal: rp(nom), alasan })), dlErr: () => this.toast('Daftar 12 error diunduh.'), proses: () => this.run() },
+      res: { done: prog >= 100, title: prog >= 100 ? 'Proses selesai' : 'Sedang memproses', stage: prog >= 100 ? 'Selesai pukul 10.44' : 'Memperbarui status proposal', pctLabel: prog + '%', bar: 'width:' + prog + '%;background-color:' + (prog >= 100 ? 'var(--success)' : 'var(--primary)') + ';', count: ok.toLocaleString('id-ID') + ' dari 1.236 baris', dl: () => this.toast('Laporan error diunduh.') },
+      hist: HIST.map(([file, who, when, ok2, fail, nom]) => ({ file, who, when, ok: ok2.toLocaleString('id-ID'), fail: String(fail), failSty: fail ? 'color:var(--danger-text);font-weight:600;' : 'color:var(--text-secondary);', nom })),
+      add: { rows: ADD.map((a) => { const L = new Date(a[5][0], a[5][1], a[5][2]), B = new Date(L.getTime() + a[6] * 864e5), d = s.decided[a[0]]; return { nama: a[1], kab: a[2], prog: a[3], alasan: a[4], lama: dS(L), baru: dS(B), hari: String(a[6]), rek: a[7], rekTone: a[7] === 'Setujui' ? 'success' : 'danger', sla: a[8], st: d ? (d === 'setuju' ? 'Disetujui' : 'Ditolak') : 'Menunggu', stTone: d ? (d === 'setuju' ? 'success' : 'danger') : 'primary', open: () => this.setState({ screen: 'keputusan', open: a[0], mode: a[7] === 'Setujui' ? 'setuju' : 'tolak', tglBaru: iso(B), catatan: '' }) }; }) },
+      dec: (() => {
+        const a = ADD.find((x) => x[0] === s.open) || ADD[0];
+        const L = new Date(a[5][0], a[5][1], a[5][2]), B = new Date(L.getTime() + a[6] * 864e5);
+        const tgl = s.tglBaru || iso(B), td = new Date(tgl + 'T00:00:00'), days = Math.round((td - L) / 864e5);
+        const tglErr = isNaN(td.getTime()) ? 'Pilih tanggal.' : days <= 0 ? 'Harus setelah tenggat lama, ' + dS(L) + '.' : days > 60 ? 'Maksimal 60 hari dari tenggat lama.' : undefined;
+        const cLen = s.catatan.replace(/\s+/g, ' ').trim().length;
+        const setuju = s.mode === 'setuju';
+        const reason = setuju ? (tglErr ? 'Perbaiki tanggal selesai baru.' : undefined) : cLen < 20 ? 'Tulis catatan minimal 20 karakter.' : undefined;
+        return {
+          nama: a[1], sla: a[8], pks: a[9], lama: dS(L), baru: dS(B), hari: String(a[6]), uraian: a[10].charAt(0).toUpperCase() + a[10].slice(1),
+          fotos: ['Lokasi tergenang', 'Gudang material', 'Pekerjaan tertunda'],
+          kpl: 'Siti Nurhaliza, S.T.', kplTgl: '3 Okt 2026', kplNote: (a[7] === 'Setujui' ? 'Rekomendasi setujui. ' : 'Rekomendasi tolak. ') + (a[7] === 'Setujui' ? 'Kendala terverifikasi saat kunjungan lapangan. Sisa pekerjaan realistis selesai dalam waktu yang diusulkan.' : 'Kendala tidak terlihat saat kunjungan. Keterlambatan lebih karena pengelolaan pekerjaan.'),
+          modes: [['setuju', 'Setujui'], ['tolak', 'Tolak']].map(([id, label]) => ({ label, on: s.mode === id, pick: () => this.setState({ mode: id }), sty: s.mode === id ? 'background-color:var(--surface);color:var(--text-primary);box-shadow:var(--shadow-card);' : 'color:var(--text-secondary);' })),
+          isSetuju: setuju, isTolak: !setuju, tgl, onTgl: (e) => this.setState({ tglBaru: e.target.value }), tglErr,
+          catatan: s.catatan, onCatatan: (e) => this.setState({ catatan: e.target.value }),
+          catMsg: cLen && cLen < 20 ? 'Minimal 20 karakter. Saat ini ' + cLen + '.' : 'Wajib, minimal 20 karakter. Terlihat oleh sekolah.', catMsgSty: cLen && cLen < 20 ? 'color:var(--danger-text);' : 'color:var(--text-secondary);', catFrame: cLen && cLen < 20 ? 'border-color:var(--danger);border-width:2px;' : '',
+          btnVariant: setuju ? 'primary' : 'danger', btnLabel: setuju ? 'Setujui dan terbitkan SK' : 'Tolak perpanjangan',
+          disabled: !!reason, reason,
+          submit: () => { this.setState((st) => ({ decided: { ...st.decided, [a[0]]: st.mode }, screen: 'antrian' })); this.toast(setuju ? 'Perpanjangan ' + a[1] + ' disetujui sampai ' + dS(td) + '. SK diterbitkan.' : 'Perpanjangan ' + a[1] + ' ditolak. Catatan dikirim ke sekolah.'); }
+        };
+      })(),
+      toast: { show: !!s.toast, msg: s.toast }
+    };
+  }
+}
+</script>
+</body>
+</html>
