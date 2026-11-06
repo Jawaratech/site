@@ -122,7 +122,7 @@ const FLOWS = [
   ['UF-13','Pembatalan Peserta (Drop-out)'],['UF-14','Tambah Role Baru'],['UF-15','Undangan Event untuk Mentor'],
   ['UF-16','Check-in Event'],['UF-17','Redeem Benefit'],['UF-18','Ecosystem Registration (by Invitation)'],
   ['UF-19','Create Program & Approval'],['UF-20','Pelaksanaan, Monitoring Program & Analitik'],['UF-21','Program Reporting & Impact Tracking'],
-  ['UF-22','Spoke Activity & Participant Management'],['UF-23','Buat Event'],['UF-24','Verifikasi & Kurasi Startup'],['UF-25','Kelola Badge'],['UF-26','Kelola Hub & Space'],['UF-27','Hub Visit'],['UF-28','Pengguna (akun external)'],['UF-29','Pengaturan › Kategori event'],['UF-30','Pengaturan › Threshold kehadiran'],['UF-31','Pengaturan › Benefit & Kuota'],['UF-33','Konten: Lowongan & Riset'],['UF-34','Scan Tiket (check-in event)'],['UF-35','Role & Akses'],['UF-36','Organizer'],['UF-37','Residents'],['UF-38','Absensi staff'],['UF-39','Email Campaign'],['UF-41','Pengaturan › Audit log'],['UF-42','Peta Persebaran']
+  ['UF-22','Spoke Activity & Participant Management'],['UF-23','Buat Event'],['UF-24','Verifikasi & Kurasi Startup'],['UF-25','Kelola Badge'],['UF-26','Kelola Hub & Space'],['UF-27','Hub Visit'],['UF-28','Pengguna (akun external)'],['UF-29','Pengaturan › Kategori event'],['UF-30','Pengaturan › Threshold kehadiran'],['UF-31','Pengaturan › Benefit & Kuota'],['UF-33','Konten: Lowongan & Riset'],['UF-34','Scan Tiket (check-in event)'],['UF-35','Role & Akses'],['UF-36','Organizer'],['UF-37','Residents'],['UF-38','Absensi staff'],['UF-39','Email Campaign'],['UF-40','Pengaturan › Audit log'],['UF-41','Peta Persebaran']
 ];
 const ROLES = [
   {id:'founder', name:'Startup Founder', desc:'Membangun dan mengembangkan startup'},
@@ -2339,11 +2339,11 @@ const INT_MENU = [
   ['Aktivitas Konten', [['Lowongan','c','UF-33/jobs'], ['Riset','c','UF-33/research'], ['Moderasi','hc','UF-09/moderate']]],
   ['Komunikasi', [['Email Campaign','hc','UF-39/templates']]],
   ['Tim Internal', [['Staff','hc','UF-18/users'], ['Absensi staff','shc','UF-38/list'], ['Role & Akses','c','UF-35/roles']]],
-  ['Insight', [['Analitik','hck','UF-20/core'], ['Peta Persebaran','hck','UF-42/map']]],
+  ['Insight', [['Analitik','hck','UF-20/core'], ['Peta Persebaran','hck','UF-41/map']]],
   ['Pengaturan', [['Pengaturan','c',null,['Kategori event','Badge & Poin','Benefit & Kuota','Threshold kehadiran','Audit log']]]]
 ];
 const INT_DASH_FLOW = {s:'UF-18-1', h:'UF-18-2', c:'UF-18-3', k:'UF-18-4'};
-const INT_SUB_TARGET = {'Badge & Poin':'UF-25/list', 'Kategori event':'UF-29/list', 'Threshold kehadiran':'UF-30/rules', 'Benefit & Kuota':'UF-31/master', 'Taksonomi':'UF-40/list', 'Audit log':'UF-41/list', 'Semua pengguna':'UF-28/list', 'Startup Founder':'UF-28/founder', 'Digital Talent':'UF-28/talent', 'SME Owner':'UF-28/sme', 'Researcher':'UF-28/researcher', 'Mentor':'UF-28/mentor', 'Partner':'UF-28/partner'};
+const INT_SUB_TARGET = {'Badge & Poin':'UF-25/list', 'Kategori event':'UF-29/list', 'Threshold kehadiran':'UF-30/rules', 'Benefit & Kuota':'UF-31/master', 'Taksonomi':'UF-TAX/list', 'Audit log':'UF-40/list', 'Semua pengguna':'UF-28/list', 'Startup Founder':'UF-28/founder', 'Digital Talent':'UF-28/talent', 'SME Owner':'UF-28/sme', 'Researcher':'UF-28/researcher', 'Mentor':'UF-28/mentor', 'Partner':'UF-28/partner'};
 /* label lama (active) → label menu baru */
 const INT_ALIAS = {'Spaces':'Hub & Space','Peserta':'Pengguna','Aktivitas':'Laporan','Verifikasi':'Verifikasi & Kurasi','Badge':'Badge & Poin','Pengguna':'Staff','Ekosistem':'Analitik','Persetujuan':'Daftar Persetujuan'};
 const intNav = (role) => Object.assign(INT_MENU.flatMap(([,items])=>items.filter(i=>i[1].includes(role)).map(i=>i[0])), {role});
@@ -6075,7 +6075,7 @@ const UF39 = {
 };
 
 /* ======================================================================
-   UF-40 · Pengaturan › Taksonomi — daftar pilihan baku (Core Team)
+   (disembunyikan) Pengaturan › Taksonomi — daftar pilihan baku (Core Team)
    ====================================================================== */
 const TX_LISTS = {
   minat:['Minat','Profiling UF-01 › 05, rekomendasi dasbor',[['Data & AI','Founder, Talent, Researcher','AI, Artificial Intelligence, ML',842],['Software engineering','Talent','Programming, Coding',611],['UI/UX','Talent','Desain produk',398],['Digital marketing','Talent, UMKM','Pemasaran digital',455],['Pendanaan','Founder','Fundraising, Investasi',377],['Go-to-market','Founder','GTM',214],['Pemasaran online','UMKM','Jualan online',503],['Pembukuan digital','UMKM','Akuntansi',188],['Cyber security','Talent','Keamanan siber',176],['Cloud','Talent','',229],['Kebijakan publik','Researcher','Policy',64],['IoT','Researcher','Internet of Things',71]]],
@@ -6119,7 +6119,7 @@ const txPage = (dialog=null) => {
         <div class="border border-neutral-300 rounded p-3 text-sm bg-neutral-50">37 data pengguna & 4 event berpindah ke <b>Data & AI</b>. "AI" otomatis ditambahkan sebagai sinonim.</div>
         <div class="flex gap-3 justify-end">${btn('Batal','list','secondary')}${btn('Gabungkan','list','primary','','data-set-on-go="txMsg:merge"')}</div></div></div>` : ''}`);
 };
-const UF40 = {
+const UF_TAX = {
   type:'Internal', name:'Pengaturan › Taksonomi', who:'Core Team (Steven)',
   order:['list','add','merge'],
   screens:{
@@ -6136,7 +6136,7 @@ const UF40 = {
 };
 
 /* ======================================================================
-   UF-41 · Pengaturan › Audit log — jejak tindakan admin (Core Team)
+   UF-40 · Pengaturan › Audit log — jejak tindakan admin (Core Team)
    ====================================================================== */
 const AU_DATA = (() => {
   const A = [['Steven Halim','Core Team'],['Dimas Prakoso','Hub Management'],['Jessica Tan','Spoke'],['Sastro Wibowo','Komdigi Official'],['Sistem','Otomatis']];
@@ -6175,7 +6175,7 @@ const auPage = (detail=false) => {
         ${r0.mod==='Role & Akses'||r0.mod==='Moderasi' ? `<p class="text-xs text-neutral-500">Alasan: "Membantu laporan dampak program Batu"</p>` : ''}
         <div class="mt-auto">${btn('Tutup','list','secondary')}</div></div></div>` : ''}`);
 };
-const UF41 = {
+const UF40 = {
   type:'Internal', name:'Pengaturan › Audit log', who:'Core Team (Steven)',
   order:['list','detail'],
   screens:{
@@ -6195,7 +6195,7 @@ const PP_LBL = {"IDKU":[467.7,70.0],"IDNT":[560.4,306.0],"IDKB":[357.0,139.9],"I
 const PP_BB = {"IDKU":[430.8,46.8,82.2,64.9],"IDNT":[518.6,293.9,123.2,57.3],"IDKB":[315.7,92.6,109.4,102.2],"IDPA":[821.2,146.2,133.3,168.5],"IDJI":[360.5,247.3,98.0,60.8],"IDMA":[653.9,188.8,180.2,110.8],"IDNB":[457.2,294.2,66.7,20.5],"IDSN":[526.9,170.2,49.1,110.7],"IDJT":[313.1,249.4,61.9,47.7],"IDJB":[270.2,251.0,49.8,37.9],"IDJK":[276.3,253.9,6.0,6.4],"IDBT":[245.3,250.3,32.6,22.4],"IDYO":[342.7,283.8,15.9,12.8],"IDSG":[556.8,190.5,63.4,62.8],"IDPB":[731.8,112.5,109.8,106.5],"IDST":[529.5,107.0,87.1,91.1],"IDMU":[624.7,81.7,104.3,101.1],"IDKR":[209.7,39.3,114.6,107.6],"IDRI":[145.4,83.3,74.1,72.0],"IDGO":[562.6,113.5,46.3,14.4],"IDSA":[600.9,23.6,80.1,104.9],"IDSR":[515.1,150.3,22.0,54.3],"IDJA":[166.1,148.6,67.6,40.3],"IDSS":[185.0,167.2,79.3,64.6],"IDLA":[215.5,208.1,45.5,43.2],"IDBE":[164.4,178.1,54.2,64.7],"IDSB":[116.3,116.3,64.2,83.5],"IDSU":[86.0,48.8,66.9,96.6],"IDAC":[45.5,16.7,64.6,77.3],"IDKT":[356.8,119.2,100.1,85.3],"IDKS":[427.1,160.7,44.8,68.7],"IDBA":[429.8,293.7,25.1,15.9],"IDBB":[245.5,163.3,62.6,34.7],"IDKI":[416.6,82.7,103.5,97.9]};
 
 /* ======================================================================
-   UF-42 · Peta Persebaran — sebaran pengguna, startup, Hub/Spoke & event per wilayah
+   UF-41 · Peta Persebaran — sebaran pengguna, startup, Hub/Spoke & event per wilayah
    ====================================================================== */
 const PP_REG = [ // [provinsi, id SVG, -, pengguna, startup, hub, spoke, event]
   ['Aceh','IDAC',0,96,8,1,0,3],['Sumatera Utara','IDSU',0,284,21,1,1,11],['Sumatera Barat','IDSB',0,121,9,0,1,4],['Riau','IDRI',0,88,6,0,0,2],['Kepulauan Riau','IDKR',0,74,7,0,0,3],['Jambi','IDJA',0,52,3,0,0,1],['Bengkulu','IDBE',0,33,2,0,0,1],['Sumatera Selatan','IDSS',0,140,11,0,1,5],['Bangka Belitung','IDBB',0,29,1,0,0,0],['Lampung','IDLA',0,79,5,0,0,2],
@@ -6241,7 +6241,7 @@ const ppPage = () => {
         <p class="px-3 py-2 text-[11px] text-neutral-500 border-t border-neutral-200">${PP_REG.filter(r=>!r[5]&&!r[6]&&r[3]>50).length} provinsi punya > 50 pengguna tanpa Hub/Spoke — kandidat Spoke baru.</p></aside>
     </div>`);
 };
-/* UF-42 › Detail provinsi + statistik kab/kota */
+/* UF-41 › Detail provinsi + statistik kab/kota */
 const PP_KAB = {
   'Jawa Timur':['Kab. Bangkalan','Kab. Banyuwangi','Kab. Blitar','Kab. Bojonegoro','Kab. Bondowoso','Kab. Gresik','Kab. Jember','Kab. Jombang','Kab. Kediri','Kab. Lamongan','Kab. Lumajang','Kab. Madiun','Kab. Magetan','Kab. Malang','Kab. Mojokerto','Kab. Nganjuk','Kab. Ngawi','Kab. Pacitan','Kab. Pamekasan','Kab. Pasuruan','Kab. Ponorogo','Kab. Probolinggo','Kab. Sampang','Kab. Sidoarjo','Kab. Situbondo','Kab. Sumenep','Kab. Trenggalek','Kab. Tuban','Kab. Tulungagung','Kota Batu','Kota Blitar','Kota Kediri','Kota Madiun','Kota Malang','Kota Mojokerto','Kota Pasuruan','Kota Probolinggo','Kota Surabaya'],
   'Jawa Barat':['Kab. Bandung','Kab. Bandung Barat','Kab. Bekasi','Kab. Bogor','Kab. Ciamis','Kab. Cianjur','Kab. Cirebon','Kab. Garut','Kab. Indramayu','Kab. Karawang','Kab. Kuningan','Kab. Majalengka','Kab. Pangandaran','Kab. Purwakarta','Kab. Subang','Kab. Sukabumi','Kab. Sumedang','Kab. Tasikmalaya','Kota Bandung','Kota Banjar','Kota Bekasi','Kota Bogor','Kota Cimahi','Kota Cirebon','Kota Depok','Kota Sukabumi','Kota Tasikmalaya'],
@@ -6303,7 +6303,7 @@ const ppProvince = () => {
       <tbody>${rows.map(k=>`<tr class="border-t border-neutral-200"><td class="px-2 py-2 text-xs sm:text-sm"><span class="underline">${k.name}</span>${k.hub?' <span title="Ada Hub">▲</span>':''}</td>${k.y.map((v,yi)=>v.map((x,ci)=>`<td class="px-1.5 py-2 text-right font-mono text-xs" style="${ppHeat(x,colMax[yi][ci])}">${fmtN(x)}</td>`).join('')).join('')}</tr>`).join('')}</tbody></table></div>`}
     ${K ? `<div class="flex flex-wrap items-center gap-3"><span class="text-xs text-neutral-500">*Data per 31 Okt 2026 · ${all.length} kab/kota · ${state.ppKView==='role'?'jumlah pengguna per role external (akun aktif)':'warna = besaran relatif per kolom'}</span><div class="flex flex-wrap items-center gap-1 sm:ml-auto">${pagerBar('ppKPage', page, pages)}</div></div>` : ''}`);
 };
-const UF42 = {
+const UF41 = {
   type:'Internal', name:'Peta Persebaran', who:'Core Team (Steven) · Hub Management · Komdigi Official',
   order:['map','province'],
   screens:{
@@ -6319,7 +6319,7 @@ const UF42 = {
 const FLOW_DEFS = { 'UF-01':UF01, 'UF-02':UF02, 'UF-03':UF03, 'UF-04':UF04, 'UF-05':UF05, 'UF-06':UF06,
   'UF-07':UF07, 'UF-08':UF08, 'UF-09':UF09, 'UF-10':UF10, 'UF-11':UF11, 'UF-12':UF12,
   'UF-13':UF13, 'UF-14':UF14, 'UF-15':UF15, 'UF-16':UF16, 'UF-17':UF17, 'UF-18':UF18,
-  'UF-19':UF19, 'UF-20':UF20, 'UF-21':UF21, 'UF-22':UF22, 'UF-23':UF23, 'UF-24':UF24, 'UF-25':UF25, 'UF-26':UF26, 'UF-27':UF27, 'UF-28':UF28, 'UF-29':UF29, 'UF-30':UF30, 'UF-31':UF31, 'UF-33':UF33, 'UF-34':UF34, 'UF-35':UF35, 'UF-36':UF36, 'UF-37':UF37, 'UF-38':UF38, 'UF-39':UF39, 'UF-41':UF41, 'UF-42':UF42,
+  'UF-19':UF19, 'UF-20':UF20, 'UF-21':UF21, 'UF-22':UF22, 'UF-23':UF23, 'UF-24':UF24, 'UF-25':UF25, 'UF-26':UF26, 'UF-27':UF27, 'UF-28':UF28, 'UF-29':UF29, 'UF-30':UF30, 'UF-31':UF31, 'UF-33':UF33, 'UF-34':UF34, 'UF-35':UF35, 'UF-36':UF36, 'UF-37':UF37, 'UF-38':UF38, 'UF-39':UF39, 'UF-40':UF40, 'UF-41':UF41,
   ...UF01_CHILDREN, ...UF02_CHILDREN, ...UF18_CHILDREN };
 
 /* ===== Pengelompokan sidebar: 2 grup besar → sub-grup per tujuan pengguna → UF → turunan (children) ===== */
@@ -6338,9 +6338,9 @@ const NAV_GROUPS = [
     ['Operasional Hub',['UF-26','UF-27']],
     ['Aktivitas Konten',['UF-33']],
     ['Komunikasi',['UF-39']],
-    ['Insight',['UF-42']],
+    ['Insight',['UF-41']],
     ['Tim Internal',['UF-38','UF-35']],
-    ['Pengaturan',['UF-29','UF-25','UF-31','UF-30','UF-41']] ]}
+    ['Pengaturan',['UF-29','UF-25','UF-31','UF-30','UF-40']] ]}
 ];
 const CHILDREN = { 'UF-01': Object.keys(UF01_CHILDREN), 'UF-02': Object.keys(UF02_CHILDREN), 'UF-18': Object.keys(UF18_CHILDREN) };
 const flowName = id => FLOW_DEFS[id] && FLOW_DEFS[id].parent ? FLOW_DEFS[id].name : (FLOWS.find(f=>f[0]===id)||[,id])[1];
