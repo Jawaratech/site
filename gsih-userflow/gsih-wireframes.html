@@ -58,7 +58,7 @@ summary::-webkit-details-marker { display:none; }
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Unduh PNG</button>
         <span id="pngMsg" class="text-xs text-neutral-600" role="status" hidden></span>
         <label class="flex items-center gap-2 text-sm ml-2 cursor-pointer select-none">
-          <input id="notesToggle" type="checkbox" class="accent-neutral-900" checked>
+          <input id="notesToggle" type="checkbox" class="accent-neutral-900">
           Catatan
         </label>
       </div>
@@ -91,7 +91,7 @@ summary::-webkit-details-marker { display:none; }
       <!-- Screen tabs -->
       <div id="screenTabs" class="flex gap-1 overflow-x-auto pb-2 mb-4 border-b border-neutral-300"></div>
 
-      <div id="stage" class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px] items-start">
+      <div id="stage" class="grid gap-6 items-start">
         <!-- Device frame -->
         <div class="min-w-0 flex justify-center">
           <div id="frame" class="w-full bg-white border border-neutral-400 rounded-md shadow-sm overflow-clip transition-[max-width] duration-300" style="max-width:1100px">
@@ -106,7 +106,7 @@ summary::-webkit-details-marker { display:none; }
         </div>
 
         <!-- Notes -->
-        <aside id="notes" class="bg-white border border-neutral-300 rounded-md p-4 text-sm xl:sticky" style="top:calc(80px + env(safe-area-inset-top,0px))"></aside>
+        <aside id="notes" hidden class="bg-white border border-neutral-300 rounded-md p-4 text-sm xl:sticky" style="top:calc(80px + env(safe-area-inset-top,0px))"></aside>
       </div>
     </main>
   </div>
@@ -175,7 +175,7 @@ const state = {
   spSek:'Semua', spKeh:'Semua', spSt:'Semua',      // UF-22 participant program
   arSpoke:'Semua', arProg:'Semua', arProgress:'Semua', // UF-22 activity report (Hub)
   bgStatus:'Semua', bgPoin:'Semua', bgMenu:'none',  // UF-25 badge list
-  lang:'id', ppKView:'year', ppMetric:'users', ppKQ:'', ppKPage:'1', ppLayer:'users', ppRole:'Semua', ppSel:'Jawa Timur', bcView:'month', bcSel:'1', txList:'minat', txQ:'', txMsg:'none', auQ:'', auMod:'Semua', auRole:'Semua', auRows:'10', auPage:'1', auSel:'0', emCat:'Semua', emTplNew:'0', emPrev:'d', emQ:'', emSt:'Semua', emRows:'10', emPage:'1', emSeg:'1', emWhen:'later', emMsg:'none', saQ:'', saHub:'Semua', saStatus:'Semua', saDate:'Semua', saRows:'10', saPage:'1', saSel:'1', rsQ:'', rsHub:'Semua', rsStat:'Semua', rsRows:'10', rsPage:'1', rsSel:'0', rsMsg:'none', rsSrc:'manual', rsStaff:'-1', rsStaffQ:'', rsUser:'-1', rsUserQ:'', ogQ:'', ogRows:'10', ogPage:'1', ogSel:'0', ogMsg:'none', raRole:{}, raOv:{1:{'Analitik':true}}, raAcc:'1', raQ:'', raMobRole:'s', raMsg:'none', sfQ:'', sfHub:'Semua', sfRole:'Semua', sfStatus:'Semua', sfRows:'10', sfPage:'1', bkLock:'on', bkMin:'100', stCam:'off', mdQ:'', mdStatus:'Semua', mdReason:'Semua', mdRows:'10', mdPage:'1', mdSel:'0', mdDur:'7', mdMsgDone:'none', evSel:'0', erTab:'peserta', erQ:'', erStatus:'Semua', erAtt:'Semua', erMode:'Semua', erRows:'10', erPage:'1', cxKind:'jobs', cxRows:'10', cxPage:'1', cxQ:'', cxStatus:'Semua', cxRep:'Semua', cxSel:'-1', cxMsgDone:'none', anTab:'hub', anPage:'1', anRows:'10', anQ:'', anLoc:'Semua Hub & Spoke', bkTab:'matrix', bkCat:'Semua', bkRole:'founder', bkModal:'none', bkMsg:'none', thWarn:'75', thAlert:'50', thSus:'30', thSusOn:'on', thSusDur:'30 hari', usStat:'Semua', usUn:'-1', usMsg:'none', udName:'Rani Pratama', udRole:'Startup Founder', udBack:'founder', udMsg:'none', udWarnC:'Kehadiran rendah', ueTags:'Alumni Batch 4,Agritech', bkWarn:'none', msSel:'lina', msOpen:'0', rqSel:'0', msPriv:'all', rpFrom:'request', mtSel:'0', mtF:'Semua', dmMsg:'none', mLoc:'custom', ctAQ:'', ctACat:'Semua', ctAType:'Semua', ctASt:'Semua', ctSel:'1', ctMsg:'none', ctType:'PDF', ctVid:'upload', ctLogin:'in', ctCatF:'Semua', ctTypeF:'Semua', ctSort:'Paling relevan', ctSlide:'0', ctThumb:'custom', mbCheck:'ok', mnSlot:'0', mnType:'Semua', mnQ:'', mnMine:'none', mnAvMsg:'none', mnSched:'empty', sdTab:'repeat', sdType:'Online', sdDays:'Kam', sdEdit:'0', fdModal:'closed', pgNet:'on', prNet:'on', mnSel:'0', udRejI:'0', udTk:'off', udMn:'none', udMnMsg:'none', udReq:'', ctPub:'now', hbBk:'none', hbBkF:'Semua', bqView:'list', bqDay:'none', bkPend:'yes', usHub:'Semua', sfSel:'7', sfMgrQ:'', asGeo:'on', asRad:'100', asHub:'Semua hub', sdLoc:'Hub Malang · Meeting Room B', evEdit:'0', eeTab:'info', eeMsg:'none', evCert:'off', evCertT:'Kehadiran', evPT:'on', evCertPick:'pick', ecF:'Semua', udSusD:'14 hari', thWq:'reduce', thAq:'block', thRed:'50', thSimA:'7', thMsg:'none', ecPreset:'0', ecName:'', ecQ:'', ecMsg:'none', usRows:'10', usPage:'1', usQ:'', usRole:'Semua', rlFilter:'Semua', hvRows:'10', hvPage:'1', hvScope:'name', hvQ:'', hvHub:'Semua', hvDate:'all', hvType:'Semua', hvStatus:'Semua', intAcc:{}, hsRole:'core', hsMode:'create', hsDel:'none', hsMsg:'none', attSim:'normal', pubViewer:'owner', pfHist:'Semua', pfTab:'ringkasan', pubTab:'tentang', pfPublic:'on', pfVisInfo:'on', pfVisExp:'on', pfVisBadge:'on', spViewer:'owner', hapSel:'0', hapSort:'lama', attSt:'out', attN:'2', attDist:'far', kqT:'startup', kqQ:'', kqSel:'-1', kqSp:'Meeting Room A', kqPer:'monthly', kqF:'Semua', lvType:'Cuti tahunan', lvHalf:'full', lvF:'Menunggu', exMode:'month', exStaff:'all', exPick:'0,2', exQ:'', exFmt:'Excel (.xlsx)', exMonth:'Oktober 2026', spDocF:'Semua', spActF:'Semua', pfVisCert:'on', pfCertF:'Semua', pfDel:'closed', pfMsg:'none', pfAdd:'closed', pfAddType:'exp', jPeriod:'1m',                                       // bahasa antarmuka (ID default, EN)
+  lang:'id', ppKView:'year', ppMetric:'users', ppKQ:'', ppKPage:'1', ppLayer:'users', ppRole:'Semua', ppSel:'Jawa Timur', bcView:'month', bcSel:'1', txList:'minat', txQ:'', txMsg:'none', auQ:'', auMod:'Semua', auRole:'Semua', auRows:'10', auPage:'1', auSel:'0', emCat:'Semua', emTplNew:'0', emPrev:'d', emQ:'', emSt:'Semua', emRows:'10', emPage:'1', emSeg:'1', emWhen:'later', emMsg:'none', saQ:'', saHub:'Semua', saStatus:'Semua', saDate:'Semua', saRows:'10', saPage:'1', saSel:'1', rsQ:'', rsHub:'Semua', rsStat:'Semua', rsRows:'10', rsPage:'1', rsSel:'0', rsMsg:'none', rsSrc:'manual', rsStaff:'-1', rsStaffQ:'', rsUser:'-1', rsUserQ:'', ogQ:'', ogRows:'10', ogPage:'1', ogSel:'0', ogMsg:'none', raRole:{}, raOv:{1:{'Analitik':true}}, raAcc:'1', raQ:'', raMobRole:'s', raMsg:'none', sfQ:'', sfHub:'Semua', sfRole:'Semua', sfStatus:'Semua', sfRows:'10', sfPage:'1', bkLock:'on', bkMin:'100', stCam:'off', mdQ:'', mdStatus:'Semua', mdReason:'Semua', mdRows:'10', mdPage:'1', mdSel:'0', mdDur:'7', mdMsgDone:'none', evSel:'0', erTab:'peserta', erQ:'', erStatus:'Semua', erAtt:'Semua', erMode:'Semua', erRows:'10', erPage:'1', cxKind:'jobs', cxRows:'10', cxPage:'1', cxQ:'', cxStatus:'Semua', cxRep:'Semua', cxSel:'-1', cxMsgDone:'none', anTab:'hub', anPage:'1', anRows:'10', anQ:'', anLoc:'Semua Hub & Spoke', bkTab:'matrix', bkCat:'Semua', bkRole:'founder', bkModal:'none', bkMsg:'none', thWarn:'75', thAlert:'50', thSus:'30', thSusOn:'on', thSusDur:'30 hari', usStat:'Semua', usUn:'-1', usMsg:'none', udName:'Rani Pratama', udRole:'Startup Founder', udBack:'founder', udMsg:'none', udWarnC:'Kehadiran rendah', ueTags:'Alumni Batch 4,Agritech', bkWarn:'none', msSel:'lina', msOpen:'0', rqSel:'0', msPriv:'all', rpFrom:'request', mtSel:'0', mtF:'Semua', dmMsg:'none', mLoc:'custom', ctAQ:'', ctACat:'Semua', ctAType:'Semua', ctASt:'Semua', ctSel:'1', ctMsg:'none', ctType:'PDF', ctVid:'upload', ctLogin:'in', ctCatF:'Semua', ctTypeF:'Semua', ctSort:'Paling relevan', ctSlide:'0', ctThumb:'custom', mbCheck:'ok', mnSlot:'0', mnType:'Semua', mnQ:'', mnMine:'none', mnAvMsg:'none', mnSched:'empty', sdTab:'repeat', sdType:'Online', sdDays:'Kam', sdEdit:'0', fdModal:'closed', pgNet:'on', prNet:'on', mnSel:'0', spRes:'on', spResMode:'fixed', udRejI:'0', udTk:'off', udMn:'none', udMnMsg:'none', udReq:'', ctPub:'now', hbBk:'none', hbBkF:'Semua', bqView:'list', bqDay:'none', bkPend:'yes', usHub:'Semua', sfSel:'7', sfMgrQ:'', asGeo:'on', asRad:'100', asHub:'Semua hub', sdLoc:'Hub Malang · Meeting Room B', evEdit:'0', eeTab:'info', eeMsg:'none', evCert:'off', evCertT:'Kehadiran', evPT:'on', evCertPick:'pick', ecF:'Semua', udSusD:'14 hari', thWq:'reduce', thAq:'block', thRed:'50', thSimA:'7', thMsg:'none', ecPreset:'0', ecName:'', ecQ:'', ecMsg:'none', usRows:'10', usPage:'1', usQ:'', usRole:'Semua', rlFilter:'Semua', hvRows:'10', hvPage:'1', hvScope:'name', hvQ:'', hvHub:'Semua', hvDate:'all', hvType:'Semua', hvStatus:'Semua', intAcc:{}, hsRole:'core', hsMode:'create', hsDel:'none', hsMsg:'none', attSim:'normal', pubViewer:'owner', pfHist:'Semua', pfTab:'ringkasan', pubTab:'tentang', pfPublic:'on', pfVisInfo:'on', pfVisExp:'on', pfVisBadge:'on', spViewer:'owner', hapSel:'0', hapSort:'lama', attSt:'out', attN:'2', attDist:'far', kqT:'startup', kqQ:'', kqSel:'-1', kqSp:'Meeting Room A', kqPer:'monthly', kqF:'Semua', lvType:'Cuti tahunan', lvHalf:'full', lvF:'Menunggu', exMode:'month', exStaff:'all', exPick:'0,2', exQ:'', exFmt:'Excel (.xlsx)', exMonth:'Oktober 2026', spDocF:'Semua', spActF:'Semua', pfVisCert:'on', pfCertF:'Semua', pfDel:'closed', pfMsg:'none', pfAdd:'closed', pfAddType:'exp', jPeriod:'1m',                                       // bahasa antarmuka (ID default, EN)
   evReg:'open', evTab:'tentang', prTab:'tentang', oppKind:'program', evKind:'open', // detail event/program (shared)                   // UF-10 detail event
   invSearch:'found',                               // UF-01-3 undang anggota tim
   liMode:'pdf', liApplied:'no',                    // UF-01 isi profil dari LinkedIn
@@ -333,7 +333,13 @@ const simBar = (label, key, opts) => `
   </div>`;
 const roleName = () => ROLES.find(r=>r.id===state.role).name;
 const isMentor = () => state.role==='mentor';
-const appHeader = (right, nav) => (nav = normalizeNav(nav, right), `
+/* Ikon Pesan (UF-42) otomatis di header external yang sudah login (ada lonceng notifikasi), sebelum lonceng */
+const withMsg = (right, nav) => {
+  if (!right || right.includes('aria-label="Pesan"') || !/aria-label="Notifikasi"|w-8 h-8 rounded-full|Profil saya/.test(right)) return right;
+  if (nav && (nav.length===0 || nav.includes('Laporan') || nav.includes('Moderasi') || nav.includes('Persetujuan'))) return right;
+  const i = right.indexOf('<span class="relative inline-flex w-8 h-8'); return i<0 ? msIco(2) + right : right.slice(0,i) + msIco(2) + right.slice(i);
+};
+const appHeader = (right, nav) => (right = withMsg(right, nav), nav = normalizeNav(nav, right), `
   <div class="flex items-center gap-4 px-5 py-3 border-b border-neutral-300">
     <button type="button" data-flow="UF-01" data-flow-screen="portal" class="flex items-center gap-2" aria-label="GSIH · beranda"><div class="ph w-7 h-7 rounded-sm" aria-hidden="true"></div><span class="font-semibold">GSIH</span></button>
     <nav class="hidden md:flex ${nav.length>7?'gap-2.5 text-[13px]':nav.length>6?'gap-3 text-[13px]':'gap-4 text-sm'} text-neutral-600" data-desktop-only>${nav.map(n=>navLink(n, nav)).join('')}</nav>
@@ -5827,6 +5833,23 @@ const hsHubForm = () => { const edit = state.hsMode==='edit'; return hsShell(`
   ${hsSec('Status', `<div class="flex flex-col gap-3">${hsSwitch(true,'Hub aktif')}${hsSwitch(true,'Tampil di menu Spaces untuk pengguna')}<p class="text-xs text-neutral-500">Hub nonaktif tidak bisa dibooking; booking mendatang tetap berjalan sampai selesai.</p></div>`)}
   <div class="flex flex-wrap gap-3 ${isMob()?'sticky bottom-0 bg-white border-t border-neutral-300 -mx-5 px-5 py-3':''}">${btn(edit?'Simpan perubahan':'Simpan Hub', edit?'detail':'list','primary','','data-set-on-go="hsMsg:hub"')}${btn('Batal', edit?'detail':'list','ghost')}</div>`); };
 
+/* Alokasi Residen per space: bagian dari kuota Residen Hub (Form Hub) */
+const spResSec = (edit) => {
+  if (!hbResOn()) return hsSec('Alokasi Residen <span class="font-normal text-xs text-neutral-500">· opsional</span>', `<p class="text-sm text-neutral-600">Hub Malang belum menerima Residen. Aktifkan "Alokasi Residen" di ${btn('Edit Hub','hubForm','ghost','!p-0 underline text-sm','data-set-on-go="hsMode:edit"')} untuk mengalokasikan space ini ke Residen.</p>`);
+  const on = state.spRes==='on', hq = +(state.hbResQ ?? 12), other = 8, q = edit ? 4 : 4;
+  return hsSec('Alokasi Residen <span class="font-normal text-xs text-neutral-500">· opsional</span>', `
+    <div class="flex flex-wrap items-center gap-3">
+      <button type="button" role="switch" aria-checked="${on}" aria-label="Alokasi Residen untuk space ini" data-set="spRes:${on?'off':'on'}" class="inline-flex items-center gap-2 text-sm"><span class="w-9 h-5 rounded-full border border-neutral-900 relative ${on?'bg-neutral-900':'bg-white'}" aria-hidden="true"><span class="absolute top-0.5 ${on?'right-0.5 bg-white':'left-0.5 bg-neutral-900'} w-3.5 h-3.5 rounded-full"></span></span>Space ini dialokasikan untuk Residen</button>
+      <span class="text-xs text-neutral-500">${on?'Aktif':'Nonaktif · space hanya untuk booking umum'}</span>
+    </div>
+    ${on ? `<div class="flex flex-col gap-4 border-l-2 border-neutral-900 pl-4">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="flex flex-col gap-1"><label for="spResQ" class="text-sm font-medium">Kursi / unit untuk Residen *</label><div class="flex items-center border border-neutral-400 rounded bg-white"><input id="spResQ" type="number" min="1" value="${q}" class="w-full min-w-0 px-3 py-2 text-sm bg-transparent"><span class="px-3 text-sm text-neutral-500 border-l border-neutral-300">orang</span></div><span class="text-xs text-neutral-500">Maks. sesuai kapasitas space.</span></div>
+        <fieldset class="flex flex-col gap-1"><legend class="text-sm font-medium mb-1">Cara pakai</legend>${[['fixed','Kursi tetap','Dikunci untuk Residen, tidak tampil di booking umum'],['prio','Prioritas booking','Residen booking tanpa mengurangi kuota jam; sisa kursi tetap bisa dibooking umum']].map(([k,t,d])=>`<label class="flex items-start gap-2 text-sm cursor-pointer"><input type="radio" name="spResMode" data-set="spResMode:${k}" ${state.spResMode===k?'checked':''} class="mt-0.5 accent-neutral-900"><span><span class="block">${t}</span><span class="block text-xs text-neutral-500">${d}</span></span></label>`).join('')}</fieldset>
+      </div>
+      <div class="bg-neutral-50 border border-neutral-300 rounded p-3 text-xs flex flex-col gap-1.5"><p><b>Kuota Residen Hub Malang: ${hq} orang</b> (diatur di Form Hub)</p>${meter('Teralokasi ke space',Math.round((other+q)/hq*100),`Co-working Area ${other} + space ini ${q} = ${other+q} dari ${hq}`)}${other+q>hq?'<p class="font-medium">⚠ Melebihi kuota Residen Hub. Kurangi kursi atau naikkan kuota di Form Hub.</p>':''}</div>
+    </div>` : ''}`, 'Bagian dari kuota Residen Hub. Residen yang ditambahkan (UF-37) ditempatkan di space yang punya alokasi.');
+};
 const hsSpaceForm = () => { const edit = state.hsMode==='edit'; return hsShell(`
   ${btn('← Hub Malang','detail','ghost','!p-0 self-start')}
   <h2 class="text-xl font-semibold">${edit?'Edit space · Meeting Room A':'Tambah space di Hub Malang'}</h2>
@@ -5840,6 +5863,7 @@ const hsSpaceForm = () => { const edit = state.hsMode==='edit'; return hsShell(`
     <div class="grid gap-4 grid-cols-2 sm:grid-cols-3">${select('spSlot','Satuan slot',['1 jam','30 menit','Harian'])}${field('spMin','Durasi min.','text','1 jam','', '1 jam')}${field('spMax','Durasi maks. / booking','text','4 jam','', '4 jam')}</div>
     <div class="flex flex-col gap-3">${hsSwitch(true,'Perlu approval Hub Management')}${hsSwitch(true,'Mengurangi kuota jam booking pengguna')}</div>
     <fieldset><legend class="text-sm font-medium mb-2">Bisa dibooking oleh</legend><div class="flex flex-wrap gap-2">${['Startup Founder','Digital Talent','SME Owner','Researcher','Mentor','Partner','Residents'].map((r,i)=>`<button type="button" class="chip border border-neutral-400 rounded-full px-3 py-1 text-sm" aria-pressed="${i<6}">${r}</button>`).join('')}</div></fieldset>`)}
+  ${spResSec(edit)}
   ${hsSec('Status', `<div class="flex flex-col gap-3">${hsSwitch(true,'Space aktif & bisa dibooking')}<p class="text-xs text-neutral-500">Nonaktifkan sementara untuk renovasi tanpa menghapus riwayat booking.</p></div>`)}
   <div class="flex flex-wrap gap-3 ${isMob()?'sticky bottom-0 bg-white border-t border-neutral-300 -mx-5 px-5 py-3':''}">${btn(edit?'Simpan perubahan':'Simpan space','detail','primary','','data-set-on-go="hsMsg:space"')}${btn('Batal','detail','ghost')}</div>`); };
 
@@ -5858,7 +5882,7 @@ const UF26 = {
       notes:[['Info','Nama, provinsi, kota, PIC Hub Manager, kontak, deskripsi.'],['Lokasi','Alamat, link Google Maps + koordinat, pratinjau peta dengan pin yang bisa digeser.'],['Alokasi Residen','Opsional. Sakelar "Hub ini menerima Residen"; bila aktif muncul input Kuota Residen (orang). Saat edit, kuota tidak bisa di bawah jumlah Residen aktif. Residen ditambahkan dari Ekosistem › Residents (UF-37); Hub yang kuotanya penuh tidak bisa dipilih.'],['Jam & hari','Sakelar buka/tutup per hari + jam buka–tutup, salin ke semua hari, tanggal tutup khusus & libur nasional otomatis.'],['Fasilitas & tag','Chip fasilitas umum & tag pencarian.'],['Status','Hub aktif & tampil di menu Spaces.']],
       render: hsHubForm },
     spaceForm:{ title:'Tambah / edit space', url:'gsih.id/konsol/hub-space/hub-malang/space/baru', steps:'Form space', actor:'Core Team / Hub Management',
-      notes:[['Info','Nama, jenis, kapasitas, lantai, deskripsi.'],['Galeri','Maks. 8 foto, urutan bisa diatur, foto pertama jadi cover (dipakai galeri UF-12 › 03).'],['Aturan booking','Jam booking (ikut Hub / sendiri), satuan slot, durasi min/maks, perlu approval, mengurangi kuota jam, role yang boleh booking (termasuk Residents).'],['Status','Aktif / nonaktif sementara.']],
+      notes:[['Info','Nama, jenis, kapasitas, lantai, deskripsi.'],['Galeri','Maks. 8 foto, urutan bisa diatur, foto pertama jadi cover (dipakai galeri UF-12 › 03).'],['Aturan booking','Jam booking (ikut Hub / sendiri), satuan slot, durasi min/maks, perlu approval, mengurangi kuota jam, role yang boleh booking (termasuk Residents).'],['Alokasi Residen','Opsional, hanya bila Hub menerima Residen (Form Hub). Sakelar "Space ini dialokasikan untuk Residen"; bila aktif: jumlah kursi/unit untuk Residen dan cara pakai (Kursi tetap / Prioritas booking). Ringkasan kuota Residen Hub menampilkan total teralokasi ke semua space dan peringatan bila melebihi kuota. Bila Hub belum menerima Residen, tampil tautan ke Edit Hub.'],['Status','Aktif / nonaktif sementara.']],
       render: hsSpaceForm },
     quota:{ title:'Kuota khusus per pengguna / startup', url:'gsih.id/konsol/hub-space/hub-malang/kuota', steps:'Kuota khusus', actor:'Core Team / Hub Management',
       notes:[['Akses','Dari Detail Hub: section "Kuota khusus" → Kelola, atau "+ Beri kuota". Hub Management hanya untuk Hub sendiri; Core Team semua Hub.'],['Daftar','Penerima (STARTUP / USER), space, jumlah & satuan, periode (per bulan berulang / sekali), rentang, terpakai (progress), alasan, pemberi, status Aktif / Habis / Berakhir; menu ⋮ Ubah, Tambah kuota, Hentikan.'],['Aturan','Tambahan di luar kuota default role (Benefit & Kuota). Saat booking, kuota khusus dipakai lebih dulu. Kuota startup dipakai bersama seluruh anggota.']],
@@ -7602,7 +7626,7 @@ const msHead = () => appHeader(`${msIco(3)}${bell(2)}${avatar('Rani')}`);
 const msTabs = (cur) => `<div class="flex border-b border-neutral-300 text-sm" role="tablist">${[['inbox','Utama',MS_CONV.filter(c=>c.unread).length],['requests','Permintaan',MS_REQ.length]].map(([k,t,n])=>`<button type="button" role="tab" data-go="${k}" data-set-on-go="msOpen:0" aria-selected="${cur===k}" class="flex-1 px-3 py-2 -mb-px border-b-2 flex items-center justify-center gap-1.5 ${cur===k?'border-neutral-900 font-semibold':'border-transparent text-neutral-500'}">${t}${n?`<span class="font-mono text-[10px] ${cur===k?'bg-neutral-900 text-white':'bg-neutral-200'} rounded-full px-1.5">${n}</span>`:''}</button>`).join('')}</div>`;
 const msListPane = (cur, sel) => `
   <aside class="border border-neutral-300 rounded flex flex-col min-w-0 ${isMob()?'':'h-[640px]'}">
-    <div class="p-3 flex items-center gap-2 border-b border-neutral-300"><h2 class="text-base font-semibold">Pesan</h2><span class="ml-auto flex gap-2">${btn('⚙',  'settings','ghost','!p-1 text-sm','aria-label="Pengaturan pesan"')}${btn('✎ Baru','compose','secondary','px-2 py-1 text-xs')}</span></div>
+    <div class="p-3 flex items-center gap-2 border-b border-neutral-300"><h2 class="text-base font-semibold">Pesan</h2><span class="ml-auto flex gap-2">${btn('✎ Baru','compose','secondary','px-2 py-1 text-xs')}</span></div>
     <div class="p-3 border-b border-neutral-200"><div class="relative">${searchIcon}<label for="ms_q" class="sr-only">Cari pesan</label><input id="ms_q" type="search" placeholder="Cari nama atau pesan…" class="w-full border border-neutral-400 rounded pl-9 pr-3 py-2 text-sm bg-white placeholder:text-neutral-400"></div></div>
     ${msTabs(cur)}
     <ul class="flex-1 overflow-y-auto divide-y divide-neutral-200">${cur==='requests'
@@ -7686,20 +7710,6 @@ const msReport = () => {
     </div>
   </div></div>`;
 };
-const msSettings = () => {
-  const opt = (k, v, t, d) => `<button type="button" data-set="${k}:${v}" aria-pressed="${state[k]===v}" class="text-left border ${state[k]===v?'border-2 border-neutral-900':'border-neutral-300'} rounded px-3 py-2 flex items-start gap-2"><span class="mt-1 w-3.5 h-3.5 rounded-full border border-neutral-900 shrink-0 ${state[k]===v?'bg-neutral-900 shadow-[inset_0_0_0_2px_#fff]':''}"></span><span><span class="block text-sm font-medium">${t}</span><span class="block text-xs text-neutral-500">${d}</span></span></button>`;
-  const tg = (on, t, d='') => `<label class="flex items-start justify-between gap-3 text-sm"><span><span class="block">${t}</span>${d?`<span class="block text-xs text-neutral-500">${d}</span>`:''}</span><span class="mt-0.5 w-9 h-5 shrink-0 rounded-full border border-neutral-900 relative ${on?'bg-neutral-900':'bg-white'}" aria-hidden="true"><span class="absolute top-0.5 ${on?'right-0.5 bg-white':'left-0.5 bg-neutral-900'} w-3.5 h-3.5 rounded-full"></span></span></label>`;
-  return `${msHead()}<div class="px-5 py-6 max-w-2xl mx-auto w-full flex flex-col gap-4">
-    ${btn('← Pesan','inbox','ghost','!p-0 self-start')}
-    <h2 class="text-xl font-semibold">Pengaturan pesan</h2>
-    ${panel('Siapa yang bisa mengirim permintaan pesan', `<div class="flex flex-col gap-2">${opt('msPriv','all','Semua pengguna GSIH','Pesan pertama dari yang belum terhubung masuk ke folder Permintaan.')}${opt('msPriv','ver','Hanya pengguna terverifikasi','Akun belum terverifikasi tidak bisa mengirim permintaan ke Anda.')}${opt('msPriv','none','Tidak ada','Hanya yang sudah terhubung & akun resmi GSIH.')}</div>
-      ${state.msPriv!=='none'?`<fieldset class="flex flex-col gap-1.5 text-sm"><legend class="text-sm font-medium mb-1">Dari role</legend><div class="flex flex-wrap gap-x-4 gap-y-1.5">${['Startup Founder','Digital Talent','SME Owner','Researcher','Mentor','Partner'].map(r=>`<label class="flex items-center gap-1.5"><input type="checkbox" checked class="accent-neutral-900">${r}</label>`).join('')}</div></fieldset>`:''}`)}
-    ${panel('Langsung masuk Utama (tanpa permintaan)', `<ul class="text-sm flex flex-col gap-1.5">${['Akun resmi GSIH (Hub, Spoke, Core Team)','Anggota tim startup yang sama','Mentor / mentee dengan sesi terjadwal','Partner tempat Anda melamar lowongan (dan sebaliknya)','Pengguna yang permintaannya pernah Anda terima'].map(t=>`<li class="flex gap-2"><span aria-hidden="true">✓</span>${t}</li>`).join('')}</ul>`)}
-    ${panel('Lainnya', `<div class="flex flex-col gap-3">${tg(true,'Tanda sudah dibaca','Bila mati, Anda juga tidak melihat tanda dibaca dari orang lain')}${tg(true,'Email untuk pesan & permintaan baru','Maks. 1 email per jam')}${tg(false,'Filter pesan berisi tautan dari akun baru','Pindahkan ke folder Permintaan tersembunyi')}</div>`)}
-    ${panel('Diblokir (2)', `<ul class="divide-y divide-neutral-200 text-sm">${['Kevin Wijaya','Akun Promo 88'].map(n=>`<li class="flex items-center gap-3 py-2">${msAv(n,false,'w-8 h-8')}<span class="flex-1">${n}</span><button type="button" class="text-xs underline">Buka blokir</button></li>`).join('')}</ul>`)}
-    <div>${btn('Simpan','inbox','primary')}</div>
-  </div>`;
-};
 /* Inbox tim (internal): Hub Management / Core Team */
 const MS_TEAM = [
   ['Rani Pratama','Startup Founder','Terima kasih! Apakah proyektor tersedia?','11.02','Dimas','Terbuka',false],
@@ -7743,7 +7753,7 @@ const msStaff = (dialog=null) => {
 };
 const UF42 = {
   type:'External', name:'Pesan (Direct Message)', who:'Semua pengguna external (contoh: Rani · Startup Founder) · Hub Management / Core Team (Inbox tim)',
-  order:['inbox','official','requests','report','compose','composeSent','settings','staff','staffNew'],
+  order:['inbox','official','requests','report','compose','composeSent','staff','staffNew'],
   screens:{
     inbox:{ title:'Inbox · Utama', url:'gsih.id/pesan', steps:'Inbox', actor:'Pengguna external',
       notes:[['Akses','Ikon 💬 di header (sebelah lonceng notifikasi) untuk semua role external yang login.'],['Tab','Utama (percakapan yang sudah terhubung + pesan resmi GSIH) · Permintaan (pesan pertama dari yang belum terhubung).'],['Daftar','Foto, nama, role, cuplikan pesan terakhir, waktu, jumlah belum dibaca; pesan resmi ditandai ✓ OFFICIAL dan disematkan di atas.'],['Percakapan','Bubble pesan, tanda dibaca ✓✓, lampiran 📎 (PDF/gambar, maks. 10 MB), menu ⋮: Lihat profil, Bisukan, Blokir, Laporkan.'],['Mobile','Daftar dulu; ketuk percakapan untuk membuka, ← untuk kembali.']],
@@ -7763,9 +7773,6 @@ const UF42 = {
     composeSent:{ title:'Permintaan terkirim (sisi pengirim)', url:'gsih.id/pesan/agus-salim', steps:'Menunggu', actor:'Pengirim',
       notes:[['Status','Pesan tampil di percakapan dengan status "Permintaan terkirim"; kolom pesan terkunci sampai penerima menerima.'],['Diterima','Saat diterima, pengirim mendapat notifikasi dan bisa melanjutkan percakapan.']],
       render: () => msCompose(true) },
-    settings:{ title:'Pengaturan pesan', url:'gsih.id/pesan/pengaturan', steps:'Pengaturan', actor:'Pengguna external',
-      notes:[['Privasi','Siapa yang bisa mengirim permintaan: Semua / Hanya terverifikasi / Tidak ada, plus filter per role.'],['Langsung ke Utama','Akun resmi GSIH, satu tim startup, mentor–mentee dengan sesi, partner–pelamar lowongan, dan yang pernah diterima.'],['Lainnya','Tanda dibaca, email pesan baru (maks. 1/jam), filter tautan dari akun baru, daftar akun diblokir.']],
-      render: msSettings },
     staff:{ title:'Inbox tim (Hub Management)', url:'gsih.id/konsol/pesan', steps:'Inbox tim', actor:'Hub Management / Core Team',
       notes:[['Akses','Sidebar › Komunikasi › Pesan (Spoke, Hub Management, Core Team).'],['Inbox bersama','Satu inbox per Hub; percakapan bisa ditugaskan ke staff, status Baru / Terbuka / Selesai, filter, ringkasan (rata-rata waktu balas).'],['Balas','Atas nama GSIH Hub Malang; mode "Catatan internal" hanya terlihat tim. Tautan ke Detail pengguna (UF-28).']],
       render: () => msStaff() },
